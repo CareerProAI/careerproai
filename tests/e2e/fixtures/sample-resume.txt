@@ -1,0 +1,37 @@
+Jordan Ellis
+Senior Backend Engineer
+jordan.ellis.dev@example.com | +1 (555) 018-2244 | Austin, TX
+linkedin.com/in/jordanellis | github.com/jordanellis
+
+PROFESSIONAL SUMMARY
+Backend engineer with 6 years of experience building high-throughput APIs and
+distributed data pipelines. Focused on Node.js, PostgreSQL, and cloud infrastructure,
+with a track record of shipping reliable systems under real production load.
+
+EXPERIENCE
+
+Senior Backend Engineer — Northwind Logistics (2022 - Present)
+- Redesigned the order-routing service, cutting p99 latency from 800ms to 120ms
+- Migrated a monolithic Rails billing module to a Node.js/TypeScript microservice
+- Introduced structured logging and tracing, reducing mean incident time-to-diagnosis by 40%
+- Mentored two junior engineers through their first on-call rotations
+
+Backend Engineer — Fenwick Analytics (2019 - 2022)
+- Built a real-time event-ingestion pipeline processing 50M events/day with Kafka
+- Designed and maintained a PostgreSQL schema serving both OLTP and reporting workloads
+- Implemented CI/CD pipelines with GitHub Actions, cutting deploy time from 45 to 6 minutes
+
+EDUCATION
+B.S. in Computer Science — University of Texas at Austin, 2019
+
+SKILLS
+Frameworks: Node.js, Express, NestJS, React
+Tools: PostgreSQL, Kafka, Docker, Kubernetes, AWS, Terraform
+Soft Skills: Mentorship, Incident Response, Technical Writing
+
+CERTIFICATIONS
+AWS Certified Solutions Architect — Associate, 2021
+
+PROJECTS
+Queue Insights — Open-source Kafka consumer-lag dashboard (github.com/jordanellis/queue-insights)
+Built with Node.js and React; used by several small engineering teams to monitor consumer lag.

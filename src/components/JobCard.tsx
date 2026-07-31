@@ -1,0 +1,91 @@
+import React from 'react';
+import { Job, ResumeProfile } from '../types';
+import JobCardActions from './JobCardActions';
+import JobCardInsights from './JobCardInsights';
+
+interface JobCardProps {
+  // No @types/react is installed in this project, so TS has no JSX.IntrinsicAttributes
+  // to auto-exclude `key` from prop-shape checks — declare it explicitly so passing
+  // key={job.id} at the call site type-checks.
+  key?: string;
+  job: Job;
+  currentProfile: ResumeProfile;
+  applied: boolean;
+  isSaved: boolean;
+  onApplyJob: (job: Job) => void;
+  onSaveJob: (job: Job) => void;
+  onViewDetails: () => void;
+  onCompare: () => void;
+}
+
+export default function JobCard({
+  job,
+  currentProfile,
+  applied,
+  isSaved,
+  onApplyJob,
+  onSaveJob,
+  onViewDetails,
+  onCompare,
+}: JobCardProps) {
+  const notAiScored = Boolean(job.notAiScored);
+  const isHighMatch = !notAiScored && job.matchRate >= 92;
+
+  return (
+    <div className="group bg-white dark:bg-slate-900 border border-outline-variant/60 hover:border-primary/40 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all relative overflow-hidden">
+      <div
+        className={`absolute top-0 right-0 px-4 py-1.5 rounded-bl-xl text-[10px] font-extrabold uppercase tracking-wider flex items-center gap-1 shadow-sm ${
+          isHighMatch
+            ? 'bg-[color:var(--color-match-high-ribbon)] text-[#181c20]'
+            : 'bg-surface-variant text-on-surface-variant'
+        }`}
+      >
+        <span className="material-symbols-outlined text-[14px]">
+          {notAiScored ? 'visibility_off' : isHighMatch ? 'psychology' : 'verified'}
+        </span>
+        <span>{notAiScored ? 'Not AI-Scored' : `${job.matchRate}% Match ${isHighMatch ? '• Top Fit' : ''}`}</span>
+      </div>
+
+      <div className="flex items-start gap-4">
+        <div className="w-16 h-16 rounded-xl border border-outline-variant/30 bg-white dark:bg-slate-950 flex items-center justify-center p-2 shrink-0 relative overflow-hidden">
+          {job.logo ? (
+            <img src={job.logo} alt={job.company} className="w-12 h-12 object-contain" />
+          ) : (
+            <span className="material-symbols-outlined text-on-surface-variant text-2xl">business</span>
+          )}
+        </div>
+        <div className="flex-1">
+          <h3 className="text-base font-extrabold text-on-surface">{job.title}</h3>
+          <p className="text-xs text-on-surface-variant font-medium mt-1">
+            {job.company} • {job.location} ({job.workplaceType})
+          </p>
+          <div className="flex flex-wrap gap-1.5 mt-3">
+            <span className="px-2.5 py-0.5 bg-surface-container dark:bg-slate-800 text-on-surface rounded text-[10px] font-bold border border-outline-variant/20">
+              {job.salary}
+            </span>
+            {job.skills.slice(0, 3).map((skill) => (
+              <span
+                key={skill}
+                className="px-2.5 py-0.5 bg-surface-container dark:bg-slate-800 text-on-surface rounded text-[10px] font-bold border border-outline-variant/20"
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+
+          <JobCardInsights job={job} currentProfile={currentProfile} onViewDetails={onViewDetails} />
+        </div>
+      </div>
+
+      <JobCardActions
+        job={job}
+        applied={applied}
+        isSaved={isSaved}
+        onApplyJob={onApplyJob}
+        onSaveJob={onSaveJob}
+        onViewDetails={onViewDetails}
+        onCompare={onCompare}
+      />
+    </div>
+  );
+}

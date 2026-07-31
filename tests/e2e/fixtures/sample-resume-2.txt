@@ -1,0 +1,28 @@
+Priya Sharma
+Product Manager
+priya.sharma.pm@example.com | +1 (555) 044-7719 | Seattle, WA
+linkedin.com/in/priyasharma
+
+PROFESSIONAL SUMMARY
+Product manager with 5 years of experience leading cross-functional teams to ship
+consumer-facing features, with a background in user research and data-driven
+prioritization.
+
+EXPERIENCE
+
+Senior Product Manager — Brightline Retail (2021 - Present)
+- Led the checkout redesign that increased conversion rate by 18%
+- Ran quarterly user research studies informing the product roadmap
+- Partnered with engineering and design to ship 12 features in 18 months
+
+Product Manager — Harborview Media (2018 - 2021)
+- Owned the onboarding funnel, reducing drop-off by 25%
+- Defined and tracked north-star metrics across three product lines
+
+EDUCATION
+B.A. in Economics — University of Washington, 2018
+
+SKILLS
+Frameworks: Figma, Jira, Amplitude
+Tools: SQL, A/B Testing, Roadmapping
+Soft Skills: Stakeholder Management, User Research, Cross-functional Leadership

@@ -1,0 +1,21 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+talentai.db
+
+# Test artifacts — playwright-report/test-results are regenerated per run; oversized.bin
+# is 6MB of pure junk data (only its size matters for A01) regenerated via
+# `npm run fixtures:generate`, not meant to be tracked.
+playwright-report/
+test-results/
+tests/e2e/fixtures/oversized.bin
+
+# Not tracked in public repo
+.claude/
+test.md
+CLAUDE.md
