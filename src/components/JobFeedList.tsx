@@ -1,6 +1,7 @@
 import React from 'react';
 import { Job, ResumeProfile } from '../types';
 import JobFeedColumn from './JobFeedColumn';
+import NoRecommendedMatches from './NoRecommendedMatches';
 
 interface JobFeedListProps {
   sortedJobs: Job[];
@@ -31,7 +32,9 @@ export default function JobFeedList({
 }: JobFeedListProps) {
   const bdjobsJobs = sortedJobs.filter((job) => job.source === 'bdjobs');
   const linkedinJobs = sortedJobs.filter((job) => job.source === 'linkedin');
-  const columnProps = { currentProfile, isApplied, savedJobIds, onApplyJob, onSaveJob, onViewDetails, onCompare, tabFilter };
+  const showBd = bdjobsJobs.length > 0 || linkedinJobs.length === 0;
+  const showLi = linkedinJobs.length > 0 || bdjobsJobs.length === 0;
+  const columnProps = { currentProfile, isApplied, savedJobIds, onApplyJob, onSaveJob, onViewDetails, onCompare };
 
   return (
     <div className="flex-1 space-y-5">
@@ -57,10 +60,15 @@ export default function JobFeedList({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <JobFeedColumn label="BDJOBS" jobs={bdjobsJobs} {...columnProps} />
-        <JobFeedColumn label="LinkedIn" jobs={linkedinJobs} {...columnProps} />
-      </div>
+      {tabFilter === 'recommended' && sortedJobs.length === 0 ? (
+        <NoRecommendedMatches className="text-center py-10" />
+      ) : (
+        <div className={`grid grid-cols-1 gap-6 ${showBd && showLi ? 'lg:grid-cols-2' : ''}`}>
+          {showBd && <JobFeedColumn label="BDJOBS" jobs={bdjobsJobs} {...columnProps} />}
+          {showLi && <JobFeedColumn label="LinkedIn" jobs={linkedinJobs} {...columnProps} />}
+        </div>
+      )}
     </div>
   );
 }
+

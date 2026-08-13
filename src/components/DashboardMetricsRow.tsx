@@ -1,17 +1,17 @@
 import React from 'react';
 import { ResumeProfile, Job } from '../types';
 import Card from './ui/Card';
+import { RECOMMENDED_MATCH_THRESHOLD } from '../hooks/useJobFilters';
 
 interface DashboardMetricsRowProps {
   currentProfile: ResumeProfile;
   jobs: Job[];
+  jobsLoading: boolean;
   activeAppsCount: number;
 }
 
-const ONE_DAY_MS = 24 * 60 * 60 * 1000;
-
-export default function DashboardMetricsRow({ currentProfile, jobs, activeAppsCount }: DashboardMetricsRowProps) {
-  const newMatchesCount = jobs.filter((job) => Date.now() - new Date(job.postedAt).getTime() <= ONE_DAY_MS).length;
+export default function DashboardMetricsRow({ currentProfile, jobs, jobsLoading, activeAppsCount }: DashboardMetricsRowProps) {
+  const newMatchesCount = jobs.filter((job) => !job.notAiScored && job.matchRate >= RECOMMENDED_MATCH_THRESHOLD).length;
   const skillsAnalyzedCount = currentProfile.skills.frameworks.length + currentProfile.skills.tools.length;
 
   return (
@@ -62,12 +62,12 @@ export default function DashboardMetricsRow({ currentProfile, jobs, activeAppsCo
             <span className="material-symbols-outlined">work</span>
           </div>
           <span className="text-[10px] bg-surface-container-high dark:bg-slate-800 text-on-surface-variant px-2.5 py-1 rounded-full font-bold">
-            New Today
+            ≥{RECOMMENDED_MATCH_THRESHOLD}% fit
           </span>
         </div>
         <div className="mt-4">
           <h3 className="text-xs text-on-surface-variant font-bold uppercase tracking-wider mb-1">New Matches</h3>
-          <p className="font-sans text-4xl font-extrabold text-on-surface">{newMatchesCount}</p>
+          <p className="font-sans text-4xl font-extrabold text-on-surface">{jobsLoading ? '—' : newMatchesCount}</p>
         </div>
       </Card>
 
@@ -83,3 +83,4 @@ export default function DashboardMetricsRow({ currentProfile, jobs, activeAppsCo
     </section>
   );
 }
+

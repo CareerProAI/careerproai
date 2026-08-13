@@ -11,6 +11,7 @@ import DashboardRecommendationsCard from './DashboardRecommendationsCard';
 interface DashboardViewProps {
   currentProfile: ResumeProfile;
   jobs: Job[];
+  jobsLoading: boolean;
   applications: Application[];
   activityLogs: ActivityLog[];
   setTab: (tab: string) => void;
@@ -20,6 +21,7 @@ interface DashboardViewProps {
 export default function DashboardView({
   currentProfile,
   jobs,
+  jobsLoading,
   applications,
   activityLogs,
   setTab,
@@ -34,11 +36,11 @@ export default function DashboardView({
         <p className="text-sm text-on-surface-variant mt-1.5">Here's your talent profile overview for today.</p>
       </section>
 
-      <DashboardMetricsRow currentProfile={currentProfile} jobs={jobs} activeAppsCount={applications.length} />
+      <DashboardMetricsRow currentProfile={currentProfile} jobs={jobs} jobsLoading={jobsLoading} activeAppsCount={applications.length} />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <DashboardTopMatches jobs={jobs} applications={applications} setTab={setTab} onApplyJob={onApplyJob} />
+          <DashboardTopMatches jobs={jobs} jobsLoading={jobsLoading} applications={applications} setTab={setTab} onApplyJob={onApplyJob} />
           <DashboardActiveResume currentProfile={currentProfile} setTab={setTab} />
           <DashboardRecommendationsCard improvements={currentProfile.improvements} setTab={setTab} />
         </div>
@@ -52,3 +54,4 @@ export default function DashboardView({
     </div>
   );
 }
+

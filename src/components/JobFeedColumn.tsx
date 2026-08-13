@@ -1,7 +1,6 @@
 import React from 'react';
 import { Job, ResumeProfile } from '../types';
 import JobCard from './JobCard';
-import { RECOMMENDED_MATCH_THRESHOLD } from '../hooks/useJobFilters';
 
 interface JobFeedColumnProps {
   label: string;
@@ -13,7 +12,6 @@ interface JobFeedColumnProps {
   onSaveJob: (job: Job) => void;
   onViewDetails: (job: Job) => void;
   onCompare: (job: Job) => void;
-  tabFilter: 'all' | 'recommended';
 }
 
 export default function JobFeedColumn({
@@ -26,12 +24,7 @@ export default function JobFeedColumn({
   onSaveJob,
   onViewDetails,
   onCompare,
-  tabFilter,
 }: JobFeedColumnProps) {
-  const emptyMessage =
-    tabFilter === 'recommended'
-      ? `None of your current ${label} listings score ≥${RECOMMENDED_MATCH_THRESHOLD}% yet — check "All Jobs" to see everything, or check back as new listings arrive.`
-      : `No ${label} listings match your search.`;
   return (
     <div className="flex-1 space-y-5 min-w-0">
       <h3 className="text-xs font-extrabold uppercase tracking-wider text-on-surface-variant px-1">
@@ -55,9 +48,10 @@ export default function JobFeedColumn({
       ) : (
         <div className="glass-card rounded-2xl p-8 text-center border border-outline-variant/60">
           <span className="material-symbols-outlined text-4xl text-outline mb-2">search_off</span>
-          <p className="text-xs text-on-surface-variant">{emptyMessage}</p>
+          <p className="text-xs text-on-surface-variant">No {label} listings match your search.</p>
         </div>
       )}
     </div>
   );
 }
+

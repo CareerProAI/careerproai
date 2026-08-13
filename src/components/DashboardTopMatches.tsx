@@ -4,12 +4,13 @@ import Card from './ui/Card';
 
 interface DashboardTopMatchesProps {
   jobs: Job[];
+  jobsLoading: boolean;
   applications: Application[];
   setTab: (tab: string) => void;
   onApplyJob: (job: Job) => void;
 }
 
-export default function DashboardTopMatches({ jobs, applications, setTab, onApplyJob }: DashboardTopMatchesProps) {
+export default function DashboardTopMatches({ jobs, jobsLoading, applications, setTab, onApplyJob }: DashboardTopMatchesProps) {
   const sortedJobs = [...jobs].sort((a, b) => b.matchRate - a.matchRate).slice(0, 2);
   const isApplied = (jobId: string) => applications.some((app) => app.jobId === jobId);
 
@@ -22,7 +23,19 @@ export default function DashboardTopMatches({ jobs, applications, setTab, onAppl
         </button>
       </div>
       <div className="space-y-4">
-        {sortedJobs.map((job) => {
+        {jobsLoading ? (
+          [0, 1].map((i) => (
+            <div key={i} className="h-20 rounded-xl bg-surface-container dark:bg-slate-800 skeleton-shimmer" />
+          ))
+        ) : sortedJobs.length === 0 ? (
+          <p className="text-sm text-on-surface-variant">
+            No scored matches yet.{' '}
+            <button onClick={() => setTab('jobs')} className="text-primary font-bold hover:underline">
+              Browse jobs
+            </button>
+          </p>
+        ) : (
+          sortedJobs.map((job) => {
           const applied = isApplied(job.id);
           return (
             <div
@@ -63,8 +76,10 @@ export default function DashboardTopMatches({ jobs, applications, setTab, onAppl
               </div>
             </div>
           );
-        })}
+        })
+        )}
       </div>
     </Card>
   );
 }
+

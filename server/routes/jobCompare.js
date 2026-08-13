@@ -1,5 +1,6 @@
 import express from 'express';
 import { callAIAPI } from '../ai/callAIAPI.js';
+import { buildResumeProfileSummary } from '../ai/buildResumeProfileSummary.js';
 
 // Job Match Matrix comparison endpoint
 export function createJobCompareRouter() {
@@ -17,10 +18,7 @@ Provide a concise, professional comparison (2-3 sentences max) explaining how th
 Return strict JSON only, in this exact shape: {"alignment": "<the comparison text>"}.`;
 
     const userPrompt = `Resume Profile:
-Name: ${profile.candidateName}
-Current Role: ${profile.currentRole}
-Skills: ${[...(profile.skills.frameworks || []), ...(profile.skills.tools || [])].join(', ')}
-Experience Summary: ${profile.experience ? profile.experience.map(e => `${e.role} at ${e.company}: ${e.bullets.join('. ')}`).join('\n') : ''}
+${buildResumeProfileSummary(profile)}
 
 Job:
 Title: ${job.title}
