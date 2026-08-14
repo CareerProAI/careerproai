@@ -31,11 +31,6 @@ export default function TopNavBar({
   const toggleDarkMode = () => {
     const nextDark = !darkMode;
     setDarkMode(nextDark);
-    if (nextDark) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
   };
 
   return (
@@ -50,7 +45,7 @@ export default function TopNavBar({
           onClick={onMenuClick}
           aria-label="Open navigation menu"
         >
-          <span className="material-symbols-outlined">menu</span>
+          <span aria-hidden="true" className="material-symbols-outlined">menu</span>
         </button>
 
         <TopNavSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
@@ -72,7 +67,7 @@ export default function TopNavBar({
           title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
           aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
         >
-          <span className="material-symbols-outlined">{darkMode ? 'light_mode' : 'dark_mode'}</span>
+          <span aria-hidden="true" className="material-symbols-outlined">{darkMode ? 'light_mode' : 'dark_mode'}</span>
         </button>
 
         {currentProfile && (

@@ -14,6 +14,7 @@ import ResumeBootstrapGate from './components/ResumeBootstrapGate';
 import ActiveViewRouter from './ActiveViewRouter';
 import AppApplicationPackageOverlay from './components/AppApplicationPackageOverlay';
 import Toast from './components/ui/Toast';
+import SkipToContent from './components/SkipToContent';
 
 export default function App() {
   const [tab, setTab] = useState<string>('dashboard');
@@ -38,6 +39,7 @@ export default function App() {
 
   return (
     <div id="app-layout" className="min-h-screen bg-background text-on-background font-sans">
+      <SkipToContent />
       <SideNavBar
         currentTab={tab}
         setTab={setTab}
@@ -58,7 +60,7 @@ export default function App() {
           setSearchQuery={setSearchQuery}
         />
 
-        <main id="content-container" className="flex-1 px-6 py-8 mt-16 max-w-7xl mx-auto w-full">
+        <main id="content-container" tabIndex={-1} className="flex-1 px-6 py-8 mt-16 max-w-7xl mx-auto w-full">
           <ResumeBootstrapGate {...resumeProfiles} tab={tab} setTab={setTab} onRetryLoad={resumeProfiles.retryLoad}>
             {(currentProfile) => (
               <ActiveViewRouter

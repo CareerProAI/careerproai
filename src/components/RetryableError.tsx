@@ -8,7 +8,7 @@ interface RetryableErrorProps {
 export default function RetryableError({ message, onRetry }: RetryableErrorProps) {
   return (
     <div className="glass-card rounded-2xl p-8 text-center border border-error/30 bg-error/5">
-      <span className="material-symbols-outlined text-4xl text-error mb-2">error</span>
+      <span aria-hidden="true" className="material-symbols-outlined text-4xl text-error mb-2">error</span>
       <p className="text-sm font-bold text-on-surface">Something went wrong</p>
       <p className="text-xs text-on-surface-variant mt-1 mb-4 max-w-sm mx-auto">{message}</p>
       <button

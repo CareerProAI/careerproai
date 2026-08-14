@@ -29,7 +29,7 @@ export default function JobDetailsModal({
   ];
 
   return (
-    <Modal scrollable onClose={onClose}>
+    <Modal scrollable onClose={onClose} labelledBy="job-details-title">
       <JobDetailsHeader job={job} onClose={onClose} />
 
       <div className="space-y-5">
@@ -74,7 +74,7 @@ export default function JobDetailsModal({
           onClick={() => onSaveJob(job)}
           className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all flex items-center gap-1.5 ${isSaved ? 'bg-secondary-container border-secondary-container text-on-secondary-container' : 'border-outline-variant text-on-surface-variant hover:bg-surface-container'}`}
         >
-          <span className="material-symbols-outlined text-sm leading-none">{isSaved ? 'bookmark_added' : 'bookmark_border'}</span>
+          <span aria-hidden="true" className="material-symbols-outlined text-sm leading-none">{isSaved ? 'bookmark_added' : 'bookmark_border'}</span>
           {isSaved ? 'Saved' : 'Save'}
         </button>
         <button

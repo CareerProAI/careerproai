@@ -31,11 +31,11 @@ export default function ApiKeysSection({ aiConfigured, apiKeyLabel, onUpdateApiK
           <span className="text-[10px] font-bold text-on-surface-variant">Checking…</span>
         ) : aiConfigured ? (
           <span className="flex items-center gap-1 text-[10px] font-bold text-tertiary">
-            <span className="material-symbols-outlined text-sm">check_circle</span> Configured
+            <span aria-hidden="true" className="material-symbols-outlined text-sm">check_circle</span> Configured
           </span>
         ) : (
           <span className="flex items-center gap-1 text-[10px] font-bold text-error">
-            <span className="material-symbols-outlined text-sm">error</span> Not configured
+            <span aria-hidden="true" className="material-symbols-outlined text-sm">error</span> Not configured
           </span>
         )}
       </div>

@@ -31,7 +31,7 @@ export default function ApplicationPackagePreview({ title, text, pdfBase64, file
           onClick={() => downloadPdf(pdfBase64, fileName)}
           className="flex items-center gap-1 px-3 py-1.5 bg-primary text-on-primary rounded-lg text-[11px] font-bold hover:bg-primary/90 transition-colors"
         >
-          <span className="material-symbols-outlined text-sm leading-none">download</span>
+          <span aria-hidden="true" className="material-symbols-outlined text-sm leading-none">download</span>
           Download PDF
         </button>
       </div>

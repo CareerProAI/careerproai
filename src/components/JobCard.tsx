@@ -16,6 +16,7 @@ interface JobCardProps {
   onSaveJob: (job: Job) => void;
   onViewDetails: () => void;
   onCompare: () => void;
+  deferred?: boolean;
 }
 
 export default function JobCard({
@@ -27,12 +28,13 @@ export default function JobCard({
   onSaveJob,
   onViewDetails,
   onCompare,
+  deferred = false,
 }: JobCardProps) {
   const notAiScored = Boolean(job.notAiScored);
   const isHighMatch = !notAiScored && job.matchRate >= 92;
 
   return (
-    <div className="group bg-white dark:bg-slate-900 border border-outline-variant/60 hover:border-primary/40 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all relative overflow-hidden">
+    <div className={`group bg-white dark:bg-slate-900 border border-outline-variant/60 hover:border-primary/40 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all relative overflow-hidden${deferred ? ' job-card-deferred' : ''}`}>
       <div
         className={`absolute top-0 right-0 px-4 py-1.5 rounded-bl-xl text-[10px] font-extrabold uppercase tracking-wider flex items-center gap-1 shadow-sm ${
           isHighMatch
@@ -40,7 +42,7 @@ export default function JobCard({
             : 'bg-surface-variant text-on-surface-variant'
         }`}
       >
-        <span className="material-symbols-outlined text-[14px]">
+        <span aria-hidden="true" className="material-symbols-outlined text-[14px]">
           {notAiScored ? 'visibility_off' : isHighMatch ? 'psychology' : 'verified'}
         </span>
         <span>{notAiScored ? 'Not AI-Scored' : `${job.matchRate}% Match ${isHighMatch ? '• Top Fit' : ''}`}</span>
@@ -51,7 +53,7 @@ export default function JobCard({
           {job.logo ? (
             <img src={job.logo} alt={job.company} className="w-12 h-12 object-contain" />
           ) : (
-            <span className="material-symbols-outlined text-on-surface-variant text-2xl">business</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-on-surface-variant text-2xl">business</span>
           )}
         </div>
         <div className="flex-1">

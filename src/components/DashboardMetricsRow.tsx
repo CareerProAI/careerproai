@@ -41,14 +41,14 @@ export default function DashboardMetricsRow({ currentProfile, jobs, jobsLoading,
           </div>
         </div>
         <div className="mt-3 flex items-center gap-1.5 text-xs text-primary font-medium">
-          <span className="material-symbols-outlined text-sm">verified</span>
+          <span aria-hidden="true" className="material-symbols-outlined text-sm">verified</span>
           <span>{currentProfile.atsCompatibility}</span>
         </div>
       </Card>
 
       <Card className="flex flex-col justify-between">
         <div className="p-2.5 bg-primary/10 rounded-xl text-primary-container w-fit">
-          <span className="material-symbols-outlined">assignment</span>
+          <span aria-hidden="true" className="material-symbols-outlined">assignment</span>
         </div>
         <div className="mt-4">
           <h3 className="text-xs text-on-surface-variant font-bold uppercase tracking-wider mb-1">Active Apps</h3>
@@ -59,7 +59,7 @@ export default function DashboardMetricsRow({ currentProfile, jobs, jobsLoading,
       <Card className="flex flex-col justify-between">
         <div className="flex justify-between items-start">
           <div className="p-2.5 bg-primary/10 rounded-xl text-primary-container">
-            <span className="material-symbols-outlined">work</span>
+            <span aria-hidden="true" className="material-symbols-outlined">work</span>
           </div>
           <span className="text-[10px] bg-surface-container-high dark:bg-slate-800 text-on-surface-variant px-2.5 py-1 rounded-full font-bold">
             ≥{RECOMMENDED_MATCH_THRESHOLD}% fit
@@ -73,7 +73,7 @@ export default function DashboardMetricsRow({ currentProfile, jobs, jobsLoading,
 
       <Card className="flex flex-col justify-between">
         <div className="p-2.5 bg-primary/10 rounded-xl text-primary-container w-fit">
-          <span className="material-symbols-outlined">psychology</span>
+          <span aria-hidden="true" className="material-symbols-outlined">psychology</span>
         </div>
         <div className="mt-4">
           <h3 className="text-xs text-on-surface-variant font-bold uppercase tracking-wider mb-1">Skills Tracked</h3>

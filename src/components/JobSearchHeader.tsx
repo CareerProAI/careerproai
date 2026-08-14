@@ -17,6 +17,7 @@ export default function JobSearchHeader({ tabFilter, setTabFilter }: JobSearchHe
       <div className="flex bg-surface-container-low dark:bg-slate-900 p-1 rounded-xl self-start">
         <button
           onClick={() => setTabFilter('all')}
+          aria-pressed={tabFilter === 'all'}
           className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
             tabFilter === 'all' ? 'bg-white dark:bg-slate-800 text-primary shadow-sm' : 'text-on-surface-variant hover:text-on-surface'
           }`}
@@ -25,11 +26,12 @@ export default function JobSearchHeader({ tabFilter, setTabFilter }: JobSearchHe
         </button>
         <button
           onClick={() => setTabFilter('recommended')}
+          aria-pressed={tabFilter === 'recommended'}
           className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
             tabFilter === 'recommended' ? 'bg-white dark:bg-slate-800 text-primary shadow-sm' : 'text-on-surface-variant hover:text-on-surface'
           }`}
         >
-          <span className="material-symbols-outlined text-[16px] text-secondary">auto_awesome</span> Highly Recommended
+          <span aria-hidden="true" className="material-symbols-outlined text-[16px] text-secondary">auto_awesome</span> Highly Recommended
         </button>
       </div>
     </div>

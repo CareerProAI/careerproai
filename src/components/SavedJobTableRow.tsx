@@ -39,7 +39,7 @@ export default function SavedJobTableRow({
             {job.logo ? (
               <img src={job.logo} alt={job.company} className="w-7 h-7 object-contain" />
             ) : (
-              <span className="material-symbols-outlined text-on-surface-variant text-base">business</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-on-surface-variant text-base">business</span>
             )}
           </div>
           <div>
@@ -77,7 +77,7 @@ export default function SavedJobTableRow({
             title="Remove from saved"
             aria-label="Remove from saved jobs"
           >
-            <span className="material-symbols-outlined text-sm leading-none">bookmark_remove</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-sm leading-none">bookmark_remove</span>
           </button>
           <button
             disabled={applied}

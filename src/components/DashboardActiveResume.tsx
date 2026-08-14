@@ -20,7 +20,7 @@ export default function DashboardActiveResume({ currentProfile, setTab }: Dashbo
       <div className="flex flex-col sm:flex-row gap-4 border border-outline-variant/40 rounded-xl p-4 bg-surface-container-lowest dark:bg-slate-950 items-start sm:items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="w-12 h-16 bg-primary/10 border border-primary/20 rounded-lg flex items-center justify-center text-primary-container shrink-0">
-            <span className="material-symbols-outlined text-3xl">description</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-3xl">description</span>
           </div>
           <div>
             <h4 className="text-sm font-bold text-on-surface truncate max-w-[280px]">{currentProfile.fileName}</h4>

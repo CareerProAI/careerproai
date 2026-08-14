@@ -49,7 +49,7 @@ export default function SideNavBar({
             onClick={() => setOpenMobile(false)}
             aria-label="Close menu"
           >
-            <span className="material-symbols-outlined">close</span>
+            <span aria-hidden="true" className="material-symbols-outlined">close</span>
           </button>
         </div>
 
@@ -80,7 +80,7 @@ export default function SideNavBar({
             }}
             className="w-full bg-primary text-on-primary py-3 rounded-full font-semibold shadow-md flex items-center justify-center gap-2 hover:bg-primary/95 hover:scale-[1.01] active:scale-[0.99] transition-all"
           >
-            <span className="material-symbols-outlined text-[20px]">psychology</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-[20px]">psychology</span>
             Analyze Resume
           </button>
         </div>

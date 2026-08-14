@@ -12,7 +12,7 @@ export default function SkillGapsCard({ missingSkills, targetRole }: SkillGapsCa
       <p className="text-[11px] text-on-surface-variant mb-4">Missing for {targetRole}</p>
       {missingSkills.length === 0 ? (
         <p className="text-xs text-tertiary font-bold flex items-center gap-1.5">
-          <span className="material-symbols-outlined text-sm">verified</span>
+          <span aria-hidden="true" className="material-symbols-outlined text-sm">verified</span>
           No skill gaps detected
         </p>
       ) : (

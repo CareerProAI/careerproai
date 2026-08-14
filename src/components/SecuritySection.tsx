@@ -5,7 +5,7 @@ export default function SecuritySection() {
     <div className="glass-card rounded-2xl p-6 border border-outline-variant/60 shadow-sm">
       <h3 className="text-sm font-bold text-on-surface uppercase tracking-wider text-on-surface-variant mb-4">Security</h3>
       <div className="flex items-start gap-3 p-3 rounded-xl bg-surface-container-low dark:bg-slate-950/40">
-        <span className="material-symbols-outlined text-on-surface-variant text-lg">info</span>
+        <span aria-hidden="true" className="material-symbols-outlined text-on-surface-variant text-lg">info</span>
         <div>
           <p className="text-xs font-bold text-on-surface">No authentication configured</p>
           <p className="text-[10px] text-on-surface-variant mt-1 leading-relaxed">

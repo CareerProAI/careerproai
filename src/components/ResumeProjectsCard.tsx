@@ -9,7 +9,7 @@ export default function ResumeProjectsCard({ currentProfile }: ResumeProjectsCar
   return (
     <div className="lg:col-span-2 glass-card rounded-2xl p-6 border border-outline-variant/60 shadow-sm">
       <h3 className="text-base font-bold text-on-surface mb-6 border-b border-outline-variant/30 pb-3 flex items-center gap-2">
-        <span className="material-symbols-outlined text-primary text-lg">folder_shared</span>
+        <span aria-hidden="true" className="material-symbols-outlined text-primary text-lg">folder_shared</span>
         Featured Projects
       </h3>
       {currentProfile.projects && currentProfile.projects.length > 0 ? (
@@ -31,12 +31,12 @@ export default function ResumeProjectsCard({ currentProfile }: ResumeProjectsCar
                 <div className="flex gap-3 text-[11px] font-bold text-primary">
                   {proj.githubUrl && (
                     <a href={proj.githubUrl} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:underline">
-                      <span className="material-symbols-outlined text-xs">code</span> GitHub
+                      <span aria-hidden="true" className="material-symbols-outlined text-xs">code</span> GitHub
                     </a>
                   )}
                   {proj.liveUrl && (
                     <a href={proj.liveUrl} target="_blank" rel="noreferrer" className="flex items-center gap-1 hover:underline">
-                      <span className="material-symbols-outlined text-xs">open_in_new</span> Live Demo
+                      <span aria-hidden="true" className="material-symbols-outlined text-xs">open_in_new</span> Live Demo
                     </a>
                   )}
                 </div>

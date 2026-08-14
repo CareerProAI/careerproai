@@ -29,20 +29,20 @@ export default function ApplicationPackageModal({
   const fileBase = job.company.replace(/[^a-z0-9]+/gi, '-').toLowerCase();
 
   return (
-    <Modal scrollable onClose={onClose}>
+    <Modal scrollable onClose={onClose} labelledBy="application-package-title">
       <div className="flex justify-between items-center border-b border-outline-variant/40 pb-4 mb-4">
         <div>
-          <h3 className="text-lg font-bold text-on-surface">AI Application Package</h3>
+          <h3 id="application-package-title" className="text-lg font-bold text-on-surface">AI Application Package</h3>
           <p className="text-xs text-on-surface-variant">Tailored resume &amp; cover letter for {job.title} at {job.company}</p>
         </div>
         <button onClick={onClose} aria-label="Close" className="p-1.5 rounded-full hover:bg-surface-container text-on-surface-variant transition-colors">
-          <span className="material-symbols-outlined">close</span>
+          <span aria-hidden="true" className="material-symbols-outlined">close</span>
         </button>
       </div>
 
       {profileIncomplete ? (
         <div className="glass-card rounded-2xl p-8 text-center border border-primary/30 bg-primary/5">
-          <span className="material-symbols-outlined text-4xl text-primary mb-2">person_edit</span>
+          <span aria-hidden="true" className="material-symbols-outlined text-4xl text-primary mb-2">person_edit</span>
           <p className="text-sm font-bold text-on-surface">Complete your resume profile first</p>
           <p className="text-xs text-on-surface-variant mt-1 mb-4 max-w-sm mx-auto">
             Add your contact email and at least one work experience entry to your resume profile before generating tailored application materials.

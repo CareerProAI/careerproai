@@ -19,3 +19,5 @@ tests/e2e/fixtures/oversized.bin
 .claude/
 test.md
 CLAUDE.md
+fix.md
+update.md

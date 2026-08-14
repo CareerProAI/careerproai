@@ -14,16 +14,16 @@ export default function JobDetailsHeader({ job, onClose }: JobDetailsHeaderProps
           {job.logo ? (
             <img src={job.logo} alt={job.company} className="w-10 h-10 object-contain" />
           ) : (
-            <span className="material-symbols-outlined text-on-surface-variant text-2xl">business</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-on-surface-variant text-2xl">business</span>
           )}
         </div>
         <div>
-          <h3 className="text-lg font-bold text-on-surface">{job.title}</h3>
+          <h3 id="job-details-title" className="text-lg font-bold text-on-surface">{job.title}</h3>
           <p className="text-xs text-on-surface-variant font-medium mt-0.5">{job.company} • {job.location}</p>
         </div>
       </div>
       <button onClick={onClose} aria-label="Close" className="p-1.5 rounded-full hover:bg-surface-container text-on-surface-variant transition-colors">
-        <span className="material-symbols-outlined">close</span>
+        <span aria-hidden="true" className="material-symbols-outlined">close</span>
       </button>
     </div>
   );

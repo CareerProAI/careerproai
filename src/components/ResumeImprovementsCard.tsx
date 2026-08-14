@@ -10,7 +10,7 @@ export default function ResumeImprovementsCard({ currentProfile }: ResumeImprove
     <div className="glass-card rounded-2xl p-6 border border-outline-variant/60 shadow-sm flex flex-col">
       <div className="flex items-center gap-3 mb-5 border-b border-outline-variant/30 pb-3">
         <div className="p-2 bg-error/10 rounded-xl text-error">
-          <span className="material-symbols-outlined">build</span>
+          <span aria-hidden="true" className="material-symbols-outlined">build</span>
         </div>
         <h3 className="text-sm font-bold text-on-surface">Suggested Improvements</h3>
       </div>

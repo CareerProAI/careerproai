@@ -30,7 +30,7 @@ export default function JobCardActions({
           title="View Details"
           aria-label="View job details"
         >
-          <span className="material-symbols-outlined text-sm leading-none">visibility</span>
+          <span aria-hidden="true" className="material-symbols-outlined text-sm leading-none">visibility</span>
         </button>
         <button
           onClick={() => onSaveJob(job)}
@@ -42,7 +42,7 @@ export default function JobCardActions({
           title={isSaved ? 'Unsave Job' : 'Save Job'}
           aria-label={isSaved ? 'Unsave job' : 'Save job'}
         >
-          <span className="material-symbols-outlined text-sm leading-none">
+          <span aria-hidden="true" className="material-symbols-outlined text-sm leading-none">
             {isSaved ? 'bookmark_added' : 'bookmark_border'}
           </span>
         </button>
@@ -50,7 +50,7 @@ export default function JobCardActions({
           onClick={onCompare}
           className="px-4 py-2 border border-outline-variant text-primary hover:bg-surface-container rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all"
         >
-          <span className="material-symbols-outlined text-sm leading-none">compare_arrows</span> Match Matrix
+          <span aria-hidden="true" className="material-symbols-outlined text-sm leading-none">compare_arrows</span> Match Matrix
         </button>
         <button
           disabled={applied}

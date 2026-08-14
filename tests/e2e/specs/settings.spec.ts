@@ -36,7 +36,8 @@ test('B08: account name/email update persists and does not touch other fields', 
   }
 });
 
-test('B09: dark mode toggles instantly and syncs with OS preference on first mount', async ({ page }) => {
+test('B09: dark mode toggles instantly and a pinned choice survives OS changes', async ({ page }) => {
+  await page.addInitScript(() => localStorage.removeItem('talentai-color-scheme'));
   await page.goto('/');
   const html = page.locator('html');
   await expect(html).not.toHaveClass(/dark/);
@@ -44,11 +45,19 @@ test('B09: dark mode toggles instantly and syncs with OS preference on first mou
   await page.locator('#btn-toggle-dark-mode').click();
   await expect(html).toHaveClass(/dark/);
   await page.locator('#btn-toggle-dark-mode').click();
-  await expect(html).not.toHaveClass(/dark/);
+  await expect(html).toHaveClass(/light/);
 
   await page.emulateMedia({ colorScheme: 'dark' });
   await page.reload();
-  await expect(html).toHaveClass(/dark/);
+  await expect(html).toHaveClass(/light/);
+  await expect(html).not.toHaveClass(/dark/);
+});
+
+test('B09b: with no saved preference, first load follows the OS color scheme', async ({ page }) => {
+  await page.addInitScript(() => localStorage.removeItem('talentai-color-scheme'));
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await page.goto('/');
+  await expect(page.locator('html')).toHaveClass(/dark/);
 });
 
 test('B10: sandbox reset shows a confirmation toast', async ({ page }) => {

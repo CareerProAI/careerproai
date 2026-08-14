@@ -53,7 +53,7 @@ export default function ResumeManagementSection({
                   title="Delete resume"
                   aria-label="Delete resume"
                 >
-                  <span className="material-symbols-outlined text-sm leading-none">delete</span>
+                  <span aria-hidden="true" className="material-symbols-outlined text-sm leading-none">delete</span>
                 </button>
               </div>
             </div>

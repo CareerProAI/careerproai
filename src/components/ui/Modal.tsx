@@ -1,29 +1,50 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { isDialogBackdropClick } from '../../utils/dialogLightDismiss';
 
 interface ModalProps {
   children: React.ReactNode;
   scrollable?: boolean;
   onClose: () => void;
+  labelledBy?: string;
 }
 
-export default function Modal({ children, scrollable = false, onClose }: ModalProps) {
+export default function Modal({ children, scrollable = false, onClose, labelledBy }: ModalProps) {
+  const ref = useRef<HTMLDialogElement>(null);
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
+
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
+    const dialog = ref.current;
+    if (!dialog) return;
+    dialog.setAttribute('closedby', 'any');
+    if (!dialog.open) dialog.showModal();
+
+    const onDialogClose = () => onCloseRef.current();
+    dialog.addEventListener('close', onDialogClose);
+
+    const supportsClosedBy = 'closedBy' in HTMLDialogElement.prototype;
+    const onBackdropClick = (event: MouseEvent) => {
+      if (supportsClosedBy) return;
+      if (isDialogBackdropClick(dialog, event, dialog.getBoundingClientRect())) dialog.close();
     };
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
+    if (!supportsClosedBy) dialog.addEventListener('click', onBackdropClick);
+
+    return () => {
+      dialog.removeEventListener('close', onDialogClose);
+      dialog.removeEventListener('click', onBackdropClick);
+      // Skip dialog.close(): Strict Mode would fire `close` after remount.
+    };
+  }, []);
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-[20px] z-50 flex items-center justify-center p-4">
-      <div
-        className={`bg-surface-container-high border border-outline-variant rounded-2xl max-w-2xl w-full p-6 shadow-2xl animate-in zoom-in-95 duration-200 ${
-          scrollable ? 'max-h-[90vh] overflow-y-auto' : ''
-        }`}
-      >
-        {children}
-      </div>
-    </div>
+    <dialog
+      ref={ref}
+      aria-labelledby={labelledBy}
+      className={`app-dialog bg-surface-container-high text-on-surface border border-outline-variant rounded-2xl max-w-2xl w-[calc(100%-2rem)] p-6 ${
+        scrollable ? 'max-h-[90vh] overflow-y-auto' : ''
+      }`}
+    >
+      {children}
+    </dialog>
   );
 }

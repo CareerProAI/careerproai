@@ -16,7 +16,7 @@ export default function MatchMatrixAlignment({
   return (
     <div className="border border-outline-variant/20 rounded-xl p-4 space-y-2 bg-surface-container-low dark:bg-slate-950/20">
       <h4 className="text-xs font-bold text-on-surface uppercase tracking-wider text-on-surface-variant flex items-center gap-1.5">
-        <span className="material-symbols-outlined text-[14px] text-primary animate-pulse">auto_awesome</span> Experience Alignment
+        <span aria-hidden="true" className="material-symbols-outlined text-[14px] text-primary animate-pulse">auto_awesome</span> Experience Alignment
       </h4>
       {isAligning ? (
         <div className="space-y-2 py-1">

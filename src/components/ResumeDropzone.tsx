@@ -27,7 +27,7 @@ export default function ResumeDropzone(props: ResumeDropzoneProps) {
       <div id="processing-status" className="glass-card rounded-2xl p-6 border border-outline-variant">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <span className="material-symbols-outlined text-primary animate-spin">autorenew</span>
+            <span aria-hidden="true" className="material-symbols-outlined text-primary animate-spin">autorenew</span>
             <h4 className="font-bold text-on-surface text-sm">Processing Document & AI scoring...</h4>
           </div>
           <span className="text-xs font-bold text-primary">{props.processingProgress}%</span>
@@ -68,7 +68,7 @@ export default function ResumeDropzone(props: ResumeDropzoneProps) {
       }`}
     >
       <div className="h-20 w-20 bg-primary/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-105 transition-transform">
-        <span className="material-symbols-outlined text-[40px] text-primary">upload_file</span>
+        <span aria-hidden="true" className="material-symbols-outlined text-[40px] text-primary">upload_file</span>
       </div>
       <h3 className="text-lg font-bold text-on-surface mb-1">Drag and drop your resume here</h3>
       <p className="text-xs text-on-surface-variant mb-6">Supports PDF, DOCX, TXT (Max 5MB)</p>

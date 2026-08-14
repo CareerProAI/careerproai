@@ -28,7 +28,7 @@ export default function ResumeScoreCard({ currentProfile }: ResumeScoreCardProps
         </div>
       </div>
       <div className="flex items-center gap-1.5 bg-tertiary/10 px-4 py-2 rounded-full mt-2">
-        <span className="material-symbols-outlined text-tertiary text-sm">verified</span>
+        <span aria-hidden="true" className="material-symbols-outlined text-tertiary text-sm">verified</span>
         <span className="text-xs font-bold text-tertiary">{currentProfile.atsCompatibility}</span>
       </div>
     </div>

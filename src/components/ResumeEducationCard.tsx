@@ -9,7 +9,7 @@ export default function ResumeEducationCard({ currentProfile }: ResumeEducationC
   return (
     <div className="glass-card rounded-2xl p-6 border border-outline-variant/60 shadow-sm">
       <h3 className="text-base font-bold text-on-surface mb-5 flex items-center gap-2">
-        <span className="material-symbols-outlined text-primary text-lg">school</span>
+        <span aria-hidden="true" className="material-symbols-outlined text-primary text-lg">school</span>
         Education
       </h3>
       <div className="space-y-4">

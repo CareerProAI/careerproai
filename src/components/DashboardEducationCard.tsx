@@ -9,7 +9,7 @@ export default function DashboardEducationCard({ education }: DashboardEducation
   return (
     <section className="glass-card rounded-2xl p-6 border border-outline-variant/60 shadow-sm">
       <h3 className="text-lg font-bold text-on-surface mb-4 flex items-center gap-2">
-        <span className="material-symbols-outlined text-primary text-lg">school</span>
+        <span aria-hidden="true" className="material-symbols-outlined text-primary text-lg">school</span>
         Education
       </h3>
       {education && education.length > 0 ? (

@@ -11,7 +11,7 @@ export default function ResumeGapAnalysisCard({ currentProfile, onAddSkill }: Re
 
   return (
     <div className="glass-card rounded-2xl p-6 bg-surface-container-low dark:bg-slate-950/50 border border-outline-variant/60 shadow-sm relative overflow-hidden flex-1">
-      <div className="absolute right-0 bottom-0 opacity-5 text-9xl leading-none material-symbols-outlined select-none pointer-events-none">
+      <div aria-hidden="true" className="absolute right-0 bottom-0 opacity-5 text-9xl leading-none material-symbols-outlined select-none pointer-events-none">
         target
       </div>
       <div className="relative z-10">
@@ -33,7 +33,7 @@ export default function ResumeGapAnalysisCard({ currentProfile, onAddSkill }: Re
                 className="group w-full px-3 py-2 bg-white dark:bg-slate-900 border border-dashed border-primary/60 hover:border-primary text-primary hover:bg-primary/5 rounded-xl text-xs font-semibold flex items-center justify-between transition-colors cursor-pointer"
               >
                 <span className="flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-sm">add</span>
+                  <span aria-hidden="true" className="material-symbols-outlined text-sm">add</span>
                   {skill}
                 </span>
                 <span className="text-[10px] opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-wider font-extrabold text-primary">
@@ -43,7 +43,7 @@ export default function ResumeGapAnalysisCard({ currentProfile, onAddSkill }: Re
             ))
           ) : (
             <div className="flex items-center gap-2 text-xs text-tertiary font-bold bg-tertiary/10 p-3 rounded-xl">
-              <span className="material-symbols-outlined">verified</span>
+              <span aria-hidden="true" className="material-symbols-outlined">verified</span>
               No skill gaps! You fully match your target Staff Architect role requirements.
             </div>
           )}

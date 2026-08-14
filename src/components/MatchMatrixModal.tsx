@@ -28,10 +28,10 @@ export default function MatchMatrixModal({
   onApplyJob,
 }: MatchMatrixModalProps) {
   return (
-    <Modal onClose={onClose}>
+    <Modal onClose={onClose} labelledBy="match-matrix-title">
       <div className="flex justify-between items-center border-b border-outline-variant/40 pb-4 mb-4">
         <div>
-          <h3 className="text-lg font-bold text-on-surface">Match Matrix Comparison</h3>
+          <h3 id="match-matrix-title" className="text-lg font-bold text-on-surface">Match Matrix Comparison</h3>
           <p className="text-xs text-on-surface-variant">Comparing with your resume and {compareJob.company}</p>
         </div>
         <button
@@ -39,7 +39,7 @@ export default function MatchMatrixModal({
           aria-label="Close"
           className="p-1.5 rounded-full hover:bg-surface-container text-on-surface-variant transition-colors"
         >
-          <span className="material-symbols-outlined">close</span>
+          <span aria-hidden="true" className="material-symbols-outlined">close</span>
         </button>
       </div>
 

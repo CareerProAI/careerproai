@@ -45,7 +45,7 @@ export default function ResumeUploadHistoryTable({ profiles, currentProfile, onS
                             isPdf ? 'bg-primary-container text-on-primary-container' : 'bg-secondary-container text-on-secondary-container'
                           }`}
                         >
-                          <span className="material-symbols-outlined text-[18px]">
+                          <span aria-hidden="true" className="material-symbols-outlined text-[18px]">
                             {isPdf ? 'picture_as_pdf' : 'description'}
                           </span>
                         </div>

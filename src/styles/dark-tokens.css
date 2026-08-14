@@ -1,4 +1,16 @@
-/* Custom dark mode settings */
+html {
+  color-scheme: light dark;
+  accent-color: var(--color-primary);
+}
+
+html.light {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
 .dark {
   --color-background: #0d1117;
   --color-on-background: #c9d1d9;
@@ -18,4 +30,28 @@
 .dark body {
   background-color: #0d1117;
   color: #c9d1d9;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not(.light) {
+    color-scheme: dark;
+    --color-background: #0d1117;
+    --color-on-background: #c9d1d9;
+    --color-surface: #161b22;
+    --color-on-surface: #f0f6fc;
+    --color-surface-container: #21262d;
+    --color-surface-container-low: #0d1117;
+    --color-surface-container-lowest: #161b22;
+    --color-surface-container-high: #30363d;
+    --color-surface-variant: #30363d;
+    --color-on-surface-variant: #8b949e;
+    --color-outline-variant: #30363d;
+    --color-inverse-surface: #eef1f7;
+    --color-inverse-on-surface: #2d3135;
+  }
+
+  html:not(.light) body {
+    background-color: #0d1117;
+    color: #c9d1d9;
+  }
 }

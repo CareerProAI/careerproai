@@ -11,7 +11,7 @@
     "clean": "rm -rf dist server/server.js",
     "lint": "tsc --noEmit",
     "fixtures:generate": "node tests/e2e/fixtures/generate-fixtures.mjs && python3 tests/e2e/fixtures/generate_docx.py",
-    "test:api": "tsx --test tests/api/sanitization-unit.test.ts tests/api/upload-validation.test.ts tests/api/resume-cascade.test.ts tests/api/users-patch.test.ts tests/api/saved-job-notes.test.ts tests/api/prompt-injection.test.ts tests/api/ssrf-guard.test.ts tests/api/ai-fallback.test.ts tests/api/resume-profile-summary.test.ts",
+    "test:api": "tsx --test tests/api/sanitization-unit.test.ts tests/api/upload-validation.test.ts tests/api/resume-cascade.test.ts tests/api/users-patch.test.ts tests/api/saved-job-notes.test.ts tests/api/prompt-injection.test.ts tests/api/ssrf-guard.test.ts tests/api/ai-fallback.test.ts tests/api/resume-profile-summary.test.ts tests/api/color-scheme.test.ts",
     "test:e2e": "playwright test --config=tests/e2e/playwright.config.ts"
   },
   "dependencies": {

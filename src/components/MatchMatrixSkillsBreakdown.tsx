@@ -17,7 +17,7 @@ export default function MatchMatrixSkillsBreakdown({ compareJob, currentProfile 
       <div className="grid grid-cols-2 gap-3">
         <div className="border border-outline-variant/30 rounded-xl p-3 bg-surface-container-low dark:bg-slate-950/40">
           <p className="text-[10px] font-bold text-tertiary uppercase tracking-wider mb-2 flex items-center gap-1">
-            <span className="material-symbols-outlined text-xs">check_circle</span> Matched Skills
+            <span aria-hidden="true" className="material-symbols-outlined text-xs">check_circle</span> Matched Skills
           </p>
           <div className="flex flex-wrap gap-1">
             {matchedSkills.map((sk) => (
@@ -30,7 +30,7 @@ export default function MatchMatrixSkillsBreakdown({ compareJob, currentProfile 
 
         <div className="border border-outline-variant/30 rounded-xl p-3 bg-surface-container-low dark:bg-slate-950/40">
           <p className="text-[10px] font-bold text-error uppercase tracking-wider mb-2 flex items-center gap-1">
-            <span className="material-symbols-outlined text-xs">warning</span> Missing/Gap Skills
+            <span aria-hidden="true" className="material-symbols-outlined text-xs">warning</span> Missing/Gap Skills
           </p>
           <div className="flex flex-wrap gap-1">
             {missingSkills.map((sk) => (

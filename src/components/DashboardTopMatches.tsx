@@ -47,7 +47,7 @@ export default function DashboardTopMatches({ jobs, jobsLoading, applications, s
                   {job.logo ? (
                     <img src={job.logo} alt={job.company} className="w-10 h-10 object-contain" />
                   ) : (
-                    <span className="material-symbols-outlined text-on-surface-variant text-xl">business</span>
+                    <span aria-hidden="true" className="material-symbols-outlined text-on-surface-variant text-xl">business</span>
                   )}
                 </div>
                 <div>
@@ -63,7 +63,7 @@ export default function DashboardTopMatches({ jobs, jobsLoading, applications, s
                 </span>
                 {applied ? (
                   <span className="text-xs font-bold text-tertiary flex items-center gap-1 mt-1">
-                    <span className="material-symbols-outlined text-[14px]">check_circle</span> Applied
+                    <span aria-hidden="true" className="material-symbols-outlined text-[14px]">check_circle</span> Applied
                   </span>
                 ) : (
                   <button

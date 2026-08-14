@@ -31,7 +31,7 @@ export default function JobCardInsights({ job, currentProfile, onViewDetails }: 
       </button>
 
       <div className="mt-3 p-3 bg-secondary-fixed/15 dark:bg-slate-950/40 rounded-xl border border-secondary-fixed/30 dark:border-slate-800/60 flex gap-2">
-        <span className="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">insights</span>
+        <span aria-hidden="true" className="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">insights</span>
         <div>
           <p className="text-[10px] text-primary font-bold uppercase tracking-wider">Why it matches</p>
           <p className="text-xs text-on-surface-variant mt-0.5 leading-relaxed">

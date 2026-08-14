@@ -32,7 +32,7 @@ export default function JobFeedColumn({
       </h3>
 
       {jobs.length > 0 ? (
-        jobs.map((job) => (
+        jobs.map((job, index) => (
           <JobCard
             key={job.id}
             job={job}
@@ -43,11 +43,12 @@ export default function JobFeedColumn({
             onSaveJob={onSaveJob}
             onViewDetails={() => onViewDetails(job)}
             onCompare={() => onCompare(job)}
+            deferred={index > 0}
           />
         ))
       ) : (
         <div className="glass-card rounded-2xl p-8 text-center border border-outline-variant/60">
-          <span className="material-symbols-outlined text-4xl text-outline mb-2">search_off</span>
+          <span aria-hidden="true" className="material-symbols-outlined text-4xl text-outline mb-2">search_off</span>
           <p className="text-xs text-on-surface-variant">No {label} listings match your search.</p>
         </div>
       )}

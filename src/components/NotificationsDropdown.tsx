@@ -20,7 +20,7 @@ export default function NotificationsDropdown({ showNotifications, onToggle }: N
         aria-label="Notifications"
         className="p-2 rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all relative"
       >
-        <span className="material-symbols-outlined">notifications</span>
+        <span aria-hidden="true" className="material-symbols-outlined">notifications</span>
         <span className="absolute top-1 right-1 w-2 h-2 bg-error rounded-full" />
       </button>
 

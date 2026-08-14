@@ -18,7 +18,7 @@ export default function DashboardRecommendationsCard({ improvements, setTab }: D
     <section className="glass-card rounded-2xl p-6 border border-outline-variant/60 shadow-sm">
       <div className="flex justify-between items-center mb-5">
         <h3 className="text-lg font-bold text-on-surface flex items-center gap-2">
-          <span className="material-symbols-outlined text-primary text-lg">auto_awesome</span>
+          <span aria-hidden="true" className="material-symbols-outlined text-primary text-lg">auto_awesome</span>
           AI Recommendations
         </h3>
         <button onClick={() => setTab('resume')} className="text-xs text-primary font-bold hover:underline">

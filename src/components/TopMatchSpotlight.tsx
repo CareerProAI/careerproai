@@ -35,7 +35,7 @@ export default function TopMatchSpotlight({
   return (
     <div className="mb-6">
       <div className="flex items-center gap-2 mb-3">
-        <span className="material-symbols-outlined text-secondary text-[20px]">auto_awesome</span>
+        <span aria-hidden="true" className="material-symbols-outlined text-secondary text-[20px]">auto_awesome</span>
         <h3 className="text-sm font-extrabold text-on-surface uppercase tracking-wider">
           Top Match For You{sourceLabel ? ` · from ${sourceLabel}` : ''}
         </h3>

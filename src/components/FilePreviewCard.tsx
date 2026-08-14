@@ -16,7 +16,7 @@ export default function FilePreviewCard({ file, onRemove, onAnalyze }: FilePrevi
   return (
     <div className="glass-card rounded-2xl p-8 flex flex-col items-center justify-center text-center border-2 border-outline-variant/60 min-h-[340px]">
       <div className="h-20 w-20 bg-primary/10 rounded-full flex items-center justify-center mb-6">
-        <span className="material-symbols-outlined text-[40px] text-primary">description</span>
+        <span aria-hidden="true" className="material-symbols-outlined text-[40px] text-primary">description</span>
       </div>
       <h3 className="text-sm font-bold text-on-surface mb-1 break-all max-w-full px-4">{file.name}</h3>
       <p className="text-xs text-on-surface-variant mb-6">{formatFileSize(file.size)}</p>

@@ -66,7 +66,7 @@ export default function ApplicationTableRow({
               aria-label="Save notes"
               className="p-1 rounded bg-primary text-on-primary hover:bg-primary/95"
             >
-              <span className="material-symbols-outlined text-[16px]">done</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-[16px]">done</span>
             </button>
           </div>
         ) : (
@@ -79,7 +79,7 @@ export default function ApplicationTableRow({
               aria-label="Edit notes"
               className="opacity-0 group-hover/notes:opacity-100 hover:text-primary transition-opacity"
             >
-              <span className="material-symbols-outlined text-sm leading-none">edit</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-sm leading-none">edit</span>
             </button>
           </div>
         )}
