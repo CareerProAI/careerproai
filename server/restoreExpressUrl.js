@@ -1,42 +1,58 @@
+function pathnameOf(raw) {
+  const url = raw || '/';
+  const q = url.indexOf('?');
+  return q === -1 ? url : url.slice(0, q);
+}
+
+function searchWithoutPath(rawUrl) {
+  const url = new URL(rawUrl || '/', 'http://n');
+  url.searchParams.delete('path');
+  const qs = url.searchParams.toString();
+  return qs ? `?${qs}` : '';
+}
+
 function pathFromQuery(pathQuery) {
   if (!pathQuery) return '';
   const segments = Array.isArray(pathQuery) ? pathQuery : [pathQuery];
   return segments.filter(Boolean).join('/');
 }
 
-function searchWithoutPath(rawUrl) {
-  const url = new URL(rawUrl, 'http://n');
-  url.searchParams.delete('path');
-  const qs = url.searchParams.toString();
-  return qs ? `?${qs}` : '';
+function pathFromRequest(req) {
+  if (req.query?.path) return pathFromQuery(req.query.path);
+  const all = new URL(req.url || '/', 'http://n').searchParams.getAll('path');
+  return pathFromQuery(all.length > 1 ? all : all[0]);
 }
 
-/** Map Vercel catch-all / rewrite URLs back to Express `/api/...` mounts. */
+/** Chain of Responsibility: each strategy returns true when req.url is final. */
+const restoreStrategies = [
+  (req) => pathnameOf(req.url).startsWith('/api/'),
+  (req) => {
+    const uri = req.headers?.['x-forwarded-uri'];
+    if (typeof uri !== 'string' || !uri.startsWith('/api/')) return false;
+    req.url = uri;
+    return true;
+  },
+  (req) => {
+    const fromQuery = pathFromRequest(req);
+    if (!fromQuery) return false;
+    req.url = `/api/${fromQuery}${searchWithoutPath(req.url)}`;
+    return true;
+  },
+  (req) => {
+    const pathname = pathnameOf(req.url);
+    const search = (req.url || '').includes('?') ? req.url.slice(req.url.indexOf('?')) : '';
+    if (pathname !== '/' && pathname !== '/api') {
+      req.url = `/api${pathname}${search}`;
+      return true;
+    }
+    req.url = `/api${searchWithoutPath(req.url)}`;
+    return true;
+  },
+];
+
 export function restoreExpressUrl(req) {
-  const raw = req.url || '/';
-  const qIndex = raw.indexOf('?');
-  const pathname = qIndex === -1 ? raw : raw.slice(0, qIndex);
-  const search = qIndex === -1 ? '' : raw.slice(qIndex);
-
-  if (pathname === '/api' || pathname.startsWith('/api/')) return req;
-
-  const headerPath = req.headers?.['x-invoke-path'] || req.headers?.['x-matched-path'];
-  if (typeof headerPath === 'string' && headerPath.startsWith('/api')) {
-    req.url = headerPath.split('?')[0] + search;
-    return req;
+  for (const step of restoreStrategies) {
+    if (step(req)) return req;
   }
-
-  const fromQuery = pathFromQuery(req.query?.path);
-  if (fromQuery) {
-    req.url = `/api/${fromQuery}${searchWithoutPath(raw)}`;
-    return req;
-  }
-
-  if (pathname.startsWith('/') && pathname !== '/') {
-    req.url = `/api${pathname}${search}`;
-    return req;
-  }
-
-  req.url = `/api${search}`;
   return req;
 }

@@ -32,6 +32,26 @@ test('restoreExpressUrl rebuilds path from Vercel query.path', () => {
   assert.equal(req.url, '/api/jobs/match-batch');
 });
 
+test('restoreExpressUrl uses x-forwarded-uri after a rewrite to /api', () => {
+  const req = {
+    url: '/api?userId=user-default',
+    headers: { 'x-forwarded-uri': '/api/resumes?userId=user-default' },
+    query: { userId: 'user-default' },
+  };
+  restoreExpressUrl(req);
+  assert.equal(req.url, '/api/resumes?userId=user-default');
+});
+
+test('restoreExpressUrl maps rewrite query.path config/status', () => {
+  const req = {
+    url: '/api?path=config/status',
+    headers: {},
+    query: { path: 'config/status' },
+  };
+  restoreExpressUrl(req);
+  assert.equal(req.url, '/api/config/status');
+});
+
 test('same-host Origin is allowed on any deployed domain', () => {
   const req = { headers: { 'x-forwarded-host': 'talentai-lilac.vercel.app' } };
   assert.equal(isSameHostOrigin('https://talentai-lilac.vercel.app', req), true);
