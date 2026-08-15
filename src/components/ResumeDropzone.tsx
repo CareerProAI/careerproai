@@ -4,6 +4,7 @@ import RetryableError from './RetryableError';
 import FilePreviewCard from './FilePreviewCard';
 import ResumeSkeletons from './ResumeSkeletons';
 import ResumePasteTextFallback from './ResumePasteTextFallback';
+import ResumeFilePicker from './ResumeFilePicker';
 
 interface ResumeDropzoneProps {
   dragActive: boolean;
@@ -63,7 +64,7 @@ export default function ResumeDropzone(props: ResumeDropzoneProps) {
       onDragOver={props.handleDrag}
       onDragLeave={props.handleDrag}
       onDrop={props.handleDrop}
-      className={`glass-card rounded-2xl p-8 flex flex-col items-center justify-center text-center border-2 border-dashed transition-all min-h-[340px] cursor-pointer group ${
+      className={`glass-card rounded-2xl p-8 flex flex-col items-center justify-center text-center border-2 border-dashed transition-all min-h-[340px] group ${
         props.dragActive ? 'border-primary bg-primary/5' : 'border-outline-variant/80 hover:border-primary/50'
       }`}
     >
@@ -72,10 +73,7 @@ export default function ResumeDropzone(props: ResumeDropzoneProps) {
       </div>
       <h3 className="text-lg font-bold text-on-surface mb-1">Drag and drop your resume here</h3>
       <p className="text-xs text-on-surface-variant mb-6">Supports PDF, DOCX, TXT (Max 5MB)</p>
-      <label className="bg-primary hover:bg-primary/95 text-on-primary font-bold text-xs px-6 py-3 rounded-xl shadow-md transition-all cursor-pointer">
-        Browse Files
-        <input type="file" accept=".pdf,.docx,.txt" onChange={props.handleFileSelect} className="hidden" />
-      </label>
+      <ResumeFilePicker onSelect={props.handleFileSelect} />
 
       <ResumePasteTextFallback
         uploadText={props.uploadText}

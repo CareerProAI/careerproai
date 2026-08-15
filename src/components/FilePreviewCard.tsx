@@ -22,14 +22,16 @@ export default function FilePreviewCard({ file, onRemove, onAnalyze }: FilePrevi
       <p className="text-xs text-on-surface-variant mb-6">{formatFileSize(file.size)}</p>
       <div className="flex gap-3">
         <button
+          type="button"
           onClick={onRemove}
-          className="px-5 py-2.5 border border-outline-variant text-on-surface font-bold rounded-xl text-xs hover:bg-surface-container transition-colors"
+          className="px-5 py-2.5 min-h-11 border border-outline-variant text-on-surface font-bold rounded-xl text-xs hover:bg-surface-container transition-colors touch-manipulation"
         >
           Remove
         </button>
         <button
+          type="button"
           onClick={onAnalyze}
-          className="px-5 py-2.5 bg-primary text-on-primary font-bold rounded-xl text-xs shadow-md hover:bg-primary/95 transition-all"
+          className="px-5 py-2.5 min-h-11 bg-primary text-on-primary font-bold rounded-xl text-xs shadow-md hover:bg-primary/95 transition-all touch-manipulation"
         >
           Analyze Resume
         </button>

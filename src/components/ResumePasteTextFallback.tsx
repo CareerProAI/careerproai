@@ -27,7 +27,8 @@ export default function ResumePasteTextFallback({ uploadText, setUploadText, onS
           }
           onSubmit(new File([uploadText], 'pasted_resume_input.txt', { type: 'text/plain' }));
         }}
-        className="mt-2 w-full text-center text-xs text-primary font-bold hover:underline"
+        type="button"
+        className="mt-2 w-full min-h-11 text-center text-xs text-primary font-bold hover:underline touch-manipulation"
       >
         Parse Typed Text
       </button>
