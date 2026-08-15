@@ -25,6 +25,14 @@ html.dark {
   --color-outline-variant: #30363d;
   --color-inverse-surface: #eef1f7;
   --color-inverse-on-surface: #2d3135;
+  --color-primary: #7cb9ff;
+  --color-secondary: #95b4f8;
+  --color-error: #ff7a7a;
+  --color-primary-container: #1d3a6e;
+  --color-on-primary: #001a40;
+  --color-tertiary: #7fda8b;
+  --color-secondary-container: #2a3f6e;
+  --color-on-secondary-container: #cfe0ff;
 }
 
 .dark body {
@@ -48,6 +56,14 @@ html.dark {
     --color-outline-variant: #30363d;
     --color-inverse-surface: #eef1f7;
     --color-inverse-on-surface: #2d3135;
+    --color-primary: #7cb9ff;
+    --color-secondary: #95b4f8;
+    --color-error: #ff7a7a;
+    --color-primary-container: #1d3a6e;
+    --color-on-primary: #001a40;
+    --color-tertiary: #7fda8b;
+    --color-secondary-container: #2a3f6e;
+    --color-on-secondary-container: #cfe0ff;
   }
 
   html:not(.light) body {

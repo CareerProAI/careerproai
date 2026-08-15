@@ -36,8 +36,9 @@ export default function TopNavBar({
   return (
     <header
       id="top-nav"
-      className="fixed top-0 right-0 left-0 md:left-[280px] h-16 bg-surface/80 dark:bg-surface/80 backdrop-blur-md border-b border-outline-variant flex justify-between items-center px-6 z-40 transition-all duration-200"
+      className="fixed top-0 right-0 left-0 md:left-[280px] h-16 bg-surface/90 dark:bg-surface/90 backdrop-blur-xl border-b border-transparent flex justify-between items-center px-6 z-40 transition-all duration-200"
     >
+      <div aria-hidden="true" className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-outline-variant to-transparent" />
       <div className="flex items-center gap-4 flex-1">
         <button
           id="btn-hamburger-mobile"

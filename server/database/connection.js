@@ -4,9 +4,15 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-// server/database/connection.js -> up two levels to the project root, where
-// talentai.db lives alongside package.json (unchanged location).
-const dbPath = path.resolve(__dirname, '../../talentai.db');
+
+// ── S11: Configurable DB path via DB_PATH env var ─────────────────────────────
+// In development the default is talentai.db at the project root (unchanged).
+// In production, set DB_PATH=/data/talentai.db to move the file outside the
+// web root so it can't be served as a static asset even if the web server is
+// misconfigured. path.resolve() normalises relative paths to absolute.
+const dbPath = process.env.DB_PATH
+  ? path.resolve(process.env.DB_PATH)
+  : path.resolve(__dirname, '../../talentai.db');
 
 export async function getDb() {
   return open({

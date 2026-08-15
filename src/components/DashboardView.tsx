@@ -7,6 +7,7 @@ import DashboardActivityTimeline from './DashboardActivityTimeline';
 import DashboardSkillsCard from './DashboardSkillsCard';
 import DashboardEducationCard from './DashboardEducationCard';
 import DashboardRecommendationsCard from './DashboardRecommendationsCard';
+import { firstName } from '../utils/firstName';
 
 interface DashboardViewProps {
   currentProfile: ResumeProfile;
@@ -29,9 +30,10 @@ export default function DashboardView({
 }: DashboardViewProps) {
   return (
     <div id="view-dashboard" className="animate-in fade-in slide-in-from-bottom-3 duration-300">
-      <section className="mb-8">
+      <section className="hero-gradient mb-8 rounded-2xl p-6">
         <h2 className="font-sans text-3xl font-extrabold text-on-surface tracking-tight">
-          Welcome back, {currentProfile.candidateName.split(' ')[0]}.
+          Welcome back, {firstName(currentProfile.candidateName)}.
+          <span aria-hidden="true" className="material-symbols-outlined align-middle text-primary ml-2">waving_hand</span>
         </h2>
         <p className="text-sm text-on-surface-variant mt-1.5">Here's your talent profile overview for today.</p>
       </section>

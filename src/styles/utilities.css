@@ -20,6 +20,13 @@
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.5);
   box-shadow: 0 4px 6px -1px rgba(0, 91, 191, 0.06), 0 2px 4px -1px rgba(0, 91, 191, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--color-primary) 35%, transparent);
+  box-shadow: 0 10px 24px rgba(0, 91, 191, 0.12);
 }
 
 .dark .glass-card {
@@ -28,6 +35,10 @@
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.dark .glass-card:hover {
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
 }
 
 /* Shimmer skeleton */

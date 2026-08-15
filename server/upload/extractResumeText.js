@@ -1,7 +1,7 @@
 import path from 'path';
 import multer from 'multer';
-import { PDFParse } from 'pdf-parse';
 import mammoth from 'mammoth';
+import { ensurePdfJsDomPolyfills } from './pdfJsDomPolyfill.js';
 
 // In-memory upload handling for resume files (PDF/DOCX/TXT) — max 5MB, matches the upload UI's stated limit
 export const upload = multer({
@@ -9,11 +9,18 @@ export const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 }
 });
 
+async function loadPdfParse() {
+  ensurePdfJsDomPolyfills();
+  const { PDFParse } = await import('pdf-parse');
+  return PDFParse;
+}
+
 // Extracts raw text from an uploaded resume file, branching by extension/MIME type
 export async function extractResumeText(file) {
   const ext = path.extname(file.originalname).toLowerCase();
 
   if (ext === '.pdf' || file.mimetype === 'application/pdf') {
+    const PDFParse = await loadPdfParse();
     const parser = new PDFParse({ data: file.buffer });
     try {
       const result = await parser.getText();

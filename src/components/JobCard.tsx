@@ -2,6 +2,7 @@ import React from 'react';
 import { Job, ResumeProfile } from '../types';
 import JobCardActions from './JobCardActions';
 import JobCardInsights from './JobCardInsights';
+import JobCardMatchBadge from './JobCardMatchBadge';
 
 interface JobCardProps {
   // No @types/react is installed in this project, so TS has no JSX.IntrinsicAttributes
@@ -30,23 +31,9 @@ export default function JobCard({
   onCompare,
   deferred = false,
 }: JobCardProps) {
-  const notAiScored = Boolean(job.notAiScored);
-  const isHighMatch = !notAiScored && job.matchRate >= 92;
-
   return (
-    <div className={`group bg-white dark:bg-slate-900 border border-outline-variant/60 hover:border-primary/40 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all relative overflow-hidden${deferred ? ' job-card-deferred' : ''}`}>
-      <div
-        className={`absolute top-0 right-0 px-4 py-1.5 rounded-bl-xl text-[10px] font-extrabold uppercase tracking-wider flex items-center gap-1 shadow-sm ${
-          isHighMatch
-            ? 'bg-[color:var(--color-match-high-ribbon)] text-[#181c20]'
-            : 'bg-surface-variant text-on-surface-variant'
-        }`}
-      >
-        <span aria-hidden="true" className="material-symbols-outlined text-[14px]">
-          {notAiScored ? 'visibility_off' : isHighMatch ? 'psychology' : 'verified'}
-        </span>
-        <span>{notAiScored ? 'Not AI-Scored' : `${job.matchRate}% Match ${isHighMatch ? '• Top Fit' : ''}`}</span>
-      </div>
+    <div className={`group card-hover bg-white dark:bg-slate-900 border border-outline-variant/60 hover:border-primary/40 rounded-2xl p-6 shadow-sm relative overflow-hidden${deferred ? ' job-card-deferred' : ''}`}>
+      <JobCardMatchBadge job={job} />
 
       <div className="flex items-start gap-4">
         <div className="w-16 h-16 rounded-xl border border-outline-variant/30 bg-white dark:bg-slate-950 flex items-center justify-center p-2 shrink-0 relative overflow-hidden">

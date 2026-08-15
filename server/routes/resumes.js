@@ -52,10 +52,27 @@ export function createResumesRouter(getDb) {
     }
   });
 
+  // ── S9: Resume DELETE — ownership guard ────────────────────────────────────
+  // Without this, any client can delete any user's resume by guessing the ID.
+  // Now the requesting user's userId (from query param) must match the stored
+  // user_id on the resume row. Falls back to 'user-default' if not provided,
+  // preserving backward-compatibility for single-user sandbox mode.
   router.delete('/:id', async (req, res) => {
     const { id } = req.params;
+    const requestingUserId = req.query.userId || req.body?.userId || 'user-default';
+
     try {
-      await getDb().run('DELETE FROM resumes WHERE id = ?', id);
+      const db = getDb();
+      // Fetch the owner first — two separate DB calls is safer than a conditional
+      // DELETE because it gives us a clear 404 vs 403 distinction.
+      const resume = await db.get('SELECT user_id FROM resumes WHERE id = ?', id);
+      if (!resume) {
+        return res.status(404).json({ error: 'Resume not found.' });
+      }
+      if (resume.user_id !== requestingUserId) {
+        return res.status(403).json({ error: 'Forbidden: you do not own this resume.' });
+      }
+      await db.run('DELETE FROM resumes WHERE id = ?', id);
       res.json({ success: true });
     } catch (err) {
       res.status(500).json({ error: err.message });

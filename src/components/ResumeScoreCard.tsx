@@ -1,5 +1,6 @@
 import React from 'react';
 import { ResumeProfile } from '../types';
+import ScoreRing from './ScoreRing';
 
 interface ResumeScoreCardProps {
   currentProfile: ResumeProfile;
@@ -12,16 +13,7 @@ export default function ResumeScoreCard({ currentProfile }: ResumeScoreCardProps
       <h3 className="text-sm font-bold text-on-surface w-full text-left mb-6">Resume Score</h3>
       <div className="relative w-40 h-40 flex items-center justify-center mb-4">
         <div className="w-full h-full rounded-full border-8 border-surface-container dark:border-slate-800 absolute"></div>
-        <svg className="w-full h-full transform -rotate-90 absolute" viewBox="0 0 36 36">
-          <path
-            className="stroke-primary"
-            fill="none"
-            strokeWidth="2.8"
-            strokeLinecap="round"
-            strokeDasharray={`${currentProfile.score}, 100`}
-            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-          />
-        </svg>
+        <ScoreRing score={currentProfile.score} />
         <div className="text-center z-10 flex flex-col items-center">
           <span className="font-sans text-5xl font-extrabold text-primary leading-none">{currentProfile.score}</span>
           <span className="text-xs text-on-surface-variant font-bold mt-1">/ 100</span>

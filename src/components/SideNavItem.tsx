@@ -18,9 +18,9 @@ export default function SideNavItem({ id, label, icon, isActive, onClick }: Side
       id={`nav-${id}`}
       onClick={onClick}
       aria-current={isActive ? 'page' : undefined}
-      className={`flex items-center gap-3 rounded-full px-4 py-3 mx-2 text-left transition-all ${
+      className={`w-full flex items-center gap-3 rounded-full px-4 py-3 mx-2 text-left transition-all duration-200 ${
         isActive
-          ? 'bg-secondary-container text-on-secondary-container font-semibold scale-[0.98]'
+          ? 'bg-secondary-container text-on-secondary-container font-semibold'
           : 'text-on-surface-variant hover:bg-surface-variant hover:text-on-surface'
       }`}
     >

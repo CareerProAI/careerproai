@@ -2,6 +2,7 @@
 @import "./styles/utilities.css";
 @import "./styles/overlays.css";
 @import "./styles/dark-tokens.css";
+@import "./styles/motion.css";
 
 @theme {
   --font-sans: 'Inter', system-ui, sans-serif;
@@ -54,4 +55,15 @@
   --color-outline: #727784;
   --color-on-error: #ffffff;
   --color-match-high-ribbon: #ffd700;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
 }

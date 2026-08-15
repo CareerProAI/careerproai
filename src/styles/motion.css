@@ -1,0 +1,44 @@
+.card-hover {
+  transition-property: all;
+  transition-duration: 200ms;
+}
+
+.card-hover:hover {
+  transform: translateY(-0.25rem);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+@keyframes score-ring-draw {
+  from { stroke-dashoffset: 100; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.hero-gradient {
+  background: linear-gradient(
+    120deg,
+    var(--color-primary-container),
+    var(--color-secondary-container),
+    var(--color-surface-container)
+  );
+  background-size: 200% 200%;
+  animation: gradient-shift 12s ease infinite;
+}
+
+.animate-score-ring {
+  animation: score-ring-draw 0.8s ease-out forwards;
+}
+
+.animate-toast-in {
+  animation: toast-in 0.35s ease-out both;
+}
