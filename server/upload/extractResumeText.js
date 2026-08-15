@@ -2,6 +2,7 @@ import path from 'path';
 import multer from 'multer';
 import mammoth from 'mammoth';
 import { ensurePdfJsDomPolyfills } from './pdfJsDomPolyfill.js';
+import { ensurePdfWorker } from './ensurePdfWorker.js';
 
 // In-memory upload handling for resume files (PDF/DOCX/TXT) — max 5MB, matches the upload UI's stated limit
 export const upload = multer({
@@ -11,6 +12,7 @@ export const upload = multer({
 
 async function loadPdfParse() {
   ensurePdfJsDomPolyfills();
+  await ensurePdfWorker();
   const { PDFParse } = await import('pdf-parse');
   return PDFParse;
 }

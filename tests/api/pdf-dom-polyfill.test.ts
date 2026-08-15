@@ -23,3 +23,7 @@ test('loading extractResumeText does not import pdf-parse at module evaluation',
     if (previous) globalThis.DOMMatrix = previous;
   }
 });
+
+test('pdf-parse worker entry loads (required on Vercel before PDFParse)', async () => {
+  await assert.doesNotReject(() => import('../../server/upload/ensurePdfWorker.js').then((m) => m.ensurePdfWorker()));
+});
