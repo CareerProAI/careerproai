@@ -19,3 +19,5 @@ export function ensurePdfJsDomPolyfills() {
     globalThis.Path2D = class Path2D {};
   }
 }
+
+ensurePdfJsDomPolyfills();

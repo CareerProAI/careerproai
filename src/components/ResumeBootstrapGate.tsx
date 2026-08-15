@@ -37,7 +37,11 @@ export default function ResumeBootstrapGate({
     return (
       <div className="py-12">
         <RetryableError
-          message={`Failed to load resumes: ${loadError}. Is the API server running (npm run server)?`}
+          message={
+            import.meta.env.DEV
+              ? `Failed to load resumes: ${loadError}. Is the API server running (npm run server)?`
+              : `Failed to load resumes: ${loadError}`
+          }
           onRetry={onRetryLoad}
         />
       </div>

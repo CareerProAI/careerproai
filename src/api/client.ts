@@ -1,4 +1,8 @@
-export const API_BASE = 'http://localhost:3001/api';
+import { resolveApiBase } from './resolveApiBase';
+
+export { resolveApiBase };
+
+export const API_BASE = resolveApiBase(import.meta.env.VITE_API_BASE);
 
 // Thin fetch wrapper shared by every file in src/api/ — every backend route responds
 // with `{ error: string }` on failure, so this surfaces that specific message instead of

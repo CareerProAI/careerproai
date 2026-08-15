@@ -17,5 +17,6 @@ export function jsonLimitFor(path) {
 }
 
 export function jsonBodyLimit(req, res, next) {
-  return parsers[jsonLimitFor(req.path)](req, res, next);
+  const pathname = (req.originalUrl || req.path || '').split('?')[0];
+  return parsers[jsonLimitFor(pathname)](req, res, next);
 }
