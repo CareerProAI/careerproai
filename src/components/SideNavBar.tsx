@@ -39,7 +39,7 @@ export default function SideNavBar({
         {/* Brand Header */}
         <div className="px-6 mb-8 flex items-center justify-between">
           <div>
-            <h1 className="font-sans text-3xl font-extrabold text-primary tracking-tight">TalentAI</h1>
+            <h1 className="font-sans text-3xl font-extrabold text-primary tracking-tight">CareerProAI</h1>
             <p className="text-xs text-on-surface-variant font-medium tracking-wider uppercase mt-1">Enterprise Suite</p>
           </div>
           {/* Close button for mobile */}

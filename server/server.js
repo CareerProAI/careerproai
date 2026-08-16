@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 3001;
 
 ready().then(() => {
   app.listen(PORT, () => {
-    console.log(`TalentAI Backend API server running on port ${PORT}`);
+    console.log(`CareerProAI Backend API server running on port ${PORT}`);
   });
 }).catch((err) => {
   console.error('Failed to initialize database:', err);

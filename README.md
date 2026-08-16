@@ -1,4 +1,4 @@
-# TalentAI — Enterprise Suite
+# CareerProAI — Enterprise Suite
 
 > AI-powered resume scanning, ATS compliance analysis, and job-match discovery.
 > Upload a resume → Groq (with an automatic Gemini fallback) parses and scores it → live job listings from bdjobs.com and LinkedIn are AI-matched against it → track saved opportunities and generate a tailored application package — all inside a Material Design 3 dashboard.
@@ -126,7 +126,7 @@ API unit tests run with `npm run test:api` (Node's built-in runner via `tsx`). P
 
 ## Architecture
 
-TalentAI runs as **two separate processes** in local development. In production the browser calls **same-origin `/api`** — no hardcoded `localhost` — so the same build works on Vercel, Railway, Render, or a VPS.
+CareerProAI runs as **two separate processes** in local development. In production the browser calls **same-origin `/api`** — no hardcoded `localhost` — so the same build works on Vercel, Railway, Render, or a VPS.
 
 ```
 Local:                         Production (any host):
