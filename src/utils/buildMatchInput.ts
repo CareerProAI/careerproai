@@ -1,6 +1,7 @@
 import { BdJobListing } from '../types';
 import { MatchInputJob } from '../api/jobMatch';
 import { LinkedInListingWithDescription } from './fetchLinkedInDescriptions';
+import { stripHtmlToText } from './stripHtmlToText';
 
 // Matches the server's own MAX_JOB_TEXT_FIELD_LENGTH (server.js) — anything beyond this
 // gets thrown away there anyway before it reaches Groq, so sending more is wasted
@@ -10,7 +11,7 @@ import { LinkedInListingWithDescription } from './fetchLinkedInDescriptions';
 // request entity too large" once LinkedIn's full descriptions were added on top of
 // bdjobs's, which alone had stayed under it.
 const MAX_FIELD_LENGTH = 600;
-const truncate = (value: string) => value.slice(0, MAX_FIELD_LENGTH);
+const truncate = (value: string) => stripHtmlToText(value).slice(0, MAX_FIELD_LENGTH);
 
 // Combines both sources into one source-agnostic match-batch input array. LinkedIn
 // listings without a fetched description (the fetch failed, or returned nothing) are

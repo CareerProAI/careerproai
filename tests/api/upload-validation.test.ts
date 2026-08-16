@@ -24,10 +24,16 @@ test('A01: file over the 5MB cap is rejected with 400, no resume row written', a
   if (!prereqs.reachable) return t.skip('API server not reachable at ' + apiUrl(''));
 
   const before = await countUserResumes();
-  const res = await uploadFixture('oversized.bin', 'application/octet-stream');
+  const sixMb = Buffer.alloc(6 * 1024 * 1024, 'x');
+  const form = new FormData();
+  form.append('file', new Blob([sixMb], { type: 'application/pdf' }), 'oversized.pdf');
+  form.append('userId', 'user-default');
+  const res = await fetch(apiUrl('/resumes/parse'), { method: 'POST', body: form });
   const after = await countUserResumes();
+  const body = await res.json();
 
   assert.equal(res.status, 400);
+  assert.match(body.error, /5MB/i);
   assert.equal(after, before, 'oversized upload must not create a resume row');
 });
 

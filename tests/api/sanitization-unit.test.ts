@@ -5,7 +5,7 @@
 // No server, no network, no AI key needed — these always run.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { computeBothRateLimited, sanitizeMatchEntry, clampMatchRate } from '../../server/server-utils.js';
+import { computeBothRateLimited, computeAllRateLimited, sanitizeMatchEntry, clampMatchRate } from '../../server/server-utils.js';
 
 test('A06: both providers 429 -> bothRateLimited is true', () => {
   const groqMsg = 'Groq API Error (429): rate limit exceeded';
@@ -19,6 +19,13 @@ test('A06: Groq 429 + unrelated Gemini failure -> bothRateLimited is false', () 
   assert.equal(computeBothRateLimited(groqMsg, geminiMsg), false);
 });
 
+test('A06: Groq + Gemini + DeepSeek 429 -> all rate-limited', () => {
+  assert.equal(computeAllRateLimited([
+    'Groq API Error (429): cap',
+    'Gemini API Error (429): cap',
+    'DeepSeek API Error (429): cap',
+  ]), true);
+});
 test('A08: unknown id in a match entry is dropped', () => {
   const validIds = new Set(['bdjobs-1', 'linkedin-2']);
   const result = sanitizeMatchEntry({ id: 'bdjobs-999', matchRate: 80, whyMatches: 'x', skills: [] }, validIds);

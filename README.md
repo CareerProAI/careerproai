@@ -137,8 +137,9 @@ Browser (:3000)                Browser (your domain)
 Express API (:3001)            Vercel fn  or  npm start
   server/createApp.js            api/index.js → vercelHandler
   │                              or server/server.js + serveSpa
-  │  Groq  ◄──── GROQ_API_KEY
-  │  Gemini ◄──── GEMINI_API_KEY  (fallback on any Groq failure)
+  │  Groq     ◄──── GROQ_API_KEY      (primary)
+  │  Gemini   ◄──── GEMINI_API_KEY    (fallback)
+  │  DeepSeek ◄──── DEEPSEEK_API_KEY  (optional third)
   ▼
 SQLite  talentai.db  (local)  /  /tmp/talentai.db  (serverless, ephemeral)
 ```
@@ -276,14 +277,15 @@ Leave `VITE_API_BASE` unset for the default. Only set it when the SPA is on one 
 
 | Variable | Required | Description |
 |----------|----------|--------------|
-| `GROQ_API_KEY` | One of the two* | Groq API key — primary AI provider, used server-side only |
-| `GEMINI_API_KEY` | One of the two* | Gemini API key — automatic fallback when Groq fails for any reason, used server-side only |
+| `GROQ_API_KEY` | One of these* | Groq API key — primary AI provider, used server-side only |
+| `GEMINI_API_KEY` | One of these* | Gemini API key — fallback when Groq fails, used server-side only |
+| `DEEPSEEK_API_KEY` | No | Optional third fallback (`deepseek-chat`). Leave unset until you add a DeepSeek key |
 | `PORT` | No | API server port (default: `3001`) |
 | `DB_PATH` | No | SQLite file path. Defaults to `./talentai.db` locally, `/tmp/talentai.db` on Vercel / Netlify / Lambda |
 | `ALLOWED_ORIGINS` | No | Comma-separated production CORS origins. Loopback (`localhost` / `127.0.0.1`, any port) is always allowed |
 | `VITE_API_BASE` | No | Frontend API origin. Leave unset so the browser calls same-origin `/api`. Set only for a split SPA/API deploy |
 
-\* At least one of the two keys must be set for resume parsing, job matching, job comparison, and application generation to work. There is no `GROK_API_KEY` alias. Neither key should be given a `VITE_`-prefixed copy.
+\* At least one of Groq / Gemini / DeepSeek must be set for resume parsing, job matching, job comparison, and application generation to work. There is no `GROK_API_KEY` alias. None of these keys should be given a `VITE_`-prefixed copy.
 
 ---
 

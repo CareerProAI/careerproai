@@ -24,8 +24,8 @@ export default function ApiKeysSection({ aiConfigured, apiKeyLabel, onUpdateApiK
 
       <div className="flex items-center justify-between mb-5 p-3 rounded-xl bg-surface-container-low dark:bg-slate-950/40">
         <div>
-          <p className="text-xs font-bold text-on-surface">AI Provider (Groq + Gemini fallback)</p>
-          <p className="text-[10px] text-on-surface-variant mt-0.5">Used server-side for resume parsing and job matching — automatically falls back to Gemini if Groq is unavailable</p>
+          <p className="text-xs font-bold text-on-surface">AI Provider (Groq → Gemini → DeepSeek)</p>
+          <p className="text-[10px] text-on-surface-variant mt-0.5">Used server-side for resume parsing and job matching. Groq first, then Gemini, then DeepSeek if a key is set.</p>
         </div>
         {aiConfigured === null ? (
           <span className="text-[10px] font-bold text-on-surface-variant">Checking…</span>

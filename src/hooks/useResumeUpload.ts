@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { DragEvent, ChangeEvent } from 'react';
 import { parseResume, fetchResumeDetails } from '../api';
 import { ResumeProfile } from '../types';
+import { validateResumeFile } from '../utils/validateResumeFile';
 
 export function useResumeUpload(
   onUploadNewProfile: (profile: ResumeProfile) => void,
@@ -28,7 +29,19 @@ export function useResumeUpload(
     }
   };
 
+  const takeFile = (file?: File) => {
+    if (!file) return;
+    const error = validateResumeFile(file);
+    setUploadError(error);
+    setSelectedFile(error ? null : file);
+  };
+
   const startRealAnalysis = async (file: File) => {
+    const error = validateResumeFile(file);
+    if (error) {
+      setUploadError(error);
+      return;
+    }
     setSelectedFile(file);
     setUploadError(null);
     setIsProcessing(true);
@@ -69,17 +82,11 @@ export function useResumeUpload(
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      setUploadError(null);
-      setSelectedFile(e.dataTransfer.files[0]);
-    }
+    takeFile(e.dataTransfer.files?.[0]);
   };
 
   const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setUploadError(null);
-      setSelectedFile(e.target.files[0]);
-    }
+    takeFile(e.target.files?.[0]);
   };
 
   return {

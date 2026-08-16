@@ -4,10 +4,18 @@ import mammoth from 'mammoth';
 import { ensurePdfJsDomPolyfills } from './pdfJsDomPolyfill.js';
 import { ensurePdfWorker } from './ensurePdfWorker.js';
 
+const MAX_RESUME_BYTES = 5 * 1024 * 1024;
+const ALLOWED_EXT = new Set(['.pdf', '.docx', '.txt']);
+
 // In-memory upload handling for resume files (PDF/DOCX/TXT) — max 5MB, matches the upload UI's stated limit
 export const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 5 * 1024 * 1024 }
+  limits: { fileSize: MAX_RESUME_BYTES },
+  fileFilter(_req, file, cb) {
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (ALLOWED_EXT.has(ext)) cb(null, true);
+    else cb(new Error(`Unsupported file type "${ext || file.mimetype}". Please upload a PDF, DOCX, or TXT file.`));
+  },
 });
 
 async function loadPdfParse() {

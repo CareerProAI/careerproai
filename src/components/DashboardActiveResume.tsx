@@ -2,6 +2,7 @@ import React from 'react';
 import { ResumeProfile } from '../types';
 import Card from './ui/Card';
 import Button from './ui/Button';
+import { formatProfileUpdated } from '../utils/formatRelativeTime';
 
 interface DashboardActiveResumeProps {
   currentProfile: ResumeProfile;
@@ -15,7 +16,9 @@ export default function DashboardActiveResume({ currentProfile, setTab }: Dashbo
     <Card as="section">
       <div className="flex justify-between items-center mb-5">
         <h3 className="text-lg font-bold text-on-surface">Active Resume</h3>
-        <span className="text-xs text-on-surface-variant font-medium">Last updated: 2 days ago</span>
+        <span className="text-xs text-on-surface-variant font-medium">
+          Last updated: {formatProfileUpdated(currentProfile.id)}
+        </span>
       </div>
       <div className="flex flex-col sm:flex-row gap-4 border border-outline-variant/40 rounded-xl p-4 bg-surface-container-lowest dark:bg-slate-950 items-start sm:items-center justify-between">
         <div className="flex items-center gap-4">

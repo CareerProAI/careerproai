@@ -1,5 +1,6 @@
 import { BdJobListing, Job } from '../types';
 import { JobMatchResult } from '../api/jobMatch';
+import { stripHtmlToText } from './stripHtmlToText';
 
 function mapWorkplaceType(workPlace: string): Job['workplaceType'] {
   const w = workPlace.toLowerCase();
@@ -36,24 +37,7 @@ function formatSalary(salary: BdJobListing['Salary']): string {
   return `৳${salary.MinSalary.toLocaleString()} - ৳${salary.MaxSalary.toLocaleString()}`;
 }
 
-const MAX_DESCRIPTION_LENGTH = 4000;
-
-// Converts external HTML to plain text — never rendered via dangerouslySetInnerHTML.
-// Block-level tags become newlines first so paragraph/list structure survives roughly
-// intact, then all remaining tags are stripped and common entities decoded.
-export function stripHtmlToText(html: string): string {
-  return html
-    .replace(/<\/(p|li|div|h[1-6])>/gi, '\n')
-    .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<[^>]*>/g, '')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&#39;|&apos;/g, "'")
-    .replace(/&quot;/g, '"')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim()
-    .slice(0, MAX_DESCRIPTION_LENGTH);
-}
+export { stripHtmlToText };
 
 export function formatPostedTime(publishDate: string): string {
   const hours = Math.max(0, Math.floor((Date.now() - new Date(publishDate).getTime()) / 3600000));

@@ -11,7 +11,10 @@ export function createResumeParseRouter(getDb) {
   router.post('/', (req, res) => {
     upload.single('file')(req, res, async (uploadErr) => {
       if (uploadErr) {
-        return res.status(400).json({ error: uploadErr.message || 'File upload failed.' });
+        const tooBig = uploadErr.code === 'LIMIT_FILE_SIZE';
+        return res.status(400).json({
+          error: tooBig ? 'Resume must be 5MB or smaller.' : (uploadErr.message || 'File upload failed.'),
+        });
       }
 
       if (!req.file) {

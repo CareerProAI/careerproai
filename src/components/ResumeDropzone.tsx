@@ -45,7 +45,7 @@ export default function ResumeDropzone(props: ResumeDropzoneProps) {
     return (
       <RetryableError
         message={props.uploadError}
-        onRetry={() => props.selectedFile && props.startRealAnalysis(props.selectedFile)}
+        onRetry={() => (props.selectedFile ? props.startRealAnalysis(props.selectedFile) : props.handleRemoveFile())}
       />
     );
   }

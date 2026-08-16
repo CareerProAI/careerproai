@@ -44,11 +44,9 @@ Return strict JSON only, no markdown, no commentary, in this exact shape: {"matc
       res.json({ matches });
     } catch (err) {
       console.error('Failed to compute job match batch:', err.message);
-      // Only report "rate-limited" when BOTH providers actually hit a 429 — a Groq 429
-      // alone (the routine, expected case, since this endpoint scores many jobs in one
-      // prompt and trips Groq's free-tier cap fastest) still falls back to Gemini inside
-      // callAIAPI, so reaching this catch means Gemini failed too, possibly for an
-      // unrelated reason a "try again in a few minutes" message would misrepresent.
+      // Only report "rate-limited" when every configured provider (Groq, Gemini, and
+      // DeepSeek if keyed) actually hit a 429. A Groq 429 alone still falls through
+      // the chain, so a generic retry message would misrepresent a Gemini/DeepSeek miss.
       if (err.bothRateLimited) {
         return res.status(429).json({ error: 'AI matching is temporarily rate-limited — please try again in a few minutes.' });
       }

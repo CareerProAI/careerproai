@@ -37,6 +37,11 @@ export function sanitizeMatchEntry(entry, validIds) {
 // actually true — a Groq 429 alone doesn't mean that, since Gemini's fallback
 // failure could be an unrelated cause (bad key, malformed response, network error)
 // that a plain retry will never fix.
+export function computeAllRateLimited(messages) {
+  if (!Array.isArray(messages) || messages.length === 0) return false;
+  return messages.every((msg) => /API Error \(429\)/.test(String(msg)));
+}
+
 export function computeBothRateLimited(groqMessage, geminiMessage) {
-  return /Groq API Error \(429\)/.test(groqMessage) && /Gemini API Error \(429\)/.test(geminiMessage);
+  return computeAllRateLimited([groqMessage, geminiMessage]);
 }

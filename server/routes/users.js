@@ -61,7 +61,9 @@ export function createUsersRouter(getDb) {
 export function createConfigStatusRouter() {
   const router = express.Router();
   router.get('/', (req, res) => {
-    const aiConfigured = Boolean(process.env.GROQ_API_KEY || process.env.GEMINI_API_KEY);
+    const aiConfigured = Boolean(
+      process.env.GROQ_API_KEY || process.env.GEMINI_API_KEY || process.env.DEEPSEEK_API_KEY,
+    );
     res.json({ aiConfigured });
   });
   return router;
