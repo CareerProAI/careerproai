@@ -16,10 +16,12 @@ test-results/
 tests/e2e/fixtures/oversized.bin
 
 # Not tracked in public repo
+.agents/
 .claude/
-test.md
+.cursor/
 CLAUDE.md
 cost.md
 detail.md
 fix.md
+test.md
 update.md
