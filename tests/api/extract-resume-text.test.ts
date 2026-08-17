@@ -26,3 +26,12 @@ test('DOCX fixture extracts readable resume text', async () => {
   );
   assert.match(text, /Jordan Ellis/i);
 });
+
+test('DOCX extracts when originalname has no extension', async () => {
+  const file = multerFile(
+    'sample-resume.docx',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  );
+  file.originalname = 'document';
+  assert.match(await extractResumeText(file), /Jordan Ellis/i);
+});

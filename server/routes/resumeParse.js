@@ -3,6 +3,7 @@ import { upload, extractResumeText } from '../upload/extractResumeText.js';
 import { callAIAPI } from '../ai/callAIAPI.js';
 import { RESUME_PARSE_SYSTEM_PROMPT } from '../resumeParsing/resumeParsePrompt.js';
 import { insertParsedResume } from '../resumeParsing/insertParsedResume.js';
+import { MAX_RESUME_BYTES } from '../upload/resumeFileFilter.js';
 
 // Parse Resume endpoint (Groq/Gemini) — accepts a multipart/form-data upload under the "file" field
 export function createResumeParseRouter(getDb) {
@@ -19,6 +20,10 @@ export function createResumeParseRouter(getDb) {
 
       if (!req.file) {
         return res.status(400).json({ error: 'A resume file is required.' });
+      }
+
+      if (req.file.size > MAX_RESUME_BYTES) {
+        return res.status(400).json({ error: 'Resume must be 5MB or smaller.' });
       }
 
       const activeUserId = req.body.userId || 'user-default';

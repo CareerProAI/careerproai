@@ -8,6 +8,7 @@ export const RESUME_FILE_ACCEPT = [
   '.txt',
   'application/pdf',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/msword',
   'text/plain',
 ].join(',');
 
