@@ -17,9 +17,9 @@ export function useJobFilters(jobs: Job[], applications: Application[], searchQu
     if (searchQuery.trim()) {
       const q = searchQuery.trim().toLowerCase();
       const matchesKeyword =
-        job.title.toLowerCase().includes(q) ||
-        job.company.toLowerCase().includes(q) ||
-        job.skills.some((skill) => skill.toLowerCase().includes(q));
+        (job.title ?? '').toLowerCase().includes(q) ||
+        (job.company ?? '').toLowerCase().includes(q) ||
+        job.skills.some((skill) => (skill ?? '').toLowerCase().includes(q));
       if (!matchesKeyword) return false;
     }
 

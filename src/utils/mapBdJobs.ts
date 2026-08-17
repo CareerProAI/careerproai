@@ -2,31 +2,31 @@ import { BdJobListing, Job } from '../types';
 import { JobMatchResult } from '../api/jobMatch';
 import { stripHtmlToText } from './stripHtmlToText';
 
-function mapWorkplaceType(workPlace: string): Job['workplaceType'] {
-  const w = workPlace.toLowerCase();
+function mapWorkplaceType(workPlace: string | null | undefined): Job['workplaceType'] {
+  const w = (workPlace ?? '').toLowerCase();
   if (w.includes('home')) return 'Remote';
   if (w.includes('both') || w.includes('hybrid')) return 'Hybrid';
   return 'On-site';
 }
 
-function mapEmploymentType(jobType: string): Job['employmentType'] {
+function mapEmploymentType(jobType: string | null | undefined): Job['employmentType'] {
   const map: Record<string, Job['employmentType']> = {
     fulltime: 'Full-time',
     parttime: 'Part-time',
     contractual: 'Contract',
     internship: 'Internship',
   };
-  return map[jobType.toLowerCase().replace(/\s/g, '')] || 'Full-time';
+  return map[(jobType ?? '').toLowerCase().replace(/\s/g, '')] || 'Full-time';
 }
 
-function mapExperienceLevel(experience: string): Job['experienceLevel'] {
-  const match = experience.match(/\d+/);
+function mapExperienceLevel(experience: string | null | undefined): Job['experienceLevel'] {
+  const match = (experience ?? '').match(/\d+/);
   const years = match ? parseInt(match[0], 10) : 0;
   return years >= 3 ? 'Mid-Senior' : 'Entry';
 }
 
-function formatSalary(salary: BdJobListing['Salary']): string {
-  if (salary.HideSalary || salary.IsNegotiable || (salary.MinSalary === 0 && salary.MaxSalary === 0)) {
+function formatSalary(salary: BdJobListing['Salary'] | null | undefined): string {
+  if (!salary || salary.HideSalary || salary.IsNegotiable || (salary.MinSalary === 0 && salary.MaxSalary === 0)) {
     return 'Negotiable';
   }
   // bdjobs.com uses MaxSalary: -1 as a sentinel for "no upper bound" (open-ended range) —

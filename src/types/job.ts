@@ -54,21 +54,21 @@ export interface BdJobListing {
   companyName: string;
   deadline: string;
   publishDate: string;
-  experience: string;
+  experience: string | null;
   eduRec: string;
   jobContext: string | null;
   jobDescription: string;
   location: string;
   logoUrl: string;
-  JobType: string;
+  JobType: string | null;
   Vacancies: number;
   Salary: {
     MinSalary: number;
     MaxSalary: number;
     IsNegotiable: boolean;
     HideSalary: boolean;
-  };
-  WorkPlace: string;
+  } | null;
+  WorkPlace: string | null;
 }
 
 export interface BdJobSearchResponse {
