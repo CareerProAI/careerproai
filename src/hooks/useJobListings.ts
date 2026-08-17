@@ -3,6 +3,14 @@ import { Job, ResumeProfile } from '../types';
 import { getSearchKeyword } from '../utils/getSearchKeyword';
 import { loadJobListings } from '../utils/loadJobListings';
 
+function jobsLoadErrorMessage(err: unknown): string {
+  const message = err instanceof Error ? err.message : '';
+  if (!message || /Cannot read properties of null/.test(message)) {
+    return 'Unable to load job listings right now. Please retry.';
+  }
+  return message;
+}
+
 export function useJobListings(profile: ResumeProfile | null, aiConfigured: boolean | null) {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
@@ -34,7 +42,7 @@ export function useJobListings(profile: ResumeProfile | null, aiConfigured: bool
         if (!cancelled) setJobs(loadedJobs);
       })
       .catch((err) => {
-        if (!cancelled) setError(err instanceof Error ? err.message : 'Failed to load job listings.');
+        if (!cancelled) setError(jobsLoadErrorMessage(err));
       })
       .finally(() => {
         if (!cancelled) setLoading(false);

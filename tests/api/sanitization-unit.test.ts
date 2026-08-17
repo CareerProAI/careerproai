@@ -19,11 +19,11 @@ test('A06: Groq 429 + unrelated Gemini failure -> bothRateLimited is false', () 
   assert.equal(computeBothRateLimited(groqMsg, geminiMsg), false);
 });
 
-test('A06: Groq + Gemini + DeepSeek 429 -> all rate-limited', () => {
+test('A06: Groq + Gemini + Z.ai 429 -> all rate-limited', () => {
   assert.equal(computeAllRateLimited([
     'Groq API Error (429): cap',
     'Gemini API Error (429): cap',
-    'DeepSeek API Error (429): cap',
+    'Z.ai API Error (429): cap',
   ]), true);
 });
 test('A08: unknown id in a match entry is dropped', () => {

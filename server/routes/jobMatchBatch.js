@@ -44,7 +44,7 @@ Return strict JSON only, no markdown, no commentary, in this exact shape: {"matc
       res.json({ matches });
     } catch (err) {
       console.error('Failed to compute job match batch:', err.message);
-      // Only report "rate-limited" when every configured provider (Groq, Gemini, and
+      // Only report "rate-limited" when every configured provider (Groq, Gemini, Z.ai,
       // DeepSeek if keyed) actually hit a 429. A Groq 429 alone still falls through
       // the chain, so a generic retry message would misrepresent a Gemini/DeepSeek miss.
       if (err.bothRateLimited) {

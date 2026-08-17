@@ -52,7 +52,7 @@ export default function JobCard({
             <span className="px-2.5 py-0.5 bg-surface-container dark:bg-slate-800 text-on-surface rounded text-[10px] font-bold border border-outline-variant/20">
               {job.salary}
             </span>
-            {job.skills.slice(0, 3).map((skill) => (
+            {(job.skills ?? []).slice(0, 3).map((skill) => (
               <span
                 key={skill}
                 className="px-2.5 py-0.5 bg-surface-container dark:bg-slate-800 text-on-surface rounded text-[10px] font-bold border border-outline-variant/20"

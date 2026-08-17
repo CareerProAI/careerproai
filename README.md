@@ -139,7 +139,8 @@ Express API (:3001)            Vercel fn  or  npm start
   │                              or server/server.js + serveSpa
   │  Groq     ◄──── GROQ_API_KEY      (primary)
   │  Gemini   ◄──── GEMINI_API_KEY    (fallback)
-  │  DeepSeek ◄──── DEEPSEEK_API_KEY  (optional third)
+  │  Z.ai     ◄──── ZAI_API_KEY       (when Groq + Gemini limited)
+  │  DeepSeek ◄──── DEEPSEEK_API_KEY  (optional fourth)
   ▼
 SQLite  talentai.db  (local)  /  /tmp/talentai.db  (serverless, ephemeral)
 ```
@@ -206,9 +207,10 @@ cp .env.example .env
 ```env
 GROQ_API_KEY=your_groq_api_key_here
 GEMINI_API_KEY=your_gemini_api_key_here
+ZAI_API_KEY=your_z_ai_api_key_here
 ```
 
-Both keys live **server-side only** — neither is ever sent to the browser, and neither should be given a `VITE_`-prefixed copy (that would bundle it into client JS).
+These keys live **server-side only** — they are never sent to the browser, and none should be given a `VITE_`-prefixed copy (that would bundle it into client JS).
 
 ### 3. Start both servers
 
@@ -251,7 +253,7 @@ The SPA always calls **same-origin `/api`**. That is what makes one build work o
 ### Vercel
 
 1. Import the GitHub repo (or `vercel` from this directory).
-2. Set `GROQ_API_KEY` and/or `GEMINI_API_KEY` in the Vercel project environment.
+2. Set `GROQ_API_KEY` and/or `GEMINI_API_KEY` (and optionally `ZAI_API_KEY`) in the Vercel project environment.
 3. Framework preset: Vite. Build command: `npm run build`. Output: `dist/`.
 4. `vercel.json` rewrites `/api/:path*` to one serverless function (`api/index.js` → `server/vercelHandler.js`). `restoreExpressUrl()` rebuilds the Express path from the rewrite. `maxDuration` is 60s for resume parse / match-batch.
 5. SQLite uses Node's built-in `node:sqlite` (no native `sqlite3` binary). The file is `/tmp/talentai.db` — **ephemeral**. Uploaded resumes do not survive cold starts or new instances. Use a persistent host below if you need durable data.
@@ -279,13 +281,14 @@ Leave `VITE_API_BASE` unset for the default. Only set it when the SPA is on one 
 |----------|----------|--------------|
 | `GROQ_API_KEY` | One of these* | Groq API key — primary AI provider, used server-side only |
 | `GEMINI_API_KEY` | One of these* | Gemini API key — fallback when Groq fails, used server-side only |
-| `DEEPSEEK_API_KEY` | No | Optional third fallback (`deepseek-chat`). Leave unset until you add a DeepSeek key |
+| `ZAI_API_KEY` | No | Z.ai API key — used when Groq and Gemini both fail (typically daily limits), model `glm-4.5-flash` |
+| `DEEPSEEK_API_KEY` | No | Optional fourth fallback (`deepseek-chat`). Leave unset until you add a DeepSeek key |
 | `PORT` | No | API server port (default: `3001`) |
 | `DB_PATH` | No | SQLite file path. Defaults to `./talentai.db` locally, `/tmp/talentai.db` on Vercel / Netlify / Lambda |
 | `ALLOWED_ORIGINS` | No | Comma-separated production CORS origins. Loopback (`localhost` / `127.0.0.1`, any port) is always allowed |
 | `VITE_API_BASE` | No | Frontend API origin. Leave unset so the browser calls same-origin `/api`. Set only for a split SPA/API deploy |
 
-\* At least one of Groq / Gemini / DeepSeek must be set for resume parsing, job matching, job comparison, and application generation to work. There is no `GROK_API_KEY` alias. None of these keys should be given a `VITE_`-prefixed copy.
+\* At least one of Groq / Gemini / Z.ai / DeepSeek must be set for resume parsing, job matching, job comparison, and application generation to work. There is no `GROK_API_KEY` alias. None of these keys should be given a `VITE_`-prefixed copy.
 
 ---
 
@@ -382,7 +385,7 @@ All child tables cascade-delete on `resumes` delete. Array-valued columns (bulle
 │   ├── database.js                    # Thin orchestrator — connect, createSchema, runMigrations, seed
 │   ├── database/                      # schema/, migrations, seed, connection (sqlite3 vs node:sqlite)
 │   ├── routes/                        # One file per API resource (+ routes/externalJobs/)
-│   ├── ai/                             # Groq/Gemini providers + the shared callAIAPI fallback wrapper
+│   ├── ai/                             # Groq/Gemini/Z.ai providers + the shared callAIAPI fallback wrapper
 │   ├── resumeParsing/                 # Parse prompt, transaction-insert helpers, profile reassembly
 │   ├── pdf/                            # Application-package PDF builders
 │   └── upload/                         # Multer, pdf-parse worker, resume text extraction

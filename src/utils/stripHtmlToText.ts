@@ -1,7 +1,8 @@
 const MAX_DESCRIPTION_LENGTH = 4000;
 
 /** Converts untrusted HTML to plain text — never rendered via dangerouslySetInnerHTML. */
-export function stripHtmlToText(html: string): string {
+export function stripHtmlToText(html: string | null | undefined): string {
+  if (typeof html !== 'string' || !html) return '';
   return html
     .replace(/<\/(p|li|div|h[1-6])>/gi, '\n')
     .replace(/<br\s*\/?>/gi, '\n')

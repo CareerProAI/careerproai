@@ -5,6 +5,7 @@ import { mapLinkedInJobListingToJob } from './mapLinkedInJobs';
 import { buildMatchInput } from './buildMatchInput';
 import { fetchLinkedInDescriptions } from './fetchLinkedInDescriptions';
 import { matchJobsInChunks } from './matchJobsInChunks';
+import { mapListingsSafely } from './mapListingsSafely';
 
 // 50 is the max both /api/external-jobs (bdjobs, `rpp`) and /api/external-jobs/linkedin
 // (`count`) accept per request — the most volume attainable without multi-page fetching.
@@ -19,23 +20,30 @@ export async function loadJobListings(profile: ResumeProfile, keyword: string, s
     fetchBdJobs(1, LISTINGS_PER_SOURCE, signal, keyword),
     fetchLinkedInJobs(keyword, '', LISTINGS_PER_SOURCE, signal),
   ]);
-  const bdListings = bdResult.status === 'fulfilled' ? bdResult.value.data : [];
-  const liListings = liResult.status === 'fulfilled' ? liResult.value.data : [];
+  const bdListings = bdResult.status === 'fulfilled' ? (bdResult.value.data ?? []) : [];
+  const liListings = liResult.status === 'fulfilled' ? (liResult.value.data ?? []) : [];
 
   if (bdListings.length === 0 && liListings.length === 0) {
     throw new Error('Unable to load job listings from either source right now.');
   }
 
-  const liWithDescriptions = await fetchLinkedInDescriptions(liListings, signal);
-  const matchInput = buildMatchInput(bdListings, liWithDescriptions);
+  const liWithDescriptions = await fetchLinkedInDescriptions(liListings.filter(Boolean), signal);
+  let matchInput = [];
+  try {
+    matchInput = buildMatchInput(bdListings, liWithDescriptions);
+  } catch (err) {
+    console.error('Failed to build match input — continuing without AI scores:', err);
+  }
 
-  // Chunked scoring: a failed chunk leaves those listings unscored instead of blanking
-  // the feed. matchJobsInChunks already swallows per-chunk errors.
   const matches = await matchJobsInChunks(profile, matchInput, signal);
   const matchById = new Map(matches.map((m) => [m.id, m]));
 
-  const mappedBd = bdListings.map((l) => mapBdJobListingToJob(l, matchById.get(`bdjobs-${l.Jobid}`)));
-  const mappedLi = liWithDescriptions.map((l) => mapLinkedInJobListingToJob(l, matchById.get(`linkedin-${l.jobId}`)));
+  const mappedBd = mapListingsSafely(bdListings.filter(Boolean), (l) => (
+    mapBdJobListingToJob(l, matchById.get(`bdjobs-${l.Jobid}`))
+  ));
+  const mappedLi = mapListingsSafely(liWithDescriptions, (l) => (
+    mapLinkedInJobListingToJob(l, matchById.get(`linkedin-${l.jobId}`))
+  ));
 
   return [...mappedBd, ...mappedLi];
 }

@@ -45,3 +45,20 @@ test('null experience and Salary do not throw', () => {
   assert.equal(job.experienceLevel, 'Entry');
   assert.equal(job.salary, 'Negotiable');
 });
+
+test('null title/company/location still map to strings', () => {
+  const job = mapBdJobListingToJob(listing({ jobTitle: null, companyName: null, location: null }));
+  assert.equal(job.title, '');
+  assert.equal(job.company, '');
+  assert.equal(job.location, '');
+});
+
+test('null match.skills becomes an empty array, not null', () => {
+  const job = mapBdJobListingToJob(listing(), {
+    id: 'bdjobs-1',
+    matchRate: 80,
+    whyMatches: 'fit',
+    skills: null as unknown as string[],
+  });
+  assert.deepEqual(job.skills, []);
+});

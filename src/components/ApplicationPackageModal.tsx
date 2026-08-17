@@ -26,7 +26,7 @@ export default function ApplicationPackageModal({
   onRetry,
   onGoToProfile,
 }: ApplicationPackageModalProps) {
-  const fileBase = job.company.replace(/[^a-z0-9]+/gi, '-').toLowerCase();
+  const fileBase = (job.company || 'job').replace(/[^a-z0-9]+/gi, '-').toLowerCase();
 
   return (
     <Modal scrollable onClose={onClose} labelledBy="application-package-title">

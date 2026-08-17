@@ -11,19 +11,24 @@ export function useJobFilters(jobs: Job[], applications: Application[], searchQu
   const [tabFilter, setTabFilter] = useState<'all' | 'recommended'>(initialTabFilter);
   const [sortMode, setSortMode] = useState<'relevance' | 'latest' | 'salary' | 'bestMatch'>('relevance');
 
-  const filteredJobs = jobs.filter((job) => {
-    if (tabFilter === 'recommended' && job.matchRate < RECOMMENDED_MATCH_THRESHOLD) return false;
+  const filteredJobs = (jobs ?? []).filter((job) => {
+    try {
+      if (!job) return false;
+      if (tabFilter === 'recommended' && job.matchRate < RECOMMENDED_MATCH_THRESHOLD) return false;
 
-    if (searchQuery.trim()) {
-      const q = searchQuery.trim().toLowerCase();
-      const matchesKeyword =
-        (job.title ?? '').toLowerCase().includes(q) ||
-        (job.company ?? '').toLowerCase().includes(q) ||
-        job.skills.some((skill) => (skill ?? '').toLowerCase().includes(q));
-      if (!matchesKeyword) return false;
+      const query = (searchQuery ?? '').trim();
+      if (query) {
+        const q = query.toLowerCase();
+        const matchesKeyword =
+          (job.title ?? '').toLowerCase().includes(q) ||
+          (job.company ?? '').toLowerCase().includes(q) ||
+          (job.skills ?? []).some((skill) => (skill ?? '').toLowerCase().includes(q));
+        if (!matchesKeyword) return false;
+      }
+      return true;
+    } catch {
+      return false;
     }
-
-    return true;
   });
 
   const sortedJobs = [...filteredJobs].sort((a, b) => {

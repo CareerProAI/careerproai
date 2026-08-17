@@ -60,7 +60,7 @@ export default function JobDetailsModal({
         <div>
           <h4 className="text-xs font-bold text-on-surface-variant mb-2 uppercase tracking-wider">Required Skills</h4>
           <div className="flex flex-wrap gap-1.5">
-            {job.skills.map((skill) => (
+            {(job.skills ?? []).map((skill) => (
               <span key={skill} className="px-2.5 py-1 bg-surface-container dark:bg-slate-800 text-on-surface rounded-lg text-[11px] font-semibold border border-outline-variant/20">
                 {skill}
               </span>

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { runProviderChain } from '../../server/ai/providerChain.js';
+import { buildProviderChain, runProviderChain } from '../../server/ai/providerChain.js';
 
 function stub(name, configured, impl) {
   return { name, isConfigured: () => configured, call: impl };
@@ -32,4 +32,35 @@ test('provider chain sets bothRateLimited when every attempt is 429', async () =
     ]),
     (err: unknown) => err instanceof Error && (err as Error & { bothRateLimited?: boolean }).bothRateLimited === true,
   );
+});
+
+test('buildProviderChain places Z.ai after Gemini', () => {
+  assert.deepEqual(
+    buildProviderChain().map((p) => p.name),
+    ['Groq', 'Gemini', 'Z.ai', 'DeepSeek'],
+  );
+});
+
+test('Z.ai is configured only when ZAI_API_KEY is set', () => {
+  const previous = process.env.ZAI_API_KEY;
+  delete process.env.ZAI_API_KEY;
+  try {
+    const zai = buildProviderChain().find((p) => p.name === 'Z.ai');
+    assert.equal(zai?.isConfigured(), false);
+    process.env.ZAI_API_KEY = 'test-key';
+    assert.equal(buildProviderChain().find((p) => p.name === 'Z.ai')?.isConfigured(), true);
+  } finally {
+    if (previous === undefined) delete process.env.ZAI_API_KEY;
+    else process.env.ZAI_API_KEY = previous;
+  }
+});
+
+test('provider chain uses Z.ai after Groq and Gemini daily limits', async () => {
+  const result = await runProviderChain('sys', 'user', {}, [
+    stub('Groq', true, async () => { throw new Error('Groq API Error (429): cap'); }),
+    stub('Gemini', true, async () => { throw new Error('Gemini API Error (429): quota'); }),
+    stub('Z.ai', true, async () => ({ ok: true })),
+    stub('DeepSeek', true, async () => { throw new Error('should not run'); }),
+  ]);
+  assert.equal(result.ok, true);
 });

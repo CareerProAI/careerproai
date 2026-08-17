@@ -8,8 +8,9 @@ interface MatchMatrixSkillsBreakdownProps {
 
 export default function MatchMatrixSkillsBreakdown({ compareJob, currentProfile }: MatchMatrixSkillsBreakdownProps) {
   const knownSkills = [...currentProfile.skills.frameworks, ...currentProfile.skills.tools];
-  const matchedSkills = compareJob.skills.filter((sk) => knownSkills.includes(sk));
-  const missingSkills = compareJob.skills.filter((sk) => !knownSkills.includes(sk));
+  const jobSkills = compareJob.skills ?? [];
+  const matchedSkills = jobSkills.filter((sk) => knownSkills.includes(sk));
+  const missingSkills = jobSkills.filter((sk) => !knownSkills.includes(sk));
 
   return (
     <div>

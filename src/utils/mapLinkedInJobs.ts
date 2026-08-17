@@ -2,6 +2,7 @@ import { Job } from '../types';
 import { JobMatchResult } from '../api/jobMatch';
 import { LinkedInListingWithDescription } from './fetchLinkedInDescriptions';
 import { formatPostedTime } from './mapBdJobs';
+import { asText } from './asText';
 
 // LinkedIn's public "guest" job-search view exposes no workplace type, employment
 // type, experience level, or salary per listing — these three fields are best-guess
@@ -23,15 +24,15 @@ export function mapLinkedInJobListingToJob(listing: LinkedInListingWithDescripti
   const scored = Boolean(match);
   return {
     id: `linkedin-${listing.jobId}`,
-    title: listing.title,
-    company: listing.company,
-    logo: listing.logoUrl,
-    location: listing.location,
+    title: asText(listing.title),
+    company: asText(listing.company),
+    logo: asText(listing.logoUrl),
+    location: asText(listing.location),
     workplaceType: DEFAULT_WORKPLACE_TYPE,
     experienceLevel: DEFAULT_EXPERIENCE_LEVEL,
     employmentType: DEFAULT_EMPLOYMENT_TYPE,
     salary: 'Not disclosed',
-    skills: scored ? match!.skills : [],
+    skills: scored && Array.isArray(match?.skills) ? match.skills.filter((s) => typeof s === 'string') : [],
     matchRate: scored ? match!.matchRate : 0,
     postedTime: listing.postedDate ? formatPostedTime(listing.postedDate) : 'Recently posted',
     postedAt: listing.postedDate || new Date().toISOString(),
