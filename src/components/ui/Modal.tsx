@@ -4,11 +4,20 @@ import { isDialogBackdropClick } from '../../utils/dialogLightDismiss';
 interface ModalProps {
   children: React.ReactNode;
   scrollable?: boolean;
+  compact?: boolean;
   onClose: () => void;
   labelledBy?: string;
+  describedBy?: string;
 }
 
-export default function Modal({ children, scrollable = false, onClose, labelledBy }: ModalProps) {
+export default function Modal({
+  children,
+  scrollable = false,
+  compact = false,
+  onClose,
+  labelledBy,
+  describedBy,
+}: ModalProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const onCloseRef = useRef(onClose);
   onCloseRef.current = onClose;
@@ -40,9 +49,10 @@ export default function Modal({ children, scrollable = false, onClose, labelledB
     <dialog
       ref={ref}
       aria-labelledby={labelledBy}
-      className={`app-dialog bg-surface-container-high text-on-surface border border-outline-variant rounded-2xl max-w-2xl w-[calc(100%-2rem)] p-6 ${
-        scrollable ? 'max-h-[90vh] overflow-y-auto' : ''
-      }`}
+      aria-describedby={describedBy}
+      className={`app-dialog bg-surface-container-high text-on-surface border border-outline-variant rounded-2xl w-[calc(100%-2rem)] p-6 ${
+        compact ? 'max-w-md' : 'max-w-2xl'
+      } ${scrollable ? 'max-h-[90vh] overflow-y-auto' : ''}`}
     >
       {children}
     </dialog>

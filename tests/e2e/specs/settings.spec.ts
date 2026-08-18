@@ -66,3 +66,27 @@ test('B10: sandbox reset shows a confirmation toast', async ({ page }) => {
   await page.getByRole('button', { name: 'Reset sandbox state' }).click();
   await expect(page.getByText('Sandbox reset successfully')).toBeVisible();
 });
+
+test('B11: resume delete uses an in-app dialog, not window.confirm', async ({ page }) => {
+  const nativeDialogs: string[] = [];
+  page.on('dialog', (dialog) => {
+    nativeDialogs.push(dialog.message());
+    void dialog.dismiss();
+  });
+
+  await page.goto('/');
+  await page.locator('#nav-settings').click();
+  const deleteBtn = page.getByRole('button', { name: /^Delete / }).first();
+  if (await deleteBtn.count() === 0) {
+    test.skip(true, 'No uploaded resume to delete in this environment');
+    return;
+  }
+
+  await deleteBtn.click();
+  const dialog = page.getByRole('dialog');
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByText(/cannot be undone/i)).toBeVisible();
+  await dialog.getByRole('button', { name: 'Cancel' }).click();
+  await expect(dialog).toBeHidden();
+  expect(nativeDialogs).toEqual([]);
+});

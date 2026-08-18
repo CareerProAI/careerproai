@@ -8,6 +8,7 @@ interface ButtonProps {
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   type?: 'button' | 'submit';
   disabled?: boolean;
+  autoFocus?: boolean;
   variant?: ButtonVariant;
   size?: ButtonSize;
   className?: string;
@@ -36,6 +37,7 @@ export default function Button({
   onClick,
   type = 'button',
   disabled = false,
+  autoFocus = false,
   variant = 'primary',
   size = 'md',
   className = '',
@@ -45,6 +47,7 @@ export default function Button({
       type={type}
       onClick={onClick}
       disabled={disabled}
+      autoFocus={autoFocus}
       className={`font-bold rounded-xl transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${VARIANT_CLASSES[variant]} ${SIZE_CLASSES[size]} ${className}`}
     >
       {children}

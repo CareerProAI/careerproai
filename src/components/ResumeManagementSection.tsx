@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { ResumeProfile } from '../types';
+import DeleteResumeDialog from './DeleteResumeDialog';
+import ResumeManagementRow from './ResumeManagementRow';
+import { createResumeDeleteCommand, ResumeDeleteCommand } from '../utils/resumeDeleteCommand';
 
 interface ResumeManagementSectionProps {
   profiles: ResumeProfile[];
@@ -14,10 +17,20 @@ export default function ResumeManagementSection({
   onSelectProfile,
   onDeleteProfile,
 }: ResumeManagementSectionProps) {
-  const handleDeleteClick = (profile: ResumeProfile) => {
-    if (window.confirm(`Delete "${profile.fileName}"? This cannot be undone.`)) {
-      onDeleteProfile(profile.id);
-    }
+  const [pendingDelete, setPendingDelete] = useState<ResumeDeleteCommand | null>(null);
+  const pendingDeleteRef = useRef<ResumeDeleteCommand | null>(null);
+  pendingDeleteRef.current = pendingDelete;
+
+  const requestDelete = (profile: ResumeProfile) => {
+    setPendingDelete(createResumeDeleteCommand(profile));
+  };
+
+  const confirmDelete = () => {
+    const command = pendingDeleteRef.current;
+    if (!command) return;
+    pendingDeleteRef.current = null;
+    setPendingDelete(null);
+    onDeleteProfile(command.id);
   };
 
   return (
@@ -29,36 +42,22 @@ export default function ResumeManagementSection({
       ) : (
         <div className="space-y-2">
           {profiles.map((profile) => (
-            <div
+            <ResumeManagementRow
               key={profile.id}
-              className={`flex items-center justify-between gap-3 p-3 rounded-xl border ${
-                profile.id === currentProfile?.id ? 'border-primary/40 bg-primary/5' : 'border-outline-variant/30'
-              }`}
-            >
-              <div className="min-w-0 flex-1">
-                <p className="text-xs font-bold text-on-surface truncate">{profile.fileName}</p>
-                <p className="text-[10px] text-on-surface-variant mt-0.5">
-                  {profile.candidateName} • {profile.score}/100 • {profile.lastAnalyzed}
-                </p>
-              </div>
-              <div className="flex items-center gap-2 shrink-0">
-                {profile.id !== currentProfile?.id && (
-                  <button onClick={() => onSelectProfile(profile)} className="text-[10px] font-bold text-primary hover:underline">
-                    Set Active
-                  </button>
-                )}
-                <button
-                  onClick={() => handleDeleteClick(profile)}
-                  className="p-1.5 rounded-lg text-error hover:bg-error/10 transition-colors"
-                  title="Delete resume"
-                  aria-label="Delete resume"
-                >
-                  <span aria-hidden="true" className="material-symbols-outlined text-sm leading-none">delete</span>
-                </button>
-              </div>
-            </div>
+              profile={profile}
+              isActive={profile.id === currentProfile?.id}
+              onSelect={() => onSelectProfile(profile)}
+              onDelete={() => requestDelete(profile)}
+            />
           ))}
         </div>
+      )}
+      {pendingDelete && (
+        <DeleteResumeDialog
+          fileName={pendingDelete.fileName}
+          onCancel={() => setPendingDelete(null)}
+          onConfirm={confirmDelete}
+        />
       )}
     </div>
   );
