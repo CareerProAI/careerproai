@@ -34,7 +34,7 @@ test('provider chain sets bothRateLimited when every attempt is 429', async () =
   );
 });
 
-test('buildProviderChain places Z.ai after Gemini', () => {
+test('buildProviderChain tries Groq, then Gemini, then Z.ai', () => {
   assert.deepEqual(
     buildProviderChain().map((p) => p.name),
     ['Groq', 'Gemini', 'Z.ai', 'DeepSeek'],

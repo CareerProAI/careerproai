@@ -35,3 +35,14 @@ test('DOCX extracts when originalname has no extension', async () => {
   file.originalname = 'document';
   assert.match(await extractResumeText(file), /Jordan Ellis/i);
 });
+
+test('invalid PDF bytes throw a PDF-specific error, not a DOCX error', async () => {
+  await assert.rejects(
+    () => extractResumeText({
+      originalname: 'broken.pdf',
+      mimetype: 'application/pdf',
+      buffer: Buffer.from('%PDF-not-a-real-file'),
+    }),
+    { message: /Could not read this PDF/i },
+  );
+});

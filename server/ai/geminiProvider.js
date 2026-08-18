@@ -1,3 +1,5 @@
+import { timedFetch } from './timedFetch.js';
+
 const GEMINI_BASE_URL = 'https://generativelanguage.googleapis.com/v1beta';
 const GEMINI_MODEL = 'gemini-3.6-flash';
 
@@ -22,7 +24,7 @@ export async function callGeminiAPI(systemPrompt, userPrompt, { jsonMode = true,
     generationConfig,
   };
 
-  const response = await fetch(`${GEMINI_BASE_URL}/models/${GEMINI_MODEL}:generateContent`, {
+  const response = await timedFetch(`${GEMINI_BASE_URL}/models/${GEMINI_MODEL}:generateContent`, {
     method: 'POST',
     headers: {
       'x-goog-api-key': apiKey,

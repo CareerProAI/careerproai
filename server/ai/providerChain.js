@@ -4,7 +4,7 @@ import { callZaiAPI } from './zaiProvider.js';
 import { callDeepSeekAPI } from './deepseekProvider.js';
 import { computeAllRateLimited } from '../server-utils.js';
 
-/** Chain of Responsibility: Groq → Gemini → Z.ai → DeepSeek (skip any provider with no key). */
+/** Chain of Responsibility: Groq → Gemini → Z.ai (skip any provider with no key). */
 export function buildProviderChain() {
   return [
     { name: 'Groq', isConfigured: () => Boolean(process.env.GROQ_API_KEY), call: callGroqAPI },

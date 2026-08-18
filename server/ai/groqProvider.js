@@ -1,5 +1,7 @@
+import { timedFetch } from './timedFetch.js';
+
 const GROQ_BASE_URL = 'https://api.groq.com/openai/v1';
-const GROQ_MODEL = 'llama-3.3-70b-versatile';
+export const GROQ_MODEL = 'openai/gpt-oss-20b';
 
 // Primary provider. jsonMode (default true) requests structured JSON output and parses
 // the result; pass jsonMode: false for a plain-text completion (see the /api/jobs/compare
@@ -23,7 +25,7 @@ export async function callGroqAPI(systemPrompt, userPrompt, { jsonMode = true, m
   if (jsonMode) body.response_format = { type: 'json_object' };
   if (maxTokens) body.max_completion_tokens = maxTokens;
 
-  const response = await fetch(`${GROQ_BASE_URL}/chat/completions`, {
+  const response = await timedFetch(`${GROQ_BASE_URL}/chat/completions`, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${apiKey}`,

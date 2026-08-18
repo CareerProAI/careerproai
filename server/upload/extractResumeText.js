@@ -24,20 +24,26 @@ export const upload = multer({
 
 async function loadPdfParse() {
   ensurePdfJsDomPolyfills();
-  await ensurePdfWorker();
+  const worker = await ensurePdfWorker();
   const { PDFParse } = await import('pdf-parse');
-  return PDFParse;
+  return { PDFParse, CanvasFactory: worker.CanvasFactory };
 }
 
 function asBuffer(file) {
   return Buffer.isBuffer(file.buffer) ? file.buffer : Buffer.from(file.buffer);
 }
 
+function pdfBytes(file) {
+  return Uint8Array.from(asBuffer(file));
+}
+
 async function extractPdf(file) {
-  const PDFParse = await loadPdfParse();
-  const parser = new PDFParse({ data: asBuffer(file) });
+  const { PDFParse, CanvasFactory } = await loadPdfParse();
+  const parser = new PDFParse({ data: pdfBytes(file), CanvasFactory, useWasm: false });
   try {
     return (await parser.getText()).text;
+  } catch {
+    throw new Error('Could not read this PDF. Export it as a text PDF (max 5MB) and try again.');
   } finally {
     await parser.destroy();
   }

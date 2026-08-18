@@ -1,3 +1,5 @@
+import { timedFetch } from './timedFetch.js';
+
 const DEEPSEEK_BASE_URL = 'https://api.deepseek.com';
 const DEEPSEEK_MODEL = 'deepseek-chat';
 
@@ -19,7 +21,7 @@ export async function callDeepSeekAPI(systemPrompt, userPrompt, { jsonMode = tru
   if (jsonMode) body.response_format = { type: 'json_object' };
   if (maxTokens) body.max_tokens = maxTokens;
 
-  const response = await fetch(`${DEEPSEEK_BASE_URL}/chat/completions`, {
+  const response = await timedFetch(`${DEEPSEEK_BASE_URL}/chat/completions`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${apiKey}`,

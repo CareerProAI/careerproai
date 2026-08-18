@@ -1,3 +1,5 @@
+import { timedFetch } from './timedFetch.js';
+
 const ZAI_BASE_URL = 'https://api.z.ai/api/paas/v4';
 const ZAI_MODEL = 'glm-4.5-flash';
 
@@ -20,7 +22,7 @@ export async function callZaiAPI(systemPrompt, userPrompt, { jsonMode = true, ma
   if (jsonMode) body.response_format = { type: 'json_object' };
   if (maxTokens) body.max_tokens = maxTokens;
 
-  const response = await fetch(`${ZAI_BASE_URL}/chat/completions`, {
+  const response = await timedFetch(`${ZAI_BASE_URL}/chat/completions`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${apiKey}`,
