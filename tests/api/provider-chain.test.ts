@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildProviderChain, runProviderChain } from '../../server/ai/providerChain.js';
+import { buildConfigStatus, buildProviderChain, runProviderChain } from '../../server/ai/providerChain.js';
 
 function stub(name, configured, impl) {
   return { name, isConfigured: () => configured, call: impl };
@@ -63,4 +63,25 @@ test('provider chain uses Z.ai after Groq and Gemini daily limits', async () => 
     stub('DeepSeek', true, async () => { throw new Error('should not run'); }),
   ]);
   assert.equal(result.ok, true);
+});
+
+test('buildConfigStatus reports Z.ai separately from Groq/Gemini without exposing secrets', () => {
+  const status = buildConfigStatus({
+    GROQ_API_KEY: 'g',
+    GEMINI_API_KEY: 'm',
+    ZAI_API_KEY: '',
+  });
+  assert.equal(status.aiConfigured, true);
+  assert.deepEqual(status.providers, { groq: true, gemini: true, zai: false, deepseek: false });
+});
+
+test('bothRateLimited is false when Z.ai fails for a non-429 after Groq and Gemini 429', async () => {
+  await assert.rejects(
+    () => runProviderChain('sys', 'user', {}, [
+      stub('Groq', true, async () => { throw new Error('Groq API Error (429): cap'); }),
+      stub('Gemini', true, async () => { throw new Error('Gemini API Error (429): cap'); }),
+      stub('Z.ai', true, async () => { throw new Error('AI provider timed out after 20000ms'); }),
+    ]),
+    (err: unknown) => err instanceof Error && (err as Error & { bothRateLimited?: boolean }).bothRateLimited === false,
+  );
 });

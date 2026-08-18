@@ -13,8 +13,10 @@ import { createJobCompareRouter } from './routes/jobCompare.js';
 import { createJobMatchBatchRouter } from './routes/jobMatchBatch.js';
 import { createGenerateApplicationRouter } from './routes/generateApplication.js';
 import { serveSpa } from './serveSpa.js';
+import { logConfiguredAiChain } from './ai/providerChain.js';
 
 dotenv.config();
+logConfiguredAiChain();
 
 let db;
 let dbPromise;

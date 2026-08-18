@@ -19,13 +19,14 @@ test('A06: Groq 429 + unrelated Gemini failure -> bothRateLimited is false', () 
   assert.equal(computeBothRateLimited(groqMsg, geminiMsg), false);
 });
 
-test('A06: Groq + Gemini + Z.ai 429 -> all rate-limited', () => {
+test('A06: Groq 429 + Gemini 429 is not all-limited if Z.ai failed for another reason', () => {
   assert.equal(computeAllRateLimited([
     'Groq API Error (429): cap',
     'Gemini API Error (429): cap',
-    'Z.ai API Error (429): cap',
-  ]), true);
+    'AI provider timed out after 20000ms',
+  ]), false);
 });
+
 test('A08: unknown id in a match entry is dropped', () => {
   const validIds = new Set(['bdjobs-1', 'linkedin-2']);
   const result = sanitizeMatchEntry({ id: 'bdjobs-999', matchRate: 80, whyMatches: 'x', skills: [] }, validIds);

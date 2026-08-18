@@ -1,5 +1,6 @@
 import express from 'express';
 import { USER_PATCH_FIELDS, validateUserPatch } from '../validation/userPatch.js';
+import { buildConfigStatus } from '../ai/providerChain.js';
 
 export function createUsersRouter(getDb) {
   const router = express.Router();
@@ -61,10 +62,7 @@ export function createUsersRouter(getDb) {
 export function createConfigStatusRouter() {
   const router = express.Router();
   router.get('/', (req, res) => {
-    const aiConfigured = Boolean(
-      process.env.GROQ_API_KEY || process.env.GEMINI_API_KEY || process.env.ZAI_API_KEY || process.env.DEEPSEEK_API_KEY,
-    );
-    res.json({ aiConfigured });
+    res.json(buildConfigStatus());
   });
   return router;
 }
