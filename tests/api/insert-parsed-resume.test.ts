@@ -49,3 +49,16 @@ test('messy AI JSON still saves a resume row', async () => {
   const exp = await db.get('SELECT dates FROM experience WHERE resume_id = ?', resumeId);
   assert.match(exp.dates, /2020/);
 });
+
+test('loadResumeProfile returns the saved PDF filename after insert', async () => {
+  const db = await openMemoryDb();
+  const resumeId = await insertParsedResume(db, {
+    activeUserId: 'user-default',
+    filename: 'My CV.pdf',
+    parsedData: messyAiJson,
+  });
+  const { loadResumeProfile } = await import('../../server/resumeParsing/loadResumeProfile.js');
+  const profile = await loadResumeProfile(db, resumeId);
+  assert.equal(profile.fileName, 'My CV.pdf');
+  assert.equal(profile.candidateName, 'Alex Rivera');
+});

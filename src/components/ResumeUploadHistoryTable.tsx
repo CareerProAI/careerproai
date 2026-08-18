@@ -26,7 +26,7 @@ export default function ResumeUploadHistoryTable({ profiles, currentProfile, onS
             </thead>
             <tbody>
               {profiles.map((p) => {
-                const isPdf = p.fileName.endsWith('.pdf');
+                const isPdf = String(p.fileName || '').toLowerCase().endsWith('.pdf');
                 return (
                   <tr
                     key={p.id}

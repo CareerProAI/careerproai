@@ -3,6 +3,7 @@ import { upload, extractResumeText } from '../upload/extractResumeText.js';
 import { callAIAPI } from '../ai/callAIAPI.js';
 import { RESUME_PARSE_SYSTEM_PROMPT } from '../resumeParsing/resumeParsePrompt.js';
 import { insertParsedResume } from '../resumeParsing/insertParsedResume.js';
+import { loadResumeProfile } from '../resumeParsing/loadResumeProfile.js';
 import { MAX_RESUME_BYTES } from '../upload/resumeFileFilter.js';
 
 // Parse Resume endpoint (Groq/Gemini) — accepts a multipart/form-data upload under the "file" field
@@ -56,12 +57,15 @@ export function createResumeParseRouter(getDb) {
       }
 
       try {
-        const resumeId = await insertParsedResume(getDb(), { activeUserId, filename, parsedData });
+        const db = getDb();
+        const resumeId = await insertParsedResume(db, { activeUserId, filename, parsedData });
+        const profile = await loadResumeProfile(db, resumeId);
         res.json({
           success: true,
-          resumeId: resumeId,
+          resumeId,
           candidateName: parsedData.candidateName,
-          score: parsedData.score
+          score: parsedData.score,
+          profile,
         });
       } catch (dbErr) {
         console.error('Resume parsing DB transaction error:', dbErr);

@@ -53,8 +53,8 @@ export function useResumeUpload(
     }, 150);
 
     try {
-      const { resumeId } = await parseResume(file);
-      const fullProfile = await fetchResumeDetails(resumeId);
+      const parsed = await parseResume(file);
+      const fullProfile = parsed.profile || await fetchResumeDetails(parsed.resumeId);
       clearInterval(interval);
       setProcessingProgress(100);
 

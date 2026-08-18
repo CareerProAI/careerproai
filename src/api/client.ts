@@ -18,7 +18,10 @@ export async function fetchOrThrow(
   const response = await fetch(url, init);
   if (!response.ok) {
     const body = await response.json().catch(() => null);
-    const err = new Error(body?.error || fallbackMessage) as Error & { status?: number };
+    const message = typeof body?.error === 'string'
+      ? body.error
+      : (response.status === 413 ? 'Resume must be 5MB or smaller.' : fallbackMessage);
+    const err = new Error(message) as Error & { status?: number };
     err.status = response.status;
     throw err;
   }

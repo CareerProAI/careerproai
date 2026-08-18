@@ -38,14 +38,16 @@ function pdfBytes(file) {
 }
 
 async function extractPdf(file) {
-  const { PDFParse, CanvasFactory } = await loadPdfParse();
-  const parser = new PDFParse({ data: pdfBytes(file), CanvasFactory, useWasm: false });
+  let parser;
   try {
+    const { PDFParse, CanvasFactory } = await loadPdfParse();
+    parser = new PDFParse({ data: pdfBytes(file), CanvasFactory, useWasm: false });
     return (await parser.getText()).text;
-  } catch {
+  } catch (err) {
+    console.error('PDF extract failed:', err?.message || err);
     throw new Error('Could not read this PDF. Export it as a text PDF (max 5MB) and try again.');
   } finally {
-    await parser.destroy();
+    if (parser) await parser.destroy();
   }
 }
 
