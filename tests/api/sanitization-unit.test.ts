@@ -5,7 +5,7 @@
 // No server, no network, no AI key needed — these always run.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { computeBothRateLimited, computeAllRateLimited, sanitizeMatchEntry, clampMatchRate } from '../../server/server-utils.js';
+import { computeBothRateLimited, computeAllRateLimited, sanitizeMatchEntry, clampMatchRate, sanitizeJobTextField } from '../../server/server-utils.js';
 
 test('A06: both providers 429 -> bothRateLimited is true', () => {
   const groqMsg = 'Groq API Error (429): rate limit exceeded';
@@ -55,4 +55,9 @@ test('A08: a valid entry passes through with fields coerced/capped', () => {
   assert.equal(result!.whyMatches.length, 500);
   assert.equal(result!.skills.length, 6);
   assert.ok(result!.skills.every((s) => typeof s === 'string'));
+});
+
+test('A08: sanitizeJobTextField default cap is 600, optional cap is honored', () => {
+  assert.equal(sanitizeJobTextField('a'.repeat(700)).length, 600);
+  assert.equal(sanitizeJobTextField('a'.repeat(5000), 4000).length, 4000);
 });

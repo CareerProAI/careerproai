@@ -6,6 +6,7 @@ import JobSearchView from './components/JobSearchView';
 import ApplicationsView from './components/ApplicationsView';
 import AnalyticsView from './components/AnalyticsView';
 import SettingsView from './components/SettingsView';
+import CustomizedResumeView from './components/CustomizedResumeView';
 
 export default function ActiveViewRouter(props: ActiveViewRouterProps) {
   const { tab } = props;
@@ -18,6 +19,8 @@ export default function ActiveViewRouter(props: ActiveViewRouterProps) {
       return <DashboardView {...props} />;
     case 'resume':
       return <ResumeView {...props} />;
+    case 'customized-cv':
+      return <CustomizedResumeView currentProfile={props.currentProfile} onUploadNewProfile={props.onUploadNewProfile} />;
     case 'jobs':
     case 'ai-matching':
       return <JobSearchView key={tab} {...props} initialTabFilter={tab === 'ai-matching' ? 'recommended' : 'all'} />;

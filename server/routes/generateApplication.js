@@ -45,12 +45,12 @@ Contact: ${profile.contactInfo?.email || ''} ${profile.contactInfo?.phone || ''}
 Company: ${sanitizeJobTextField(job.company)}
 Location: ${sanitizeJobTextField(job.location)}
 Required Skills: ${(job.skills || []).map(sanitizeJobTextField).join(', ')}
-Description: ${sanitizeJobTextField(job.description)}`;
+Description: ${sanitizeJobTextField(job.description, 4000)}`;
 
     const userPrompt = `Candidate Resume Profile:\n${profileSummary}\n\nTarget Job:\n${jobSummary}`;
 
     try {
-      const parsed = await callAIAPI(systemPrompt, userPrompt, { maxTokens: 2000 });
+      const parsed = await callAIAPI(systemPrompt, userPrompt, { maxTokens: 3000 });
       const resumeContent = parsed.resume || {};
       const coverLetterText = typeof parsed.coverLetter === 'string' ? parsed.coverLetter : '';
       const candidateName = profile.candidateName || 'Candidate';
