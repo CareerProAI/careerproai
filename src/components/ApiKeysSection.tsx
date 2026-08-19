@@ -25,7 +25,7 @@ export default function ApiKeysSection({ aiConfigured, apiKeyLabel, onUpdateApiK
       <div className="flex items-center justify-between mb-5 p-3 rounded-xl bg-surface-container-low dark:bg-slate-950/40">
         <div>
           <p className="text-xs font-bold text-on-surface">AI Provider (Groq → Gemini → Z.ai)</p>
-          <p className="text-[10px] text-on-surface-variant mt-0.5">Used server-side for resume parsing and job matching. Groq first, then Gemini, then Z.ai if both are rate-limited.</p>
+          <p className="text-[10px] text-on-surface-variant mt-0.5">Used server-side for CV parsing and job matching. Groq first, then Gemini, then Z.ai if both are rate-limited.</p>
         </div>
         {aiConfigured === null ? (
           <span className="text-[10px] font-bold text-on-surface-variant">Checking…</span>

@@ -67,7 +67,7 @@ export function useResumeUpload(
       }, 500);
     } catch (err) {
       clearInterval(interval);
-      console.error('CV parsing failed:', err);
+      console.error('Resume parsing failed:', err);
       setIsProcessing(false);
       setUploadError(err instanceof Error ? err.message : 'Failed to parse CV. Please try again.');
     }

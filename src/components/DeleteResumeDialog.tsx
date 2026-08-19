@@ -35,7 +35,7 @@ export default function DeleteResumeDialog({ fileName, onCancel, onConfirm }: De
           Cancel
         </Button>
         <Button variant="danger" size="sm" onClick={onConfirm}>
-          Delete resume
+          Delete CV
         </Button>
       </div>
     </Modal>

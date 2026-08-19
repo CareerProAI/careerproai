@@ -9,10 +9,9 @@ const MAX_JOB_TEXT_FIELD_LENGTH = 600;
 // Strips HTML/markup and caps length on a single job text field. `jobs[].description`
 // et al. originate from external, untrusted sources (Bdjobs.com, LinkedIn) — this keeps
 // that content inert as plain text data before it's embedded in an AI prompt.
-export function sanitizeJobTextField(value, maxLength = MAX_JOB_TEXT_FIELD_LENGTH) {
+export function sanitizeJobTextField(value) {
   if (typeof value !== 'string') return '';
-  const cap = Number.isFinite(maxLength) && maxLength > 0 ? maxLength : MAX_JOB_TEXT_FIELD_LENGTH;
-  return value.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, cap);
+  return value.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, MAX_JOB_TEXT_FIELD_LENGTH);
 }
 
 export function clampMatchRate(value) {

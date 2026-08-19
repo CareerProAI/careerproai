@@ -15,16 +15,16 @@ export function createResumeParseRouter(getDb) {
       if (uploadErr) {
         const tooBig = uploadErr.code === 'LIMIT_FILE_SIZE';
         return res.status(400).json({
-          error: tooBig ? 'Resume must be 5MB or smaller.' : (uploadErr.message || 'File upload failed.'),
+          error: tooBig ? 'CV must be 5MB or smaller.' : (uploadErr.message || 'File upload failed.'),
         });
       }
 
       if (!req.file) {
-        return res.status(400).json({ error: 'A resume file is required.' });
+        return res.status(400).json({ error: 'A CV file is required.' });
       }
 
       if (req.file.size > MAX_RESUME_BYTES) {
-        return res.status(400).json({ error: 'Resume must be 5MB or smaller.' });
+        return res.status(400).json({ error: 'CV must be 5MB or smaller.' });
       }
 
       const activeUserId = req.body.userId || 'user-default';
@@ -41,19 +41,29 @@ export function createResumeParseRouter(getDb) {
         return res.status(400).json({ error: 'Could not extract any readable text from the uploaded file.' });
       }
 
+      // Truncate to 8 000 chars (~4-5 resume pages). Extra length inflates the
+      // token budget without improving parse quality — all critical info appears
+      // in the first pages — and long inputs are the main cause of Z.ai timeouts.
+      const cvText = resumeText.slice(0, 8_000);
+
       // Split into two try/catches (was one) so an AI-provider failure and a DB failure
       // get distinct, safe client-facing messages — neither err.message is ever forwarded
       // raw: an AI error embeds the full upstream provider error bodies (see the same fix
       // in jobCompare.js), and a DB error can name real table/column names.
       let parsedData;
       try {
-        parsedData = await callAIAPI(RESUME_PARSE_SYSTEM_PROMPT, resumeText);
+        // temperature:0 → deterministic output (faster). maxTokens:2000 caps
+        // response size so providers don't over-generate on verbose CVs.
+        parsedData = await callAIAPI(RESUME_PARSE_SYSTEM_PROMPT, cvText, {
+          maxTokens: 2000,
+          temperature: 0.7,
+        });
       } catch (aiErr) {
         console.error('Resume parsing AI call failed:', aiErr.message);
         if (aiErr.bothRateLimited) {
           return res.status(429).json({ error: 'AI parsing is temporarily rate-limited — please try again in a few minutes.' });
         }
-        return res.status(502).json({ error: 'Unable to parse the resume right now. Please try again.' });
+        return res.status(502).json({ error: 'Unable to parse the CV right now. Please try again.' });
       }
 
       try {
@@ -69,7 +79,7 @@ export function createResumeParseRouter(getDb) {
         });
       } catch (dbErr) {
         console.error('Resume parsing DB transaction error:', dbErr);
-        res.status(500).json({ error: 'Failed to save the parsed resume. Please try again.' });
+        res.status(500).json({ error: 'Failed to save the parsed CV. Please try again.' });
       }
     });
   });

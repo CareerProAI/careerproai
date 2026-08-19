@@ -12,6 +12,8 @@ import { createLinkedInRouter, createLinkedInDescriptionRouter } from './routes/
 import { createJobCompareRouter } from './routes/jobCompare.js';
 import { createJobMatchBatchRouter } from './routes/jobMatchBatch.js';
 import { createGenerateApplicationRouter } from './routes/generateApplication.js';
+import { createCustomiseResumeRouter } from './routes/customiseResume.js';
+import { createResumeExtractRouter } from './routes/resumeExtract.js';
 import { serveSpa } from './serveSpa.js';
 import { logConfiguredAiChain } from './ai/providerChain.js';
 
@@ -41,6 +43,7 @@ export function createApp() {
   app.use('/api/config/status', createConfigStatusRouter());
   app.use('/api/users', createUsersRouter(getDb));
   app.use('/api/resumes/parse', aiLimiter, createResumeParseRouter(getDb));
+  app.use('/api/resumes/extract-cv', aiLimiter, createResumeExtractRouter());
   app.use('/api/resumes', createResumesRouter(getDb));
   app.use('/api/saved-jobs', createSavedJobsRouter(getDb));
   app.use('/api/external-jobs/bdjobs/description', createBdjobsDescriptionRouter());
@@ -50,6 +53,7 @@ export function createApp() {
   app.use('/api/jobs/compare', aiLimiter, createJobCompareRouter());
   app.use('/api/jobs/match-batch', aiLimiter, createJobMatchBatchRouter());
   app.use('/api/jobs/generate-application', aiLimiter, createGenerateApplicationRouter());
+  app.use('/api/jobs/customise-resume', aiLimiter, createCustomiseResumeRouter());
   serveSpa(app);
   return app;
 }

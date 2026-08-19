@@ -5,6 +5,7 @@ const LARGE_JSON_PATHS = [
   '/api/jobs/match-batch',
   '/api/jobs/compare',
   '/api/jobs/generate-application',
+  '/api/jobs/customise-resume',
 ];
 
 const parsers = {

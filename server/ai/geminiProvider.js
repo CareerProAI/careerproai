@@ -1,4 +1,4 @@
-import { timedFetch } from './timedFetch.js';
+import { timedFetch, GEMINI_TIMEOUT_MS } from './timedFetch.js';
 
 const GEMINI_BASE_URL = 'https://generativelanguage.googleapis.com/v1beta';
 const GEMINI_MODEL = 'gemini-3.6-flash';
@@ -31,7 +31,7 @@ export async function callGeminiAPI(systemPrompt, userPrompt, { jsonMode = true,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(body)
-  });
+  }, GEMINI_TIMEOUT_MS);
 
   if (!response.ok) {
     const errText = await response.text();

@@ -32,7 +32,7 @@ export default function MatchMatrixModal({
       <div className="flex justify-between items-center border-b border-outline-variant/40 pb-4 mb-4">
         <div>
           <h3 id="match-matrix-title" className="text-lg font-bold text-on-surface">Match Matrix Comparison</h3>
-          <p className="text-xs text-on-surface-variant">Comparing with your resume and {compareJob.company}</p>
+          <p className="text-xs text-on-surface-variant">Comparing with your CV and {compareJob.company}</p>
         </div>
         <button
           onClick={onClose}

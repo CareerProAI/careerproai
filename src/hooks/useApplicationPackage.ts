@@ -1,7 +1,12 @@
 import { useRef, useState } from 'react';
 import { generateApplicationPackage, ApplicationPackage } from '../api';
 import { Job, ResumeProfile } from '../types';
-import { isProfileReadyForApplication } from '../utils/isProfileReadyForApplication';
+
+// A tailored resume can only be worth generating if there's real experience/contact
+// data to tailor from — otherwise the AI has nothing to work with beyond the job posting.
+function isProfileReadyForApplication(profile: ResumeProfile | null): profile is ResumeProfile {
+  return Boolean(profile) && Boolean(profile!.contactInfo?.email) && profile!.experience.length > 0;
+}
 
 // Keyed by profile id too, not just job id — the same job (bdjobs/LinkedIn ids are global,
 // not profile-scoped) can appear in more than one resume profile's listings, and a package

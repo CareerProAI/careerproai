@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchResumes, fetchResumeDetails, deleteResume } from '../api';
+import { fetchAllProfiles, deleteResume } from '../api';
 import { ResumeProfile } from '../types';
 import { addSkillToProfile, mergeProfileUpdate } from '../utils/resumeProfileUpdates';
 
@@ -10,7 +10,7 @@ export function useResumeProfiles(triggerToast: (msg: string) => void, addLog: (
   const [loadError, setLoadError] = useState<string | null>(null);
   const [reloadKey, setReloadKey] = useState(0);
 
-  // Bootstrap CV profiles from the server-persisted backend (talentai.db).
+  // Bootstrap resume profiles from the server-persisted backend (talentai.db).
   useEffect(() => {
     let cancelled = false;
 
@@ -18,10 +18,9 @@ export function useResumeProfiles(triggerToast: (msg: string) => void, addLog: (
       setIsLoadingProfiles(true);
       setLoadError(null);
       try {
-        const summaries = await fetchResumes();
-        const fullProfiles = await Promise.all(
-          summaries.map((summary: { id: string }) => fetchResumeDetails(summary.id))
-        );
+        // Single batch request replaces the previous 1+N pattern
+        // (list fetch + N individual detail fetches).
+        const fullProfiles = await fetchAllProfiles();
         if (cancelled) return;
         setProfiles(fullProfiles);
         setCurrentProfile(fullProfiles[0] ?? null);

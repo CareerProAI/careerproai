@@ -6,8 +6,8 @@ export function useSavedJobs(currentProfileId: string | undefined, triggerToast:
   const [savedJobRecords, setSavedJobRecords] = useState<SavedJobRecord[]>([]);
   const savedJobIds = savedJobRecords.map((record) => record.job_id);
 
-  // Saved jobs are scoped per CV (job_matches.resume_id) — reload whenever the
-  // active CV changes.
+  // Saved jobs are scoped per resume (job_matches.resume_id) — reload whenever the
+  // active resume changes.
   useEffect(() => {
     let cancelled = false;
 

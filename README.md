@@ -1,7 +1,7 @@
 # CareerProAI — Enterprise Suite
 
-> AI-powered resume scanning, ATS compliance analysis, and job-match discovery.
-> Upload a resume → Groq (with an automatic Gemini fallback) parses and scores it → live job listings from bdjobs.com and LinkedIn are AI-matched against it → track saved opportunities and generate a tailored application package — all inside a Material Design 3 dashboard.
+> AI-powered CV scanning, ATS compliance analysis, job-match discovery, and one-click tailored CV + cover letter generation.
+> Upload a CV → Groq (with automatic Gemini → Z.ai fallbacks) parses and scores it → live job listings from bdjobs.com and LinkedIn are AI-matched against it → track saved opportunities, generate a tailored application package, or produce a job-specific Customised CV — all inside a Material Design 3 dashboard.
 
 ![Node.js](https://img.shields.io/badge/Node.js-20%2B-339933?logo=node.js&logoColor=white)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
@@ -9,8 +9,9 @@
 ![Vite](https://img.shields.io/badge/Vite-6-646CFF?logo=vite&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-06B6D4?logo=tailwindcss&logoColor=white)
 ![SQLite](https://img.shields.io/badge/SQLite-local-003B57?logo=sqlite&logoColor=white)
-![Groq](https://img.shields.io/badge/Groq-Llama%203.3%2070B-F54703)
-![Gemini](https://img.shields.io/badge/Gemini-3.6%20Flash%20(fallback)-8E75B2)
+![Groq](https://img.shields.io/badge/Groq-primary-F54703)
+![Gemini](https://img.shields.io/badge/Gemini-fallback-8E75B2)
+![Z.ai](https://img.shields.io/badge/Z.ai-fallback-6366F1)
 ![Vercel](https://img.shields.io/badge/Vercel-ready-000000?logo=vercel&logoColor=white)
 
 ---
@@ -32,21 +33,27 @@
 
 ## Features
 
-### Resume intelligence
+### CV intelligence
 - **Drag-and-drop upload** of PDF, DOCX, or TXT files (5 MB cap) with live progress animation and retry on failure. **Browse Files** uses a real file input overlaid at `opacity: 0` (not `display: none`) so Chrome, Edge, and mobile all open the picker; MIME types are included in `accept` because mobile browsers ignore extensions alone. Paste-text fallback is available if the picker is blocked.
-- **AI parsing** via Groq Llama 3.3 70B (automatic Gemini 3.6 Flash fallback on any Groq failure) — extracts candidate info, experience, education, skills, certifications, projects, and social links from raw resume text
+- **AI parsing** via a three-provider fallback chain — Groq (primary) → Gemini (first fallback) → Z.ai / GLM-4.5-Flash (second fallback, when both Groq and Gemini are rate-limited). CV text is truncated to 8 000 chars before the AI call (covers 4–5 pages; all critical info appears early) with a 2 000-token output cap and temperature 0.7. Extracts candidate info, experience, education, skills, certifications, projects, and social links.
 - **ATS compatibility score** (0–100) with badge rating and a circular SVG health gauge
 - **Strengths & improvements** — structured AI-generated insight cards
 - **Target-role gap analysis** — missing skills highlighted with one-click "Add to resume" shortcut
-- **Multi-profile support** — multiple uploaded resumes per user, switchable from the top navigation bar
-- **Upload history table** inside the Resume view
+- **Multi-profile support** — multiple uploaded CVs per user, switchable from the top navigation bar; all profiles loaded in **one** batch request (`GET /api/resumes/all`) instead of the previous 1+N pattern
+- **Upload history table** inside the CV view
+
+### Customised CV *(new)*
+A three-step wizard that produces a job-tailored CV and cover letter using any uploaded CV against a pasted job description:
+1. **Upload step** — drag-and-drop a PDF/DOCX, or tap "Use current profile" to skip upload and use the already-parsed active profile. A lightweight extract endpoint (`POST /api/resumes/extract-cv`) handles the upload path: same text-extraction logic but a compact 6-field AI prompt (no DB writes, no ATS scoring), text truncated to 6 000 chars, 800-token output cap. ~3–4× faster than full parse.
+2. **Job Description step** — paste any job posting text.
+3. **Download step** — AI generates a tailored CV and matching cover letter (both downloadable as PDF).
 
 ### Job matching
 - **Live job listings**, merged from two real external sources — no mock data:
   - **bdjobs.com** (Bangladesh's largest job board) — rich per-listing data: salary, employment type, experience, education, description
   - **LinkedIn** — public, no-login "guest" search endpoint (deliberately not authenticated scraping, to avoid any account-ban risk); thinner data (title/company/location/date/URL only), full description fetched lazily
   - Feed is split into two columns (BDJOBS / LinkedIn) so a slow or failing source never blanks the other (`Promise.allSettled` end-to-end)
-- **One AI call scores every listing on the page** against the active resume (Groq, Gemini fallback) — match percentage, a "why it matches" explanation, and extracted skill keywords per job. If scoring fails entirely (both providers down), listings still render — marked "Not AI-Scored" — instead of the whole feed going blank
+- **One AI call scores every listing on the page** against the active CV (Groq → Gemini → Z.ai fallback chain) — match percentage, a "why it matches" explanation, and extracted skill keywords per job. If scoring fails entirely (all providers down), listings still render — marked "Not AI-Scored" — instead of the whole feed going blank
 - **Global job search** from the top navigation bar (filters by title, company, and skill)
 - **Rich filter panel:** location, company, experience level, workplace type, employment type, date posted, salary
 - **Sort modes:** Relevance, Latest, Salary, Best Match
@@ -54,18 +61,18 @@
 - **Job details modal** with full description (fetched on demand for LinkedIn), required skills, and metadata
 - **Match Matrix** — overlay with a skills breakdown table and a live Groq-powered experience-alignment paragraph (`POST /api/jobs/compare`)
 - **Save / unsave** jobs with bookmark; notes editable inline in Saved Jobs view (persisted to SQLite)
-- **Quick Apply** generates a real AI-tailored resume + cover letter for that specific job (`POST /api/jobs/generate-application`), previewed in-app and downloadable as PDF — not a placeholder/toast-only action
+- **Quick Apply** generates a real AI-tailored CV + cover letter for that specific job (`POST /api/jobs/generate-application`), previewed in-app and downloadable as PDF — not a placeholder/toast-only action
 
 ### Dashboard
-- Bento-grid KPI cards: Resume Health score (animated SVG gauge), active applications, new matches, skills tracked
+- Bento-grid KPI cards: CV Health score (animated SVG gauge), active applications, new matches, skills tracked
 - Top recommended jobs with Quick Apply
-- Active resume summary with a link to the Resume Analysis tab
+- Active CV summary with a link to the CV Analysis tab
 - AI improvement recommendations card
 - Recent activity timeline
 - Skills and education sidebar cards
 
 ### Analytics
-- **Score progression chart** — every uploaded resume version plotted over time (each profile's `res-<timestamp>` id doubles as its version snapshot; no separate history table needed)
+- **Score progression chart** — every uploaded CV version plotted over time (each profile's `res-<timestamp>` id doubles as its version snapshot; no separate history table needed)
 - **Skills distribution** — breakdown of frameworks, tools, and soft skills for the active profile
 - **Applications per month** bar chart (mock pipeline data — see "What's real vs. mock" below)
 - **Recruiting rates card** and **Top Skills chart**
@@ -74,12 +81,12 @@
 
 ### Settings
 - Account name and email update (persisted to SQLite, 409 on duplicate email)
-- Notification preferences: job matches, resume analysis alerts, weekly summary (persisted)
-- AI provider status indicator — shows whether at least one of Groq/Gemini is configured server-side (key itself never sent to the browser)
+- Notification preferences: job matches, CV analysis alerts, weekly summary (persisted)
+- AI provider status indicator — shows whether at least one of Groq/Gemini/Z.ai is configured server-side (key itself never sent to the browser)
 - API key label (custom display name, for the user's own reference)
-- Resume management: delete any uploaded profile (cascades to all child tables)
+- CV management: delete any uploaded profile (cascades to all child tables)
 - Dark mode toggle (also auto-syncs with OS preference on mount)
-- Sandbox reset — restores mock applications and activity logs to seed state only (resume profiles and saved jobs, being real DB-backed data, are untouched)
+- Sandbox reset — restores mock applications and activity logs to seed state only (CV profiles and saved jobs, being real DB-backed data, are untouched)
 
 ---
 
@@ -88,7 +95,8 @@
 | Tab | Label | Component | Notes |
 |-----|-------|-----------|-------|
 | `dashboard` | Dashboard | `DashboardView` | Default landing view |
-| `resume` | Resume | `ResumeView` | Upload + report sub-views |
+| `resume` | CV | `ResumeView` | Upload + report sub-views |
+| `customised-cv` | Customised CV | `CustomisedCvView` | 3-step wizard: upload → JD → download |
 | `jobs` | Job Search | `JobSearchView` | All jobs, full filter panel |
 | `ai-matching` | AI Matching | `JobSearchView` | Reuses `JobSearchView` seeded to the "recommended" filter — rendered with a distinct `key` so React remounts instead of treating navigation as a prop update |
 | `saved-jobs` | Saved Jobs | `SavedJobsView` | API-backed, per-resume scope |
@@ -112,7 +120,7 @@ The sidebar collapses on mobile with an overlay and a hamburger toggle in `TopNa
 | Animation | Tailwind `animate-in` utilities + `motion` library |
 | Backend | Express 4 (ES modules) — `createApp()` shared by local `server.js` and the Vercel handler |
 | Database | SQLite via `sqlite` + `sqlite3` locally; built-in `node:sqlite` on Vercel / Netlify / AWS Lambda |
-| AI | Groq (`llama-3.3-70b-versatile`, primary) with an automatic Gemini (`gemini-3.6-flash`) fallback on any Groq failure |
+| AI | Three-provider fallback chain: Groq (primary) → Gemini (`gemini-3.6-flash`, first fallback) → Z.ai / `glm-4.5-flash` (second fallback when both Groq and Gemini are rate-limited) |
 | External job sources | bdjobs.com (reverse-engineered JSON API, proxied), LinkedIn (public "guest" HTML endpoint, parsed server-side with `cheerio`) |
 | File parsing | `pdf-parse` v2 class-based API (PDF), `mammoth` (DOCX), raw buffer (TXT) |
 | File upload | `multer` (in-memory, 5 MB cap) |
@@ -138,8 +146,8 @@ Express API (:3001)            Vercel fn  or  npm start
   server/createApp.js            api/index.js → vercelHandler
   │                              or server/server.js + serveSpa
   │  Groq     ◄──── GROQ_API_KEY      (primary)
-  │  Gemini   ◄──── GEMINI_API_KEY    (fallback)
-  │  Z.ai     ◄──── ZAI_API_KEY       (when Groq + Gemini limited)
+  │  Gemini   ◄──── GEMINI_API_KEY    (fallback 1)
+  │  Z.ai     ◄──── ZAI_API_KEY       (fallback 2, timeout 50s)
   │  DeepSeek ◄──── DEEPSEEK_API_KEY  (optional fourth)
   ▼
 SQLite  talentai.db  (local)  /  /tmp/talentai.db  (serverless, ephemeral)
@@ -151,31 +159,35 @@ SQLite  talentai.db  (local)  /  /tmp/talentai.db  (serverless, ephemeral)
   - **`src/ActiveViewRouter.tsx`** — the `switch (tab)` that renders the active `*View` component
 - **`src/components/*View.tsx`** — one top-level component per sidebar tab; every file is kept at or under 100 lines, so sub-widgets (table rows, chart components, modal sections) and stateful logic are extracted into their own files and `src/hooks/*.ts` hooks rather than living inline
 - **`src/api/`** — all `fetch()` calls to the Express backend, split by domain (`users.ts`, `resumes.ts`, `savedJobs.ts`, `jobMatch.ts`, `externalJobs.ts`, `linkedinJobs.ts`, `client.ts`, `resolveApiBase.ts`), re-exported from `src/api/index.ts`. `API_BASE` defaults to `/api`; set `VITE_API_BASE` only when the SPA and API are on different hosts.
-- **`src/types/`** — canonical TypeScript shapes (`resume.ts`, `job.ts`, `application.ts`, `settings.ts`), re-exported from `src/types/index.ts`
+- **`src/types/`** — canonical TypeScript shapes (`resume.ts` includes `ResumeProfile` and the lighter `CvExtract` used by the Customised CV wizard, `job.ts`, `application.ts`, `settings.ts`), re-exported from `src/types/index.ts`
 - **`src/data/`** — mock applications and mock activity-log seed data only (job listings are no longer mocked — see below), re-exported from `src/data/index.ts`
 - **`src/utils/`** — pure functions: mapping raw bdjobs/LinkedIn shapes into the shared `Job` type, building the AI match-batch request, resolving search keywords, filtering/sorting
 
 ### Backend (`server/`)
 - All backend code lives under `server/` — a clean boundary from the frontend's `src/`. `createApp()` (`server/createApp.js`) is the shared Express factory used by local `server/server.js` (`npm start`) and by `server/vercelHandler.js` (Vercel serverless). `server/server.js` only listens on a port; `serveSpa()` serves `dist/` on generic Node hosts and no-ops on Vercel. The former ~1,150-line monolith was split into `server/routes/` (one file per resource, plus `server/routes/externalJobs/`), `server/ai/`, `server/resumeParsing/`, `server/pdf/`, and `server/upload/`, so the 100-line rule applies here too.
-- `callAIAPI()` (`server/ai/callAIAPI.js`) is the single shared call site for all five AI features; it tries Groq first and falls back to Gemini once on any failure (rate limit, malformed response, network error) — both provider functions share an identical `(systemPrompt, userPrompt, options) → parsed result` contract
+- `callAIAPI()` (`server/ai/callAIAPI.js`) is the single shared call site for all AI features via a Chain-of-Responsibility fallback: Groq first, then Gemini, then Z.ai. Rate-limit failures cascade in < 1 s each, so Z.ai (timeout 50 s) almost always gets its full budget when Groq and Gemini are rate-limited (1s+1s+50s = 52s, within Vercel's 60s `maxDuration`).
+- **CV text is truncated before every AI call** — 8 000 chars for full parse (`/api/resumes/parse`), 6 000 chars for the lightweight extract (`/api/resumes/extract-cv`). Long extracted text (15 000+ chars from dense PDFs) was the main cause of Z.ai timeouts; all critical CV information appears in the first 3–5 pages.
+- **Batch profile loading** — `GET /api/resumes/all` returns all full profiles for a user in one request, eliminating the previous 1+N pattern (one list fetch + N individual detail fetches). `server/resumeParsing/loadAllProfiles.js` queries all IDs then runs `loadResumeProfile` for each in parallel via `Promise.all`.
 - No route ever forwards a caught AI/DB error's raw `.message` to the client — a failed AI call embeds the full upstream provider error bodies (internal org IDs, billing URLs), and a failed DB call can name real table/column names. Every route logs the real error server-side and returns a clean branded message instead (429 when `err.bothRateLimited`, otherwise a generic 502/500)
 - Normalized SQLite schema centered on `resumes`; all child tables cascade-delete via foreign keys
-- Resume parse: text extraction → AI JSON-mode completion → `BEGIN TRANSACTION` / `COMMIT` / `ROLLBACK` multi-table insert
+- CV parse: text extraction → 8 000-char truncation → AI JSON-mode completion (compressed 26-line prompt, `maxTokens: 2000`, `temperature: 0.7`) → `BEGIN TRANSACTION` / `COMMIT` / `ROLLBACK` multi-table insert
 - `PATCH` endpoints use a targeted `UPDATE` from a fixed column allowlist (not `INSERT OR REPLACE`) to avoid clobbering unspecified columns
 - Schema changes to already-created tables use idempotent `PRAGMA table_info` + `ALTER TABLE … ADD COLUMN` migrations, not just an updated `CREATE TABLE IF NOT EXISTS`
 - External job text (title/company/location/experience/education/description) is treated as **untrusted third-party data**: sanitized/truncated before being embedded in a prompt, explicitly labeled as data-not-instructions in the system prompt, and the AI's response is re-validated server-side (`clampMatchRate`, `sanitizeMatchEntry`) regardless of what the model returns
 - The LinkedIn full-description endpoint only accepts real `linkedin.com/jobs/view/...` URLs (regex-enforced) to prevent it being used as an open SSRF proxy
 - SQLite driver is an Abstract Factory: `sqlite3` locally, built-in `node:sqlite` (via `sqliteAdapter.js`) when `VERCEL`, `NETLIFY`, or `AWS_LAMBDA_FUNCTION_NAME` is set
+- Global rate limiter: **500 requests / 15 minutes per IP** (raised from 200 to accommodate the ~10 non-AI requests made per page load). AI-specific limiter remains at 10 requests / minute per IP.
 
 ### What's real vs. mock
 
 | Feature | Source |
 |---------|--------|
-| Resume profiles & AI analysis | **SQLite** via REST API + Groq/Gemini |
+| CV profiles & AI analysis | **SQLite** via REST API + Groq/Gemini/Z.ai |
 | Saved jobs & inline notes | **SQLite** via REST API, scoped per resume |
 | Job listings & match rates | **Live** — bdjobs.com + LinkedIn, scored by one batched AI call per page load |
 | Match Matrix experience alignment | **AI** via `/api/jobs/compare` |
-| Quick Apply tailored resume + cover letter | **AI** via `/api/jobs/generate-application`, rendered server-side as PDFs |
+| Quick Apply tailored CV + cover letter | **AI** via `/api/jobs/generate-application`, rendered server-side as PDFs |
+| Customised CV wizard output | **AI** via `/api/jobs/customise-resume`, rendered server-side as PDFs |
 | Account name, email, notification prefs, API key label | **SQLite** via REST API |
 | AI provider configuration status | **REST API** (`/api/config/status`) |
 | Applications pipeline | **Mock** — client-only, resets on "Reset sandbox state" |
@@ -214,7 +226,7 @@ These keys live **server-side only** — they are never sent to the browser, and
 
 ### 3. Start both servers
 
-Both processes must be running for API-backed features (resume parsing, job listings, saved jobs, match matrix, Quick Apply, settings) to work.
+Both processes must be running for API-backed features (CV parsing, job listings, saved jobs, match matrix, Quick Apply, Customised CV, settings) to work.
 
 **Terminal 1 — Express API (port 3001):**
 ```bash
@@ -256,7 +268,7 @@ The SPA always calls **same-origin `/api`**. That is what makes one build work o
 2. Set `GROQ_API_KEY` and/or `GEMINI_API_KEY` (and optionally `ZAI_API_KEY`) in the Vercel project environment.
 3. Framework preset: Vite. Build command: `npm run build`. Output: `dist/`.
 4. `vercel.json` rewrites `/api/:path*` to one serverless function (`api/index.js` → `server/vercelHandler.js`). `restoreExpressUrl()` rebuilds the Express path from the rewrite. `maxDuration` is 60s for resume parse / match-batch.
-5. SQLite uses Node's built-in `node:sqlite` (no native `sqlite3` binary). The file is `/tmp/talentai.db` — **ephemeral**. Uploaded resumes do not survive cold starts or new instances. Use a persistent host below if you need durable data.
+5. SQLite uses Node's built-in `node:sqlite` (no native `sqlite3` binary). The file is `/tmp/talentai.db` — **ephemeral**. Uploaded CVs do not survive cold starts or new instances. Use a persistent host below if you need durable data.
 6. `pdf-parse` worker files are bundled via `includeFiles` in `vercel.json`.
 
 ### Railway, Render, or any Node host
@@ -280,15 +292,15 @@ Leave `VITE_API_BASE` unset for the default. Only set it when the SPA is on one 
 | Variable | Required | Description |
 |----------|----------|--------------|
 | `GROQ_API_KEY` | One of these* | Groq API key — primary AI provider, used server-side only |
-| `GEMINI_API_KEY` | One of these* | Gemini API key — fallback when Groq fails, used server-side only |
-| `ZAI_API_KEY` | No | Z.ai API key — used when Groq and Gemini both fail (typically daily limits), model `glm-4.5-flash` |
+| `GEMINI_API_KEY` | One of these* | Gemini API key — first fallback when Groq fails, used server-side only |
+| `ZAI_API_KEY` | No | Z.ai API key — second fallback when Groq and Gemini both fail (typically daily limits), model `glm-4.5-flash`, timeout 50s |
 | `DEEPSEEK_API_KEY` | No | Optional fourth fallback (`deepseek-chat`). Leave unset until you add a DeepSeek key |
 | `PORT` | No | API server port (default: `3001`) |
 | `DB_PATH` | No | SQLite file path. Defaults to `./talentai.db` locally, `/tmp/talentai.db` on Vercel / Netlify / Lambda |
 | `ALLOWED_ORIGINS` | No | Comma-separated production CORS origins. Loopback (`localhost` / `127.0.0.1`, any port) is always allowed |
 | `VITE_API_BASE` | No | Frontend API origin. Leave unset so the browser calls same-origin `/api`. Set only for a split SPA/API deploy |
 
-\* At least one of Groq / Gemini / Z.ai / DeepSeek must be set for resume parsing, job matching, job comparison, and application generation to work. There is no `GROK_API_KEY` alias. None of these keys should be given a `VITE_`-prefixed copy.
+\* At least one of Groq / Gemini / Z.ai / DeepSeek must be set for CV parsing, job matching, job comparison, and application generation to work. There is no `GROK_API_KEY` alias. None of these keys should be given a `VITE_`-prefixed copy.
 
 ---
 
@@ -302,11 +314,13 @@ Base URL: **`/api`** (same origin on every host). Locally Vite proxies `/api` to
 | `POST` | `/users` | Create or upsert a user |
 | `PATCH` | `/users/:id` | Update account name/email, API key label, or notification prefs (targeted column update) |
 | `GET` | `/config/status` | Returns `{ aiConfigured: boolean }` — key values never exposed |
-| `GET` | `/resumes?userId=` | List resume summaries for a user |
+| `GET` | `/resumes?userId=` | List CV summaries for a user (summary columns only) |
+| `GET` | `/resumes/all?userId=` | **Batch**: all full `ResumeProfile` objects for a user in one request — eliminates the 1+N fetch pattern |
 | `GET` | `/resumes/:id` | Full `ResumeProfile` — reassembled from normalized tables |
-| `POST` | `/resumes/parse` | Upload + AI-parse a resume (`multipart/form-data`, field `file`) |
-| `DELETE` | `/resumes/:id` | Delete a resume (cascades to all child tables) |
-| `GET` | `/saved-jobs?resumeId=` | List saved job matches for a resume |
+| `POST` | `/resumes/parse` | Upload + AI-parse a CV (`multipart/form-data`, field `file`); text truncated to 8 000 chars, `maxTokens: 2000` |
+| `POST` | `/resumes/extract-cv` | **Lightweight extract** for the Customised CV wizard — same upload, compact 6-field prompt, no DB write, text truncated to 6 000 chars, `maxTokens: 800` |
+| `DELETE` | `/resumes/:id` | Delete a CV (cascades to all child tables) |
+| `GET` | `/saved-jobs?resumeId=` | List saved job matches for a CV |
 | `POST` | `/saved-jobs` | Save or upsert a job match |
 | `PATCH` | `/saved-jobs/:id` | Update notes on a saved job (does not touch match data) |
 | `DELETE` | `/saved-jobs/:id` | Remove a saved job |
@@ -316,7 +330,8 @@ Base URL: **`/api`** (same origin on every host). Locally Vite proxies `/api` to
 | `GET` | `/external-jobs/linkedin/description?url=` | Lazily fetch one LinkedIn listing's full description (URL must match `linkedin.com/jobs/view/...`) |
 | `POST` | `/jobs/compare` | AI alignment between a profile and one job — returns `{ alignment: string }` |
 | `POST` | `/jobs/match-batch` | AI match scoring for a whole page of listings in one call — returns `{ matches: [...] }` |
-| `POST` | `/jobs/generate-application` | AI-tailored resume + cover letter for one profile/job pair, rendered as base64 PDFs |
+| `POST` | `/jobs/generate-application` | AI-tailored CV + cover letter for one profile/job pair, rendered as base64 PDFs |
+| `POST` | `/jobs/customise-resume` | **Customised CV wizard**: AI rewrites the CV and drafts a cover letter for a specific job description, rendered as base64 PDFs |
 
 ---
 
@@ -352,47 +367,66 @@ All child tables cascade-delete on `resumes` delete. Array-valued columns (bulle
 │   ├── ActiveViewRouterProps.ts        # shared prop shape spread into each *View
 │   ├── main.tsx                       # React entry point
 │   ├── index.css                      # MD3 design tokens, Tailwind theme, global utilities
-│   ├── hooks/                          # one hook per state domain (useResumeProfiles, useJobListings, ...)
+│   ├── hooks/
+│   │   ├── useResumeProfiles.ts       # Batch-loads all profiles via GET /resumes/all (1 request)
+│   │   ├── useCustomisedCv.ts         # 3-step wizard state machine
+│   │   └── ...                        # useJobListings, useSavedJobs, useApplicationPackage, ...
 │   ├── api/                            # fetch() wrappers + resolveApiBase (same-origin /api)
-│   ├── types/                          # shared TypeScript interfaces, barrel-exported via index.ts
+│   │   └── resumes.ts                 # fetchAllProfiles(), fetchResumeDetails(), parseResume(), extractCv()
+│   ├── types/
+│   │   ├── resume.ts                  # ResumeProfile + CvExtract (lightweight wizard type)
+│   │   └── ...                        # job.ts, application.ts, settings.ts
 │   ├── data/                           # mock applications/activity seed data, barrel-exported via index.ts
 │   ├── utils/                          # pure helpers: job-source mapping, match-input building, filters
 │   ├── styles/                         # dark-tokens.css, utilities.css (glass-card, skeleton-shimmer, etc.)
 │   └── components/
 │       ├── DashboardView.tsx, ResumeView.tsx, JobSearchView.tsx,
 │       │   SavedJobsView.tsx*, ApplicationsView.tsx, AnalyticsView.tsx, SettingsView.tsx
-│       │                                 # one top-level component per sidebar tab
+│       ├── CustomisedCvView.tsx        # Wizard shell (step switcher)
+│       ├── CustomisedCvUploadStep.tsx  # Step 1: upload or use current profile
+│       ├── CustomisedCvJdStep.tsx      # Step 2: paste job description
+│       ├── CustomisedCvResultStep.tsx  # Step 3: download tailored CV + cover letter
+│       ├── CvDownloadPanel.tsx         # Reusable PDF download card
 │       ├── ResumeFilePicker.tsx        # Browse Files — opacity-0 overlay (Chrome/mobile safe)
 │       ├── ResumeBootstrapGate.tsx     # loading/error/no-profile guard, render-prop narrowing
-│       ├── AppApplicationPackageOverlay.tsx / ApplicationPackageModal.tsx / ApplicationPackagePreview.tsx
-│       │                                 # Quick Apply: AI-tailored resume + cover letter, PDF preview/download
-│       ├── JobFeedList.tsx / JobFeedColumn.tsx / JobFeedStatus.tsx
-│       │                                 # two-column bdjobs/LinkedIn feed with partial-failure status
+│       ├── AppApplicationPackageOverlay.tsx / ApplicationPackagePreview.tsx
+│       ├── JobFeedList.tsx / JobFeedColumn.tsx
 │       ├── JobSearchModals.tsx, MatchMatrixModal.tsx, JobDetailsModal.tsx
 │       ├── ScoreProgressionChart.tsx, SkillsDistributionChart.tsx, ApplicationsPerMonthChart.tsx,
 │       │   RecruitingRatesCard.tsx, TopSkillsChart.tsx    # hand-rolled SVG/CSS charts, no library
-│       ├── AccountSection.tsx, ApiKeysSection.tsx, NotificationSettingsSection.tsx,
-│       │   SecuritySection.tsx, ResumeManagementSection.tsx, UiSettingsSection.tsx
 │       └── ui/
 │           ├── Card.tsx, Button.tsx, Modal.tsx, Table.tsx, Toast.tsx, FilterPillGroup.tsx
 ├── server/                            # All backend code — a clean boundary from src/
 │   ├── createApp.js                   # Shared Express factory (local + Vercel)
 │   ├── server.js                      # npm start — listen on PORT after ready()
 │   ├── vercelHandler.js               # Vercel serverless entry (lazy-loads createApp)
-│   ├── restoreExpressUrl.js           # Rebuilds /api/… after Vercel rewrites
-│   ├── serveSpa.js                    # Serves dist/ on Railway/Render/VPS; no-op on Vercel
 │   ├── server-utils.js                # Pure, test-covered helpers (sanitization, rate-limit flag)
 │   ├── database.js                    # Thin orchestrator — connect, createSchema, runMigrations, seed
 │   ├── database/                      # schema/, migrations, seed, connection (sqlite3 vs node:sqlite)
-│   ├── routes/                        # One file per API resource (+ routes/externalJobs/)
-│   ├── ai/                             # Groq/Gemini/Z.ai providers + the shared callAIAPI fallback wrapper
-│   ├── resumeParsing/                 # Parse prompt, transaction-insert helpers, profile reassembly
+│   ├── routes/
+│   │   ├── resumes.js                 # GET /all (batch), GET /:id, DELETE /:id
+│   │   ├── resumeParse.js             # POST /parse — 8 000-char truncation, maxTokens:2000
+│   │   ├── resumeExtract.js           # POST /extract-cv — 6 000-char truncation, maxTokens:800, no DB
+│   │   ├── customiseResume.js         # POST /jobs/customise-resume — wizard AI + PDF generation
+│   │   └── ...                        # users, savedJobs, jobCompare, jobMatchBatch, generateApplication
+│   ├── ai/
+│   │   ├── callAIAPI.js               # Single call site → providerChain (Groq → Gemini → Z.ai)
+│   │   ├── groqProvider.js, geminiProvider.js, zaiProvider.js (timeout 50s)
+│   │   └── timedFetch.js              # Abort-signal wrapper (30s default, 50s for Z.ai)
+│   ├── resumeParsing/
+│   │   ├── resumeParsePrompt.js       # Compressed 26-line ATS parse prompt (was 81 lines)
+│   │   ├── cvExtractPrompt.js         # Compact 6-field wizard prompt, max 4 roles · 3 bullets
+│   │   ├── loadResumeProfile.js       # Load one profile from DB
+│   │   ├── loadAllProfiles.js         # Batch-load all profiles for a user (parallel Promise.all)
+│   │   └── ...                        # insertParsedResume, reassembleResumeProfile
+│   ├── middleware/
+│   │   ├── rateLimit.js               # globalLimiter 500/15min · aiLimiter 10/min
+│   │   └── ...
 │   ├── pdf/                            # Application-package PDF builders
 │   └── upload/                         # Multer, pdf-parse worker, resume text extraction
 ├── api/                               # Vercel function: re-exports server/vercelHandler.js
 ├── vercel.json                        # /api rewrite + pdf-parse includeFiles
-├── tests/                             # tests/api/ (node:test) + tests/e2e/ (Playwright) — see tests/README.md
-├── docs/                              # app_detail.md (original design brief), submit.md
+├── tests/                             # tests/api/ (node:test) + tests/e2e/ (Playwright)
 ├── index.html                         # Vite HTML entry
 ├── vite.config.ts                     # Vite + Tailwind + /api proxy (dev and preview)
 ├── tsconfig.json                      # TypeScript config (path alias @/*)
@@ -410,7 +444,7 @@ Every file under `src/` (and `server/`) is kept at or under 100 lines. When a co
 
 ## Origin
 
-Originally scaffolded from [Google AI Studio](https://ai.studio/apps/527dcbd2-224a-4a4a-a049-3383a9531a45) using a Material Design 3 dashboard brief (see `docs/app_detail.md`). Significantly extended with a persistent Express + SQLite backend, multipart resume upload, dual-provider (Groq + Gemini) AI parsing and job matching, live bdjobs.com + LinkedIn job aggregation, AI-generated tailored application packages, a normalized multi-table database schema, and same-origin `/api` hosting that runs on Vercel or any Node host.
+Originally scaffolded from [Google AI Studio](https://ai.studio/apps/527dcbd2-224a-4a4a-a049-3383a9531a45) using a Material Design 3 dashboard brief (see `docs/app_detail.md`). Significantly extended with a persistent Express + SQLite backend, multipart CV upload, three-provider AI fallback chain (Groq → Gemini → Z.ai), CV parsing and job matching, live bdjobs.com + LinkedIn job aggregation, AI-generated tailored application packages, a Customised CV wizard, a normalized multi-table database schema, and same-origin `/api` hosting that runs on Vercel or any Node host.
 
 ## License
 

@@ -1,80 +1,26 @@
-export const RESUME_PARSE_SYSTEM_PROMPT = `You are an expert ATS (Applicant Tracking System) resume analyzer.
-Your task is to parse the raw resume text provided by the user and extract/evaluate candidate information.
-You must return your response as a strict JSON object conforming to the following structure:
+// Condensed ATS parse prompt — same output schema as before but ~70% fewer
+// system-prompt tokens. Fewer input tokens → less AI processing time per call,
+// which reduces the chance of provider timeouts under rate-pressure.
+// Output limits (3 strengths, 3 improvements, 4 bullets/role, 5 projects) also
+// cap response length, keeping the total token budget predictable.
+export const RESUME_PARSE_SYSTEM_PROMPT = `You are an ATS resume analyzer. Parse the CV text and return ONLY valid JSON — no markdown, no commentary, no extra keys.
+
+Required shape:
 {
-  "candidateName": "Extract full name (e.g. Jane Doe). If not found, use a plausible professional name.",
-  "currentRole": "Extract or infer their current job title (e.g. Senior Software Engineer)",
-  "contactInfo": {
-    "email": "Extract email, or null if not found",
-    "phone": "Extract phone number, or null if not found",
-    "address": "Extract address, or null if not found",
-    "linkedin": "Extract LinkedIn URL, or null if not found",
-    "github": "Extract GitHub URL, or null if not found",
-    "portfolio": "Extract Portfolio URL, or null if not found"
-  },
-  "score": 85, // Overall ATS score from 0 to 100 based on standard industry criteria
-  "atsCompatibility": "High ATS Compatibility" or "Good ATS Compatibility" or "Low ATS Compatibility",
-  "strengths": [
-    {
-      "title": "Short title of strength",
-      "description": "Elaborate on why this is a strength (1-2 sentences)"
-    }
-  ],
-  "improvements": [
-    {
-      "title": "Area of improvement",
-      "priority": "High" or "Medium" or "Low",
-      "description": "Specific feedback on what is missing or can be enhanced"
-    }
-  ],
-  "experience": [
-    {
-      "role": "Job Title",
-      "company": "Company Name",
-      "dates": "Start Date - End Date (e.g. 2021 - Present)",
-      "bullets": [
-        "Detail accomplishment 1",
-        "Detail accomplishment 2"
-      ]
-    }
-  ],
-  "education": [
-    {
-      "degree": "Degree (e.g. B.S. in Computer Science)",
-      "institution": "University/College Name",
-      "graduationYear": "Year (e.g. 2020)"
-    }
-  ],
-  "skills": {
-    "frameworks": ["Framework 1", "Framework 2"],
-    "tools": ["Tool 1", "Tool 2"],
-    "softSkills": ["Soft Skill 1", "Soft Skill 2"]
-  },
-  "certifications": [
-    {
-      "name": "Certification Name",
-      "institution": "Issuing Organization",
-      "year": "Year"
-    }
-  ],
-  "projects": [
-    {
-      "title": "Project Title",
-      "description": "Short description of what the project does",
-      "technologies": ["Tech 1", "Tech 2"],
-      "githubUrl": "Link to repo, or null",
-      "liveUrl": "Link to live deployment, or null"
-    }
-  ],
-  "languages": [
-    {
-      "name": "Language",
-      "proficiency": "Proficiency Level"
-    }
-  ],
-  "gapAnalysis": {
-    "targetRole": "Inferred target/next-step role",
-    "missingSkills": ["Skill A", "Skill B"]
-  }
+  "candidateName": "Full name",
+  "currentRole": "Current or most recent title",
+  "contactInfo": { "email": "string|null", "phone": "string|null", "address": "string|null", "linkedin": "string|null", "github": "string|null", "portfolio": "string|null" },
+  "score": <integer 0-100>,
+  "atsCompatibility": "High ATS Compatibility"|"Good ATS Compatibility"|"Low ATS Compatibility",
+  "strengths": [{ "title": "string", "description": "1 sentence" }],
+  "improvements": [{ "title": "string", "priority": "High"|"Medium"|"Low", "description": "1 sentence" }],
+  "experience": [{ "role": "string", "company": "string", "dates": "string", "bullets": ["string"] }],
+  "education": [{ "degree": "string", "institution": "string", "graduationYear": "string" }],
+  "skills": { "frameworks": ["string"], "tools": ["string"], "softSkills": ["string"] },
+  "certifications": [{ "name": "string", "institution": "string", "year": "string" }],
+  "projects": [{ "title": "string", "description": "string", "technologies": ["string"], "githubUrl": "string|null", "liveUrl": "string|null" }],
+  "languages": [{ "name": "string", "proficiency": "string" }],
+  "gapAnalysis": { "targetRole": "string", "missingSkills": ["string"] }
 }
-Do not include any markdown styling, explanation, or HTML tags outside the JSON object. Return ONLY the valid JSON object.`;
+
+Limits: max 3 strengths · max 3 improvements · max 4 bullets per experience role · max 5 projects.`;

@@ -2,7 +2,10 @@ import { timedFetch } from './timedFetch.js';
 
 const ZAI_BASE_URL = 'https://api.z.ai/api/paas/v4';
 const ZAI_MODEL = 'glm-4.5-flash';
-export const ZAI_TIMEOUT_MS = 120_000;
+// 50s: when Groq and Gemini are rate-limited (429 in < 1s each) Z.ai gets the full
+// budget; 1s + 1s + 50s = 52s stays within Vercel's 60s maxDuration.
+// Raised from 30s because GLM-4.5-flash needs more headroom on long resume texts.
+export const ZAI_TIMEOUT_MS = 50_000;
 
 /** OpenAI-compatible fallback after Groq and Gemini (free GLM flash). */
 export async function callZaiAPI(systemPrompt, userPrompt, { jsonMode = true, maxTokens, temperature = 0.2 } = {}) {

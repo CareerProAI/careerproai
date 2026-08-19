@@ -10,7 +10,7 @@ export const mockApplications: Application[] = [
     appliedDate: 'Today, 10:30 AM',
     appliedAt: '2026-07-19T10:30:00.000Z',
     status: 'Applied',
-    notes: 'Submitted CV v2. Feeling highly confident about the match rate!'
+    notes: 'Submitted resume v2. Feeling highly confident about the match rate!'
   },
   {
     id: 'app-2',

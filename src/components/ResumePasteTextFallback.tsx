@@ -25,7 +25,7 @@ export default function ResumePasteTextFallback({ uploadText, setUploadText, onS
             triggerToast('Please type or paste some CV text first!');
             return;
           }
-          onSubmit(new File([uploadText], 'pasted_resume_input.txt', { type: 'text/plain' }));
+          onSubmit(new File([uploadText], 'pasted_cv_input.txt', { type: 'text/plain' }));
         }}
         type="button"
         className="mt-2 w-full min-h-11 text-center text-xs text-primary font-bold hover:underline touch-manipulation"

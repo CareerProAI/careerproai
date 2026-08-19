@@ -68,6 +68,17 @@ export interface LanguageItem {
   proficiency: string | null;
 }
 
+// Minimal profile shape used by the Customised CV wizard.
+// Subset of ResumeProfile — ResumeProfile is structurally assignable to this type.
+export interface CvExtract {
+  candidateName: string;
+  currentRole: string;
+  contactInfo?: { email?: string | null; phone?: string | null } | null;
+  experience: Array<{ role: string; company: string; dates: string; bullets: string[] }>;
+  education?: Array<{ degree: string; institution: string; graduationYear: string }>;
+  skills: { frameworks: string[]; tools: string[]; softSkills: string[] };
+}
+
 export interface ResumeProfile {
   id: string;
   fileName: string;

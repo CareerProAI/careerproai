@@ -2,7 +2,7 @@ import { ResumeProfile } from '../../types';
 
 export const alexMercer: ResumeProfile = {
   id: 'profile-alex',
-  fileName: 'Alex_Resume_AI_Engineer_2024.pdf',
+  fileName: 'Alex_CV_AI_Engineer_2024.pdf',
   candidateName: 'Alex Mercer',
   currentRole: 'Senior ML / AI Specialist',
   score: 85,
@@ -14,7 +14,7 @@ export const alexMercer: ResumeProfile = {
   ],
   improvements: [
     { id: 'ai1', title: 'Missing Certifications', priority: 'Medium', description: 'Listing GCP Machine Learning Engineer or AWS ML Specialty could increase interview rates by 15%.' },
-    { id: 'ai2', title: 'Resume Layout', priority: 'Low', description: 'Using double columns can occasionally trip older parser tools. Single-column layouts are safer.' }
+    { id: 'ai2', title: 'CV Layout', priority: 'Low', description: 'Using double columns can occasionally trip older parser tools. Single-column layouts are safer.' }
   ],
   experience: [
     {

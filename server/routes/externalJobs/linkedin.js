@@ -65,11 +65,8 @@ export function createLinkedInDescriptionRouter() {
       const upstreamRes = await fetch(url, {
         headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }
       });
-      // LinkedIn frequently blocks scraping requests (429, 999, redirects to auth wall).
-      // Return an empty description gracefully rather than a 502 that floods the browser
-      // console — callers already handle '' as "not AI-scored" via mapLinkedInJobs.ts.
       if (!upstreamRes.ok) {
-        return res.json({ description: '' });
+        throw new Error(`Upstream responded with status ${upstreamRes.status}`);
       }
       const html = await upstreamRes.text();
       const $ = cheerio.load(html);

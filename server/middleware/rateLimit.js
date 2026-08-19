@@ -5,20 +5,14 @@ const shared = {
   legacyHeaders: false,
 };
 
-// Strategy pattern: bypass rate limiting for private/loopback addresses so
-// local dev + Playwright testing can never exhaust the global window.
-const PRIVATE_IP_RE = /^(127\.|::1$|::ffff:127\.|10\.|172\.(1[6-9]|2\d|3[01])\.|192\.168\.)/;
-function skipPrivateIps(req) {
-  const ip = req.ip || '';
-  return process.env.NODE_ENV !== 'production' || PRIVATE_IP_RE.test(ip);
-}
-
-// Global: 200 requests / 15 minutes per IP (skipped for private IPs in dev).
+// Global: 500 requests / 15 minutes per IP.
+// Raised from 200 → 500 because the bootstrap path makes ~10 non-AI requests
+// per page load (resumes/all, config-status, saved-jobs, etc.), and devtools
+// reloads + retries consumed the old budget very quickly.
 export const globalLimiter = rateLimit({
   ...shared,
   windowMs: 15 * 60 * 1000,
-  limit: 200,
-  skip: skipPrivateIps,
+  limit: 500,
   message: { error: 'Too many requests — please try again later.' },
 });
 

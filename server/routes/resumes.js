@@ -1,10 +1,11 @@
 import express from 'express';
 import { loadResumeProfile } from '../resumeParsing/loadResumeProfile.js';
+import { loadAllProfiles } from '../resumeParsing/loadAllProfiles.js';
 
 export function createResumesRouter(getDb) {
   const router = express.Router();
 
-  // Get all resumes for a user
+  // Get all resumes for a user (summary list only)
   router.get('/', async (req, res) => {
     const userId = req.query.userId || 'user-default';
     try {
@@ -15,6 +16,18 @@ export function createResumesRouter(getDb) {
       res.json(resumes);
     } catch (err) {
       res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Batch: all full profiles in one request — eliminates the 1+N pattern.
+  // Must be defined before GET /:id so Express matches /all literally.
+  router.get('/all', async (req, res) => {
+    const userId = req.query.userId || 'user-default';
+    try {
+      const profiles = await loadAllProfiles(getDb(), userId);
+      res.json(profiles);
+    } catch (err) {
+      res.status(500).json({ error: 'Failed to load CV profiles.' });
     }
   });
 

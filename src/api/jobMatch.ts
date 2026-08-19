@@ -1,5 +1,5 @@
 import { API_BASE, fetchOrThrow } from './client';
-import { ResumeProfile, Job } from '../types';
+import { ResumeProfile, Job, CvExtract } from '../types';
 
 export async function getExperienceAlignment(profile: ResumeProfile, job: Job): Promise<string> {
   const response = await fetchOrThrow(`${API_BASE}/jobs/compare`, {
@@ -65,5 +65,17 @@ export async function generateApplicationPackage(profile: ResumeProfile, job: Jo
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ profile, job })
   }, 'Failed to generate application materials.');
+  return response.json();
+}
+
+// Generates a tailored resume + cover letter from a free-text job description
+// (see POST /api/jobs/customise-resume). Accepts CvExtract (quick wizard upload)
+// or the full ResumeProfile (use-existing shortcut) — server needs the same fields.
+export async function customiseResume(profile: CvExtract | ResumeProfile, jobDescription: string): Promise<ApplicationPackage> {
+  const response = await fetchOrThrow(`${API_BASE}/jobs/customise-resume`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ profile, jobDescription })
+  }, 'Failed to generate customised CV.');
   return response.json();
 }

@@ -71,7 +71,7 @@ export default function ResumeDropzone(props: ResumeDropzoneProps) {
       <div className="h-20 w-20 bg-primary/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-105 transition-transform">
         <span aria-hidden="true" className="material-symbols-outlined text-[40px] text-primary">upload_file</span>
       </div>
-      <h3 className="text-lg font-bold text-on-surface mb-1">Drag and drop your resume here</h3>
+      <h3 className="text-lg font-bold text-on-surface mb-1">Drag and drop your CV here</h3>
       <p className="text-xs text-on-surface-variant mb-6">PDF, DOCX, or TXT — max 5MB each</p>
       <ResumeFilePicker onSelect={props.handleFileSelect} />
 

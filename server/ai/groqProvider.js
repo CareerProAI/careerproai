@@ -1,4 +1,4 @@
-import { timedFetch } from './timedFetch.js';
+import { timedFetch, GROQ_TIMEOUT_MS } from './timedFetch.js';
 
 const GROQ_BASE_URL = 'https://api.groq.com/openai/v1';
 export const GROQ_MODEL = 'openai/gpt-oss-20b';
@@ -32,7 +32,7 @@ export async function callGroqAPI(systemPrompt, userPrompt, { jsonMode = true, m
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(body)
-  });
+  }, GROQ_TIMEOUT_MS);
 
   if (!response.ok) {
     const errText = await response.text();

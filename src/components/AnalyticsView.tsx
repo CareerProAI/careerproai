@@ -16,7 +16,7 @@ interface AnalyticsViewProps {
 }
 
 export default function AnalyticsView({ currentProfile, profiles, applications }: AnalyticsViewProps) {
-  // Every analyzed CV is a real, timestamped snapshot (its id embeds the
+  // Every analyzed resume is a real, timestamped snapshot (its id embeds the
   // upload time, res-<timestamp>) — that IS the score history, no separate
   // tracking table needed.
   const sorted = [...profiles].sort((a, b) => {
