@@ -2,7 +2,7 @@ import { timedFetch } from './timedFetch.js';
 
 const ZAI_BASE_URL = 'https://api.z.ai/api/paas/v4';
 const ZAI_MODEL = 'glm-4.5-flash';
-export const ZAI_TIMEOUT_MS = 77_000;
+export const ZAI_TIMEOUT_MS = 120_000;
 
 /** OpenAI-compatible fallback after Groq and Gemini (free GLM flash). */
 export async function callZaiAPI(systemPrompt, userPrompt, { jsonMode = true, maxTokens, temperature = 0.2 } = {}) {
