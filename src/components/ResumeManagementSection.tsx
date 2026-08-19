@@ -35,10 +35,10 @@ export default function ResumeManagementSection({
 
   return (
     <div className="glass-card rounded-2xl p-6 border border-outline-variant/60 shadow-sm">
-      <h3 className="text-base font-bold text-on-surface mb-1">Resume Management</h3>
-      <p className="text-xs text-on-surface-variant mb-5">Manage the resumes you've analyzed.</p>
+      <h3 className="text-base font-bold text-on-surface mb-1">CV Management</h3>
+      <p className="text-xs text-on-surface-variant mb-5">Manage the CVs you've analyzed.</p>
       {profiles.length === 0 ? (
-        <p className="text-xs text-on-surface-variant">No resumes uploaded yet.</p>
+        <p className="text-xs text-on-surface-variant">No CVs uploaded yet.</p>
       ) : (
         <div className="space-y-2">
           {profiles.map((profile) => (

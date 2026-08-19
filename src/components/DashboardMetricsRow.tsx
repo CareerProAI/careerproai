@@ -17,7 +17,7 @@ export default function DashboardMetricsRow({ currentProfile, jobs, jobsLoading,
   return (
     <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
       <Card className="flex flex-col items-center justify-center relative overflow-hidden">
-        <h3 className="text-xs text-on-surface-variant font-bold uppercase tracking-wider mb-4">Resume Health</h3>
+        <h3 className="text-xs text-on-surface-variant font-bold uppercase tracking-wider mb-4">CV Health</h3>
         <div className="relative w-32 h-32 flex items-center justify-center">
           <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
             <path

@@ -11,7 +11,7 @@ export default function JobSearchHeader({ tabFilter, setTabFilter }: JobSearchHe
       <div>
         <h2 className="font-sans text-3xl font-extrabold text-on-surface">AI Job Match</h2>
         <p className="text-sm text-on-surface-variant max-w-2xl mt-1.5">
-          Discover opportunities tailored to your resume using our predictive AI model. We analyze skills, experience, and cultural fit.
+          Discover opportunities tailored to your CV using our predictive AI model. We analyze skills, experience, and cultural fit.
         </p>
       </div>
       <div className="flex bg-surface-container-low dark:bg-slate-900 p-1 rounded-xl self-start">

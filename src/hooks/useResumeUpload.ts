@@ -63,13 +63,13 @@ export function useResumeUpload(
         setIsProcessing(false);
         setSelectedFile(null);
         onAnalysisSuccess();
-        triggerToast('Resume parsed and analyzed with AI!');
+        triggerToast('CV parsed and analyzed with AI!');
       }, 500);
     } catch (err) {
       clearInterval(interval);
-      console.error('Resume parsing failed:', err);
+      console.error('CV parsing failed:', err);
       setIsProcessing(false);
-      setUploadError(err instanceof Error ? err.message : 'Failed to parse resume. Please try again.');
+      setUploadError(err instanceof Error ? err.message : 'Failed to parse CV. Please try again.');
     }
   };
 

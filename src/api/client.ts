@@ -20,7 +20,7 @@ export async function fetchOrThrow(
     const body = await response.json().catch(() => null);
     const message = typeof body?.error === 'string'
       ? body.error
-      : (response.status === 413 ? 'Resume must be 5MB or smaller.' : fallbackMessage);
+      : (response.status === 413 ? 'CV must be 5MB or smaller.' : fallbackMessage);
     const err = new Error(message) as Error & { status?: number };
     err.status = response.status;
     throw err;

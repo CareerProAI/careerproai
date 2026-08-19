@@ -1,9 +1,9 @@
 import React from 'react';
 
 const notifications = [
-  { id: 1, text: 'Your resume has high ATS score (92/100)!', time: '10 min ago' },
+  { id: 1, text: 'Your CV has high ATS score (92/100)!', time: '10 min ago' },
   { id: 2, text: 'Google matched your profile (98% match)', time: '2 hours ago' },
-  { id: 3, text: 'Stripe requested an update to your resume', time: 'Yesterday' },
+  { id: 3, text: 'Stripe requested an update to your CV', time: 'Yesterday' },
 ];
 
 interface NotificationsDropdownProps {

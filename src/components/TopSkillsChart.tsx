@@ -23,7 +23,7 @@ export default function TopSkillsChart({ profiles }: TopSkillsChartProps) {
     <section className="glass-card rounded-2xl p-6 border border-outline-variant/60 shadow-sm">
       <h3 className="text-base font-bold text-on-surface mb-1">Top Skills</h3>
       <p className="text-xs text-on-surface-variant mb-5">
-        Most frequent skills across all {profiles.length} analyzed resume{profiles.length !== 1 ? 's' : ''}
+        Most frequent skills across all {profiles.length} analyzed CV{profiles.length !== 1 ? 's' : ''}
       </p>
       {topSkills.length === 0 ? (
         <p className="text-xs text-on-surface-variant">No skills detected yet.</p>

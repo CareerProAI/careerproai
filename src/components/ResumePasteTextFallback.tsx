@@ -10,9 +10,9 @@ interface ResumePasteTextFallbackProps {
 export default function ResumePasteTextFallback({ uploadText, setUploadText, onSubmit, triggerToast }: ResumePasteTextFallbackProps) {
   return (
     <div className="mt-8 w-full max-w-md pt-6 border-t border-outline-variant/40">
-      <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-wider mb-2">Or parse typed resume details</p>
+      <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-wider mb-2">Or parse typed CV details</p>
       <textarea
-        placeholder="Paste candidate info or resume text here (e.g. John Mercer - Lead Developer...)"
+        placeholder="Paste candidate info or CV text here (e.g. John Mercer - Lead Developer...)"
         value={uploadText}
         onChange={(e) => setUploadText(e.target.value)}
         onClick={(e) => e.stopPropagation()}
@@ -22,7 +22,7 @@ export default function ResumePasteTextFallback({ uploadText, setUploadText, onS
         onClick={(e) => {
           e.stopPropagation();
           if (!uploadText) {
-            triggerToast('Please type or paste some resume text first!');
+            triggerToast('Please type or paste some CV text first!');
             return;
           }
           onSubmit(new File([uploadText], 'pasted_resume_input.txt', { type: 'text/plain' }));

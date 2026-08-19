@@ -14,7 +14,7 @@ export function validateResumeFile(file: { name: string; size: number; type?: st
     return 'Please upload a PDF or DOCX file (max 5MB). TXT is also accepted.';
   }
   if (file.size > MAX_RESUME_BYTES) {
-    return 'Resume must be 5MB or smaller.';
+    return 'CV must be 5MB or smaller.';
   }
   return null;
 }

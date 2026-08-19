@@ -21,7 +21,7 @@ interface ResumeReportSectionProps {
 export default function ResumeReportSection({ currentProfile, onAddSkill, triggerToast, onSwitchToUpload }: ResumeReportSectionProps) {
   const handleAddSkill = (skill: string) => {
     onAddSkill(skill);
-    triggerToast(`Successfully studied and added "${skill}" to your active resume skills! Score increased!`);
+    triggerToast(`Successfully studied and added "${skill}" to your active CV skills! Score increased!`);
   };
 
   return (

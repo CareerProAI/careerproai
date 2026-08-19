@@ -33,7 +33,7 @@ export default function FilePreviewCard({ file, onRemove, onAnalyze }: FilePrevi
           onClick={onAnalyze}
           className="px-5 py-2.5 min-h-11 bg-primary text-on-primary font-bold rounded-xl text-xs shadow-md hover:bg-primary/95 transition-all touch-manipulation"
         >
-          Analyze Resume
+          Analyze CV
         </button>
       </div>
     </div>

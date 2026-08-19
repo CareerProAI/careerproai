@@ -13,7 +13,7 @@ export default function ResumeReportHeader({ currentProfile, onDownloadPdf, onSh
   return (
     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-outline-variant/40 pb-5">
       <div>
-        <h2 className="font-sans text-2xl font-extrabold text-on-surface">{currentProfile.candidateName} Resume</h2>
+        <h2 className="font-sans text-2xl font-extrabold text-on-surface">{currentProfile.candidateName} CV</h2>
         <p className="text-xs text-on-surface-variant mt-1">
           Last analyzed: <span className="font-semibold text-primary">{currentProfile.lastAnalyzed}</span>
         </p>
@@ -75,7 +75,7 @@ export default function ResumeReportHeader({ currentProfile, onDownloadPdf, onSh
           onClick={onUpdateResume}
           className="w-full md:w-auto flex items-center justify-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-xl hover:bg-primary/95 text-xs font-semibold shadow-md transition-colors"
         >
-          <span aria-hidden="true" className="material-symbols-outlined text-sm">autorenew</span> Update Resume
+          <span aria-hidden="true" className="material-symbols-outlined text-sm">autorenew</span> Update CV
         </button>
       </div>
     </div>

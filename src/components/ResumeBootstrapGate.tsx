@@ -31,7 +31,7 @@ export default function ResumeBootstrapGate({
   children,
 }: ResumeBootstrapGateProps) {
   if (isLoadingProfiles) {
-    return <div className="text-center py-24 text-sm text-on-surface-variant">Loading resume profiles…</div>;
+    return <div className="text-center py-24 text-sm text-on-surface-variant">Loading CV profiles…</div>;
   }
   if (loadError) {
     return (
@@ -39,8 +39,8 @@ export default function ResumeBootstrapGate({
         <RetryableError
           message={
             import.meta.env.DEV
-              ? `Failed to load resumes: ${loadError}. Is the API server running (npm run server)?`
-              : `Failed to load resumes: ${loadError}`
+              ? `Failed to load CVs: ${loadError}. Is the API server running (npm run server)?`
+              : `Failed to load CVs: ${loadError}`
           }
           onRetry={onRetryLoad}
         />
@@ -61,12 +61,12 @@ export default function ResumeBootstrapGate({
     }
     return (
       <div className="text-center py-24">
-        <p className="text-sm text-on-surface-variant mb-4">No resumes yet — upload one to get started.</p>
+        <p className="text-sm text-on-surface-variant mb-4">No CVs yet — upload one to get started.</p>
         <button
           onClick={() => setTab('resume')}
           className="px-5 py-2.5 bg-primary text-on-primary font-bold rounded-xl text-xs"
         >
-          Go to Resume Upload
+          Go to CV Upload
         </button>
       </div>
     );

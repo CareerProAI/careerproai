@@ -22,7 +22,7 @@ export default function ResumeGapAnalysisCard({ currentProfile, onAddSkill }: Re
           </span>
         </div>
         <p className="text-xs text-on-surface-variant mb-4 leading-relaxed">
-          Skills missing from your resume that appear in 80% of job postings for your target role:
+          Skills missing from your CV that appear in 80% of job postings for your target role:
         </p>
         <div className="flex flex-col gap-2">
           {missingSkills.length > 0 ? (
@@ -37,7 +37,7 @@ export default function ResumeGapAnalysisCard({ currentProfile, onAddSkill }: Re
                   {skill}
                 </span>
                 <span className="text-[10px] opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-wider font-extrabold text-primary">
-                  Add to Resume (+3 Pts)
+                  Add to CV (+3 Pts)
                 </span>
               </button>
             ))

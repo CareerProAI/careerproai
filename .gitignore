@@ -18,6 +18,7 @@ tests/e2e/fixtures/oversized.bin
 # Not tracked in public repo
 .agents/
 .claude/
+.codex/
 .cursor/
 CLAUDE.md
 cost.md

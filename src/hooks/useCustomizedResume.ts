@@ -11,7 +11,7 @@ export interface CustomizedResumeInput {
   description: string;
 }
 
-// Facade: parse an optional upload, then generate a tailored resume + cover letter.
+// Facade: parse an optional upload, then generate a tailored CV + cover letter.
 export function useCustomizedResume(
   currentProfile: ResumeProfile | null,
   onParsedProfile?: (profile: ResumeProfile) => void,
@@ -39,13 +39,13 @@ export function useCustomizedResume(
         profile = parsed.profile || await fetchResumeDetails(parsed.resumeId);
         onParsedProfile?.(profile);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to parse resume.');
+        setError(err instanceof Error ? err.message : 'Failed to parse CV.');
         setLoading(false);
         return;
       }
     }
     if (!isProfileReadyForApplication(profile)) {
-      setError('Upload a PDF or DOCX resume so we can tailor this application.');
+      setError('Upload a PDF or DOCX CV so we can tailor this application.');
       setLoading(false);
       return;
     }

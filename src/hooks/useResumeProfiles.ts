@@ -10,7 +10,7 @@ export function useResumeProfiles(triggerToast: (msg: string) => void, addLog: (
   const [loadError, setLoadError] = useState<string | null>(null);
   const [reloadKey, setReloadKey] = useState(0);
 
-  // Bootstrap resume profiles from the server-persisted backend (talentai.db).
+  // Bootstrap CV profiles from the server-persisted backend (talentai.db).
   useEffect(() => {
     let cancelled = false;
 
@@ -27,7 +27,7 @@ export function useResumeProfiles(triggerToast: (msg: string) => void, addLog: (
         setCurrentProfile(fullProfiles[0] ?? null);
       } catch (err) {
         if (!cancelled) {
-          setLoadError(err instanceof Error ? err.message : 'Failed to load resumes from the server.');
+          setLoadError(err instanceof Error ? err.message : 'Failed to load CVs from the server.');
         }
       } finally {
         if (!cancelled) setIsLoadingProfiles(false);
@@ -55,16 +55,16 @@ export function useResumeProfiles(triggerToast: (msg: string) => void, addLog: (
       if (currentProfile?.id === profileId) {
         setCurrentProfile(updated[0] ?? null);
       }
-      triggerToast('Resume deleted');
+      triggerToast('CV deleted');
     } catch (err) {
-      triggerToast(err instanceof Error ? err.message : 'Failed to delete resume.');
+      triggerToast(err instanceof Error ? err.message : 'Failed to delete CV.');
     }
   };
 
   const onUploadNewProfile = (newProfile: ResumeProfile) => {
     setProfiles((prev) => [newProfile, ...prev]);
     setCurrentProfile(newProfile);
-    addLog(`Analyzed resume "${newProfile.fileName}"`);
+    addLog(`Analyzed CV "${newProfile.fileName}"`);
   };
 
   const onAddSkill = (skill: string) => {

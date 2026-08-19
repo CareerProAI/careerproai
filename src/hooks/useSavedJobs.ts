@@ -6,8 +6,8 @@ export function useSavedJobs(currentProfileId: string | undefined, triggerToast:
   const [savedJobRecords, setSavedJobRecords] = useState<SavedJobRecord[]>([]);
   const savedJobIds = savedJobRecords.map((record) => record.job_id);
 
-  // Saved jobs are scoped per resume (job_matches.resume_id) — reload whenever the
-  // active resume changes.
+  // Saved jobs are scoped per CV (job_matches.resume_id) — reload whenever the
+  // active CV changes.
   useEffect(() => {
     let cancelled = false;
 
@@ -31,7 +31,7 @@ export function useSavedJobs(currentProfileId: string | undefined, triggerToast:
 
   const onSaveJob = async (job: Job) => {
     if (!currentProfileId) {
-      triggerToast('Select or upload a resume before saving jobs.');
+      triggerToast('Select or upload a CV before saving jobs.');
       return;
     }
     const isSaved = savedJobIds.includes(job.id);

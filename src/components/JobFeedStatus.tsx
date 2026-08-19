@@ -13,7 +13,7 @@ export default function JobFeedStatus({ loading, error, onRetry }: JobFeedStatus
   return (
     <div className="glass-card rounded-2xl p-12 text-center border border-outline-variant/60">
       <p className="text-sm text-on-surface-variant">
-        {loading ? 'Fetching live listings from Bdjobs.com and scoring them against your resume…' : ''}
+        {loading ? 'Fetching live listings from Bdjobs.com and scoring them against your CV…' : ''}
       </p>
     </div>
   );

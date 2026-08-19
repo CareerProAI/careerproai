@@ -35,8 +35,8 @@ export default function ResumeView({
 
       <div className="flex justify-between items-center border-b border-outline-variant/60 pb-3 mb-6">
         <div>
-          <h2 className="font-sans text-2xl font-extrabold text-on-surface">Resume Insights</h2>
-          <p className="text-xs text-on-surface-variant mt-0.5">Parse, score, and evaluate resumes with AI.</p>
+          <h2 className="font-sans text-2xl font-extrabold text-on-surface">CV Insights</h2>
+          <p className="text-xs text-on-surface-variant mt-0.5">Parse, score, and evaluate CVs with AI.</p>
         </div>
         <div className="flex bg-surface-container-low dark:bg-slate-900 p-1 rounded-xl">
           <button
@@ -53,7 +53,7 @@ export default function ResumeView({
               subView === 'upload' ? 'bg-white dark:bg-slate-800 text-primary shadow-sm' : 'text-on-surface-variant hover:text-on-surface'
             }`}
           >
-            Upload Resume
+            Upload CV
           </button>
         </div>
       </div>

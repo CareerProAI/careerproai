@@ -81,7 +81,7 @@ export default function SideNavBar({
             className="w-full bg-primary text-on-primary py-3 rounded-full font-semibold shadow-md flex items-center justify-center gap-2 hover:bg-primary/95 hover:scale-[1.01] active:scale-[0.99] transition-all"
           >
             <span aria-hidden="true" className="material-symbols-outlined text-[20px]">psychology</span>
-            Analyze Resume
+            Analyze CV
           </button>
         </div>
       </nav>

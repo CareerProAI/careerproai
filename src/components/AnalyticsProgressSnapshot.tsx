@@ -12,7 +12,7 @@ export default function AnalyticsProgressSnapshot({ totalAnalyses, bestScore, gr
       <h3 className="text-sm font-bold text-on-surface uppercase tracking-wider text-on-surface-variant mb-4">Progress Snapshot</h3>
       <div className="space-y-4">
         <div className="flex justify-between items-center text-xs">
-          <span className="font-medium text-on-surface-variant">Resumes Analyzed</span>
+          <span className="font-medium text-on-surface-variant">CVs Analyzed</span>
           <span className="font-extrabold text-primary">{totalAnalyses}</span>
         </div>
         <div className="flex justify-between items-center text-xs">

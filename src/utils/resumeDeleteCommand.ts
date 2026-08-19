@@ -5,13 +5,13 @@ export function createResumeDeleteCommand(
   profile: { id: string; fileName?: string } | null,
 ): ResumeDeleteCommand | null {
   if (!profile?.id) return null;
-  return { id: profile.id, fileName: profile.fileName?.trim() || 'this resume' };
+  return { id: profile.id, fileName: profile.fileName?.trim() || 'this CV' };
 }
 
 export function resumeDeleteDialogCopy(fileName: string): { title: string; description: string } {
   const name = fileName?.trim();
   return {
-    title: name && name !== 'this resume' ? `Delete "${name}"?` : 'Delete this resume?',
-    description: 'This cannot be undone. Saved job matches for this resume will also be removed.',
+    title: name && name !== 'this CV' ? `Delete "${name}"?` : 'Delete this CV?',
+    description: 'This cannot be undone. Saved job matches for this CV will also be removed.',
   };
 }

@@ -30,7 +30,7 @@ export default function CustomizedResumeForm({
   return (
     <form onSubmit={handleSubmit} className="glass-card rounded-2xl p-6 border border-outline-variant/60 space-y-5">
       <fieldset className="space-y-5 border-0 p-0 m-0" disabled={loading}>
-        <legend className="text-sm font-bold text-on-surface mb-1">Resume and job details</legend>
+        <legend className="text-sm font-bold text-on-surface mb-1">CV and job details</legend>
         <CustomizedResumeDropzone
           file={pick.file}
           fileError={pick.fileError}

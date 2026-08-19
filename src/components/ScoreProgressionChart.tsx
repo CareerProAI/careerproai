@@ -36,7 +36,7 @@ export default function ScoreProgressionChart({ scoreHistory }: ScoreProgression
       <div className="flex justify-between items-center mb-6">
         <div>
           <h3 className="text-base font-bold text-on-surface">Score Progression</h3>
-          <p className="text-xs text-on-surface-variant">Your resume scoring timeline</p>
+          <p className="text-xs text-on-surface-variant">Your CV scoring timeline</p>
         </div>
         {growth !== null && (
           <span className="text-xs bg-primary/10 text-primary font-bold px-3 py-1 rounded-full">
@@ -88,7 +88,7 @@ export default function ScoreProgressionChart({ scoreHistory }: ScoreProgression
       </div>
       <div className="flex items-center gap-2 mt-4 text-[11px] text-on-surface-variant font-medium">
         <span className="w-3 h-1.5 bg-primary rounded-full"></span>
-        <span>Your resume score at each analysis</span>
+        <span>Your CV score at each analysis</span>
       </div>
     </div>
   );

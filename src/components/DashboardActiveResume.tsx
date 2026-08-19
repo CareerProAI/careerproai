@@ -15,7 +15,7 @@ export default function DashboardActiveResume({ currentProfile, setTab }: Dashbo
   return (
     <Card as="section">
       <div className="flex justify-between items-center mb-5">
-        <h3 className="text-lg font-bold text-on-surface">Active Resume</h3>
+        <h3 className="text-lg font-bold text-on-surface">Active CV</h3>
         <span className="text-xs text-on-surface-variant font-medium">
           Last updated: {formatProfileUpdated(currentProfile.id)}
         </span>
@@ -36,7 +36,7 @@ export default function DashboardActiveResume({ currentProfile, setTab }: Dashbo
           </div>
         </div>
         <Button variant="secondary" onClick={() => setTab('resume')} className="w-full sm:w-auto text-primary">
-          Manage Resume
+          Manage CV
         </Button>
       </div>
     </Card>

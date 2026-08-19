@@ -23,7 +23,7 @@ export default function CustomizedResumeResults({
         <div className="h-2.5 bg-outline-variant/40 rounded w-5/6 animate-pulse"></div>
         <div className="h-2.5 bg-outline-variant/40 rounded w-4/6 animate-pulse"></div>
         <p className="text-xs text-on-surface-variant text-center pt-2">
-          Parsing your resume and generating tailored materials — this can take up to a minute...
+          Parsing your CV and generating tailored materials — this can take up to a minute...
         </p>
       </div>
     );
@@ -36,7 +36,7 @@ export default function CustomizedResumeResults({
   return (
     <div className="glass-card rounded-2xl p-6 border border-outline-variant/60 space-y-5">
       <h3 className="text-sm font-bold text-on-surface">Tailored for {targetLabel}</h3>
-      <ApplicationPackagePreview title="Tailored CV" text={data.resumeText} pdfBase64={data.resumePdfBase64} fileName={`resume-${fileBase}.pdf`} />
+      <ApplicationPackagePreview title="Tailored CV" text={data.resumeText} pdfBase64={data.resumePdfBase64} fileName={`cv-${fileBase}.pdf`} />
       <ApplicationPackagePreview title="Cover Letter" text={data.coverLetterText} pdfBase64={data.coverLetterPdfBase64} fileName={`cover-letter-${fileBase}.pdf`} />
     </div>
   );

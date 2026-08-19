@@ -42,7 +42,7 @@ export function useResumeFilePick() {
     handleDrag, handleDrop, handleFileSelect, resetFile,
     requireFile: (hasReadyProfile: boolean) => {
       if (file || hasReadyProfile) return true;
-      setFileError('Upload a PDF or DOCX resume first.');
+      setFileError('Upload a PDF or DOCX CV first.');
       return false;
     },
   };

@@ -14,8 +14,8 @@ const TOGGLE_ITEMS: { key: keyof NotificationPrefs; label: string; description: 
   },
   {
     key: 'notifyResumeAnalysis',
-    label: 'Resume analysis complete',
-    description: 'Notify when a resume finishes parsing and scoring',
+    label: 'CV analysis complete',
+    description: 'Notify when a CV finishes parsing and scoring',
   },
   {
     key: 'notifyWeeklySummary',
