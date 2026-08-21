@@ -28,4 +28,13 @@ export async function runMigrations(db) {
   if (!jobMatchesColumnNames.includes('notes')) {
     await db.exec('ALTER TABLE job_matches ADD COLUMN notes TEXT');
   }
+
+  const analysisColumns = await db.all('PRAGMA table_info(resume_analysis)');
+  const analysisNames = analysisColumns.map((col) => col.name);
+  if (!analysisNames.includes('target_role')) {
+    await db.exec('ALTER TABLE resume_analysis ADD COLUMN target_role TEXT');
+  }
+  if (!analysisNames.includes('missing_skills')) {
+    await db.exec('ALTER TABLE resume_analysis ADD COLUMN missing_skills TEXT');
+  }
 }

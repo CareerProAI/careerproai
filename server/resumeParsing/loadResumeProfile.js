@@ -13,7 +13,7 @@ export async function loadResumeProfile(db, id) {
     db.all('SELECT * FROM projects WHERE resume_id = ?', id),
     db.all('SELECT * FROM languages WHERE resume_id = ?', id),
     db.all('SELECT platform, url FROM social_links WHERE resume_id = ?', id),
-    db.get('SELECT strengths, improvements FROM resume_analysis WHERE resume_id = ?', id),
+    db.get('SELECT strengths, improvements, target_role, missing_skills FROM resume_analysis WHERE resume_id = ?', id),
   ]);
 
   return reassembleResumeProfile(resume, {

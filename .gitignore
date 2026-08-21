@@ -7,6 +7,8 @@ coverage/
 .env*
 !.env.example
 talentai.db
+talentai.db-shm
+talentai.db-wal
 
 # Test artifacts — playwright-report/test-results are regenerated per run; oversized.bin
 # is 6MB of pure junk data (only its size matters for A01) regenerated via
@@ -14,6 +16,7 @@ talentai.db
 playwright-report/
 test-results/
 tests/e2e/fixtures/oversized.bin
+Test_Work.zip
 
 # Not tracked in public repo
 .agents/
@@ -21,6 +24,10 @@ tests/e2e/fixtures/oversized.bin
 .codex/
 .cursor/
 CLAUDE.md
+AGENTS.md
+ats.md
+ats_new.md
+implement_ats.md
 cost.md
 detail.md
 fix.md

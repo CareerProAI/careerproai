@@ -8,8 +8,9 @@ export { getDb };
 export async function initDb() {
   const db = await getDb();
 
-  // Enable foreign keys
-  await db.get('PRAGMA foreign_keys = ON');
+  // Enable foreign keys + WAL (reduces SQLITE_BUSY when tests hit the DB concurrently).
+  await db.exec('PRAGMA foreign_keys = ON');
+  await db.exec('PRAGMA journal_mode = WAL');
 
   await createSchema(db);
   await runMigrations(db);

@@ -61,4 +61,5 @@ test('loadResumeProfile returns the saved PDF filename after insert', async () =
   const profile = await loadResumeProfile(db, resumeId);
   assert.equal(profile.fileName, 'My CV.pdf');
   assert.equal(profile.candidateName, 'Alex Rivera');
+  assert.equal(profile.gapAnalysis.targetRole, 'Engineer');
 });

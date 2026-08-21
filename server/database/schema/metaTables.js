@@ -15,7 +15,9 @@ export async function ensureMetaTables(db) {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       resume_id TEXT NOT NULL UNIQUE,
       strengths TEXT NOT NULL, -- JSON string representation of StrengthItem[]
-      improvements TEXT NOT NULL, -- JSON string representation of ImprovementItem[]
+      improvements TEXT NOT NULL,
+      target_role TEXT,
+      missing_skills TEXT,
       FOREIGN KEY (resume_id) REFERENCES resumes(id) ON DELETE CASCADE
     )
   `);

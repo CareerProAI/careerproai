@@ -4,13 +4,13 @@ import { timedFetch } from '../../server/ai/timedFetch.js';
 
 test('timedFetch aborts a hung provider before Vercel maxDuration', async () => {
   const originalFetch = globalThis.fetch;
-  globalThis.fetch = (_url, init) => new Promise((_resolve, reject) => {
-    init.signal.addEventListener('abort', () => {
+  globalThis.fetch = ((_url, init) => new Promise((_resolve, reject) => {
+    init?.signal?.addEventListener('abort', () => {
       const err = new Error('This operation was aborted');
       err.name = 'AbortError';
       reject(err);
     });
-  });
+  })) as typeof fetch;
   try {
     const started = Date.now();
     await assert.rejects(() => timedFetch('https://example.invalid/ai', {}, 30), {

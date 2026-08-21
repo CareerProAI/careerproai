@@ -15,12 +15,27 @@ function defaultDbPath() {
 
 const dbPath = process.env.DB_PATH ? path.resolve(process.env.DB_PATH) : defaultDbPath();
 
+function isWrongOsBinary(err) {
+  const msg = String(err?.message || err);
+  return err?.code === 'ERR_DLOPEN_FAILED'
+    || msg.includes('invalid ELF header')
+    || msg.includes('not a valid Win32');
+}
+
 export async function getDb() {
   if (useBuiltinSqlite()) {
     const { openNodeSqlite } = await import('./openNodeSqlite.js');
     return openNodeSqlite(dbPath);
   }
-  const sqlite3 = (await import('sqlite3')).default;
-  const { open } = await import('sqlite');
-  return open({ filename: dbPath, driver: sqlite3.Database });
+  try {
+    const sqlite3 = (await import('sqlite3')).default;
+    const { open } = await import('sqlite');
+    return await open({ filename: dbPath, driver: sqlite3.Database });
+  } catch (err) {
+    if (!isWrongOsBinary(err)) throw err;
+    // WSL + Windows share node_modules — sqlite3's .node is OS-specific.
+    console.warn('sqlite3 native binary is for a different OS — using built-in node:sqlite.');
+    const { openNodeSqlite } = await import('./openNodeSqlite.js');
+    return openNodeSqlite(dbPath);
+  }
 }

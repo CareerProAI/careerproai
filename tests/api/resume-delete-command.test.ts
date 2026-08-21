@@ -21,5 +21,5 @@ test('resumeDeleteDialogCopy never uses a native confirm string with a blank nam
   const copy = resumeDeleteDialogCopy('My CV.docx');
   assert.equal(copy.title, 'Delete "My CV.docx"?');
   assert.match(copy.description, /cannot be undone/i);
-  assert.equal(resumeDeleteDialogCopy('').title, 'Delete this resume?');
+  assert.equal(resumeDeleteDialogCopy('').title, 'Delete this CV?');
 });

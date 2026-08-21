@@ -18,27 +18,20 @@ export function reassembleResumeProfile(resume, { skills, experience, education,
     softSkills: skills.filter(s => s.category === 'softSkills').map(s => s.skill_name)
   };
 
-  const gapAnalysis = {
-    targetRole: resume.current_role ? `Lead ${resume.current_role}` : 'Specialist',
-    missingSkills: []
-  };
-
   let strengths = [];
   let improvements = [];
+  const gapAnalysis = {
+    targetRole: analysis?.target_role || resume.current_role || 'Specialist',
+    missingSkills: [],
+  };
   if (analysis) {
     strengths = JSON.parse(analysis.strengths);
     improvements = JSON.parse(analysis.improvements);
-
-    // Infer missing skills from improvements & strengths
-    const parsedImprovements = improvements.map(i => i.title.toLowerCase());
-    if (parsedImprovements.some(i => i.includes('cloud') || i.includes('aws'))) {
-      gapAnalysis.missingSkills.push('AWS / GCP Cloud');
-    }
-    if (parsedImprovements.some(i => i.includes('system design') || i.includes('architecture'))) {
-      gapAnalysis.missingSkills.push('System Architecture');
-    }
-    if (parsedImprovements.some(i => i.includes('ci/cd') || i.includes('pipeline'))) {
-      gapAnalysis.missingSkills.push('CI/CD Pipelines');
+    try {
+      const missing = JSON.parse(analysis.missing_skills || '[]');
+      if (Array.isArray(missing)) gapAnalysis.missingSkills = missing;
+    } catch {
+      gapAnalysis.missingSkills = [];
     }
   }
 

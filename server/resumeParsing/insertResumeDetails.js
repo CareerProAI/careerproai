@@ -86,9 +86,11 @@ export async function insertResumeDetails(db, resumeId, parsedData) {
   const improvementsWithIds = improvements.map((im, i) => ({ ...im, id: `imp-${Date.now()}-${i}` }));
 
   await db.run(
-    'INSERT INTO resume_analysis (resume_id, strengths, improvements) VALUES (?, ?, ?)',
+    'INSERT INTO resume_analysis (resume_id, strengths, improvements, target_role, missing_skills) VALUES (?, ?, ?, ?, ?)',
     resumeId,
     JSON.stringify(strengthsWithIds),
-    JSON.stringify(improvementsWithIds)
+    JSON.stringify(improvementsWithIds),
+    parsedData.gapAnalysis?.targetRole || parsedData.currentRole || '',
+    JSON.stringify(parsedData.gapAnalysis?.missingSkills || []),
   );
 }

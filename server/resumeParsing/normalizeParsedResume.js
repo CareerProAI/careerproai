@@ -69,5 +69,9 @@ export function normalizeParsedResume(raw) {
       name: asText(typeof lang === 'string' ? lang : lang?.name, 'Unknown'),
       proficiency: asText(typeof lang === 'string' ? '' : lang?.proficiency),
     })),
+    gapAnalysis: {
+      targetRole: asText(data.gapAnalysis?.targetRole, asText(data.currentRole, 'Specialist')),
+      missingSkills: asList(data.gapAnalysis?.missingSkills).map((s) => asText(s)).filter(Boolean),
+    },
   };
 }
